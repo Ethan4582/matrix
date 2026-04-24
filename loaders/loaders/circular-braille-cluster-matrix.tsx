@@ -46,10 +46,15 @@ export function CircularBrailleClusterMatrix({
       const x = col - 2;
       const y = row - 2;
       const ring = Math.sqrt(x * x + y * y);
+      const count = BRAILLE_PHASES.length;
       const phaseIndex =
         reducedMotion || phase === "idle"
           ? 0
-          : Math.floor((animPhase) * BRAILLE_PHASES.length) % BRAILLE_PHASES.length;
+          : (() => {
+              const t = Number.isFinite(animPhase) ? animPhase : 0;
+              const raw = Math.floor(t * count);
+              return ((raw % count) + count) % count;
+            })();
       const activePattern = BRAILLE_PHASES[phaseIndex]!;
       const key = `${row},${col}`;
       const inPattern = activePattern.has(key);

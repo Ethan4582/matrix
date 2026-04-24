@@ -29,7 +29,8 @@ export function useCyclePhase({ active, cycleMsBase, speed = 1 }: UseCyclePhaseO
     let rafId = 0;
 
     const tick = (now: number) => {
-      const elapsed = (now - start) % cycleMs;
+      // Positive modulo so elapsed stays in [0, cycleMs); JS % can be negative when (now - start) < 0.
+      const elapsed = ((now - start) % cycleMs + cycleMs) % cycleMs;
       setPhase(elapsed / cycleMs);
       rafId = requestAnimationFrame(tick);
     };

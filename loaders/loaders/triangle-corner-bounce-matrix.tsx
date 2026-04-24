@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
 
 import { cx } from "../core/cx";
+import { styleOpacity, stylePx } from "../core/hydration-inline-style";
 import { usePrefersReducedMotion } from "../hooks/use-prefers-reduced-motion";
 import type { DotMatrixCommonProps } from "../types";
 
@@ -76,8 +77,8 @@ export function TriangleCornerBounceMatrix({
 
   const gap = Math.max(1, Math.floor((size - dotSize * MATRIX_SIZE) / (MATRIX_SIZE - 1)));
   const rootStyle = {
-    width: size,
-    height: size,
+    width: stylePx(size),
+    height: stylePx(size),
     color
   } as CSSProperties;
 
@@ -134,9 +135,9 @@ export function TriangleCornerBounceMatrix({
               aria-hidden="true"
               className={cx("dmx-dot", !isActive && "dmx-inactive", dotClassName)}
               style={{
-                width: dotSize,
-                height: dotSize,
-                opacity
+                width: stylePx(dotSize),
+                height: stylePx(dotSize),
+                opacity: styleOpacity(opacity)
               }}
             />
           );
