@@ -2,7 +2,7 @@
 
 import type { CSSProperties } from "react";
 
-import { useDotMatrixPhases, usePrefersReducedMotion } from "./dotmatrix-hooks";
+import { useDotMatrixPhases, usePrefersReducedMotion } from "@/components/ui/dotmatrix-hooks";
 
 export type MatrixPattern = "diamond" | "full" | "outline" | "rose" | "cross" | "rings";
 export type DotMatrixPhase = "idle" | "collapse" | "hoverRipple" | "loadingRipple";

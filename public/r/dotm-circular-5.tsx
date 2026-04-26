@@ -2,12 +2,12 @@
 
 import { useMemo } from "react";
 
-import { DotMatrixBase } from "./dotmatrix-core";
-import { useDotMatrixPhases } from "./dotmatrix-hooks";
-import { isWithinCircularMask } from "./dotmatrix-core";
-import { useCyclePhase } from "./dotmatrix-hooks";
-import { usePrefersReducedMotion } from "./dotmatrix-hooks";
-import type { DotAnimationResolver, DotMatrixCommonProps } from "./dotmatrix-core";
+import { DotMatrixBase } from "@/components/ui/dotmatrix-core";
+import { useDotMatrixPhases } from "@/components/ui/dotmatrix-hooks";
+import { isWithinCircularMask } from "@/components/ui/dotmatrix-core";
+import { useCyclePhase } from "@/components/ui/dotmatrix-hooks";
+import { usePrefersReducedMotion } from "@/components/ui/dotmatrix-hooks";
+import type { DotAnimationResolver, DotMatrixCommonProps } from "@/components/ui/dotmatrix-core";
 
 export type DotmCircular5Props = DotMatrixCommonProps;
 

@@ -48,38 +48,50 @@ async function writeRegistrySource(pathInRegistry: string, content: string): Pro
 }
 
 const importRewrites: ReadonlyArray<{ from: string; to: string }> = [
-  { from: "../base/dot-matrix-base", to: "./dotmatrix-core" },
-  { from: "../core/circle-mask", to: "./dotmatrix-core" },
-  { from: "../core/cx", to: "./dotmatrix-core" },
-  { from: "../core/grid-paths", to: "./dotmatrix-core" },
-  { from: "../core/hydration-inline-style", to: "./dotmatrix-core" },
-  { from: "../core/path-wave-factory", to: "./dotmatrix-core" },
-  { from: "../core/patterns", to: "./dotmatrix-core" },
-  { from: "../types", to: "./dotmatrix-core" },
-  { from: "../hooks/use-cycle-phase", to: "./dotmatrix-hooks" },
-  { from: "../hooks/use-stepped-cycle", to: "./dotmatrix-hooks" },
-  { from: "../hooks/use-prefers-reduced-motion", to: "./dotmatrix-hooks" },
-  { from: "../core/phases", to: "./dotmatrix-hooks" }
+  { from: "../base/dot-matrix-base", to: "@/components/ui/dotmatrix-core" },
+  { from: "../core/circle-mask", to: "@/components/ui/dotmatrix-core" },
+  { from: "../core/cx", to: "@/components/ui/dotmatrix-core" },
+  { from: "../core/grid-paths", to: "@/components/ui/dotmatrix-core" },
+  { from: "../core/hydration-inline-style", to: "@/components/ui/dotmatrix-core" },
+  { from: "../core/path-wave-factory", to: "@/components/ui/dotmatrix-core" },
+  { from: "../core/patterns", to: "@/components/ui/dotmatrix-core" },
+  { from: "../types", to: "@/components/ui/dotmatrix-core" },
+  { from: "../hooks/use-cycle-phase", to: "@/components/ui/dotmatrix-hooks" },
+  { from: "../hooks/use-stepped-cycle", to: "@/components/ui/dotmatrix-hooks" },
+  { from: "../hooks/use-prefers-reduced-motion", to: "@/components/ui/dotmatrix-hooks" },
+  { from: "../core/phases", to: "@/components/ui/dotmatrix-hooks" }
 ];
+
+/** shadcn installs all files under components/ui/; use the default ui alias so paths resolve in consumer apps. */
+function rewriteRegistrySharedCrossImports(source: string): string {
+  return source
+    .replaceAll('from "./dotmatrix-core"', 'from "@/components/ui/dotmatrix-core"')
+    .replaceAll('from "./dotmatrix-hooks"', 'from "@/components/ui/dotmatrix-hooks"');
+}
 
 async function build() {
   await rm(publicRegistryDir, { recursive: true, force: true });
   await mkdir(publicRegistryDir, { recursive: true });
 
   const sharedSources = await Promise.all(
-    sharedSourceFiles.map(async (sharedFile) => ({
-      ...sharedFile,
-      content: await readAbsolute(sharedFile.absolutePath)
-    }))
+    sharedSourceFiles.map(async (sharedFile) => {
+      let content = await readAbsolute(sharedFile.absolutePath);
+      if (sharedFile.type !== "registry:style") {
+        content = rewriteRegistrySharedCrossImports(content);
+      }
+      return { ...sharedFile, content };
+    })
   );
 
   const registryItems = await Promise.all(
     loaderRegistry.map(async (loader) => {
       const files: RegistryFile[] = [];
 
-      const componentSource = importRewrites.reduce(
-        (current, { from, to }) => current.replaceAll(`"${from}"`, `"${to}"`),
-        await readSource(path.join("loaders", loader.fileName))
+      const componentSource = rewriteRegistrySharedCrossImports(
+        importRewrites.reduce(
+          (current, { from, to }) => current.replaceAll(`"${from}"`, `"${to}"`),
+          await readSource(path.join("loaders", loader.fileName))
+        )
       );
       const componentPath = `components/ui/${loader.fileName}`;
       files.push({

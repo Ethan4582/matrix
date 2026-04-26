@@ -21,7 +21,6 @@ import type { ReactNode } from "react";
 
 import { HomeLink } from "@/components/home-link";
 import { ThemeToggle } from "@/components/theme-toggle";
-import "@/loaders/styles.css";
 import "./globals.css";
 
 const fontVariables = [

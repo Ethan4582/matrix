@@ -26,7 +26,7 @@ const componentsJsonExample = `{
 
 const installCommand = `npx shadcn@latest add @dotmatrix/dotm-square-3`;
 
-const usageExample = `import { DotmSquare3 } from "@/components/dotmatrix/dotm-square-3";
+const usageExample = `import { DotmSquare3 } from "@/components/ui/dotm-square-3";
 
 export function SaveButton({ isSaving }: { isSaving: boolean }) {
   return (

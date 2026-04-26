@@ -2,16 +2,16 @@
 
 import type { CSSProperties } from "react";
 
-import { DotMatrixBase } from "./dotmatrix-core";
-import { useDotMatrixPhases } from "./dotmatrix-hooks";
+import { DotMatrixBase } from "@/components/ui/dotmatrix-core";
+import { useDotMatrixPhases } from "@/components/ui/dotmatrix-hooks";
 import {
   middleRingAntiClockwiseNormFromIndex,
   middleRingAntiClockwiseOrderValue,
   outerRingClockwiseNormFromIndex,
   outerRingClockwiseOrderValue
-} from "./dotmatrix-core";
-import { usePrefersReducedMotion } from "./dotmatrix-hooks";
-import type { DotAnimationResolver, DotMatrixCommonProps } from "./dotmatrix-core";
+} from "@/components/ui/dotmatrix-core";
+import { usePrefersReducedMotion } from "@/components/ui/dotmatrix-hooks";
+import type { DotAnimationResolver, DotMatrixCommonProps } from "@/components/ui/dotmatrix-core";
 
 export type DotmSquare4Props = DotMatrixCommonProps;
 

@@ -1,13 +1,13 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import { useSteppedCycle } from "./dotmatrix-hooks";
+import { useSteppedCycle } from "@/components/ui/dotmatrix-hooks";
 
-import { cx } from "./dotmatrix-core";
-import { useDotMatrixPhases } from "./dotmatrix-hooks";
-import { styleOpacity, stylePx } from "./dotmatrix-core";
-import { usePrefersReducedMotion } from "./dotmatrix-hooks";
-import type { DotMatrixCommonProps } from "./dotmatrix-core";
+import { cx } from "@/components/ui/dotmatrix-core";
+import { useDotMatrixPhases } from "@/components/ui/dotmatrix-hooks";
+import { styleOpacity, stylePx } from "@/components/ui/dotmatrix-core";
+import { usePrefersReducedMotion } from "@/components/ui/dotmatrix-hooks";
+import type { DotMatrixCommonProps } from "@/components/ui/dotmatrix-core";
 
 export type DotmTriangle1Props = DotMatrixCommonProps;
 

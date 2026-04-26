@@ -5,6 +5,8 @@
 @source "../lib/**/*.{ts,tsx}";
 @source "../loaders/**/*.{ts,tsx}";
 
+@import "../loaders/styles.css";
+
 @theme {
   --color-dotmatrix: hsl(var(--dotmatrix-color, var(--dotmatrix-accent)));
 
