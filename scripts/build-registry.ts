@@ -28,7 +28,7 @@ const sharedSourceFiles: Array<{ absolutePath: string; targetPath: string; type:
   },
   {
     absolutePath: path.join(loadersRoot, "styles.css"),
-    targetPath: "styles/dotmatrix-loader.css",
+    targetPath: "components/dotmatrix-loader.css",
     type: "registry:style"
   }
 ];

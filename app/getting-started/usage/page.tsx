@@ -26,6 +26,12 @@ const componentsJsonExample = `{
 
 const installCommand = `npx shadcn@latest add @dotmatrix/dotm-square-3`;
 
+const globalsCssImportExample = `@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "../components/dotmatrix-loader.css";
+@custom-variant dark (&:is(.dark *));`;
+
 const usageExample = `import { DotmSquare3 } from "@/components/ui/dotm-square-3";
 
 export function SaveButton({ isSaving }: { isSaving: boolean }) {
@@ -98,6 +104,16 @@ export default function UsagePage() {
           <p className="theme-text text-sm leading-relaxed">
             Installed files are local. Rename, restyle, and retime motion as needed.
           </p>
+        </section>
+
+        <section className="grid gap-3">
+          <h2 className="theme-text-strong text-lg tracking-tight">Ensure loader styles are imported</h2>
+          <p className="theme-text max-w-[72ch] text-sm leading-relaxed">
+            Dot Matrix loaders depend on <code className="font-mono text-[0.9em]">dotmatrix-loader.css</code>. If your
+            setup does not inject it automatically, add this import in{" "}
+            <code className="font-mono text-[0.9em]">app/globals.css</code>.
+          </p>
+          <ManualCodePanel title="globals.css" code={globalsCssImportExample} lang="css" />
         </section>
 
         <section className="grid gap-3">
