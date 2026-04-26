@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from "react";
 
+import "../styles.css";
 import { useDotMatrixPhases, usePrefersReducedMotion } from "./dotmatrix-hooks";
 
 export type MatrixPattern = "diamond" | "full" | "outline" | "rose" | "cross" | "rings";

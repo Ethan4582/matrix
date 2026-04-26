@@ -47,7 +47,7 @@ export async function getManualSetupSources(): Promise<ManualSetupSources> {
     coreSource,
     hooksFilePath: "components/ui/dotmatrix-hooks.ts",
     hooksSource,
-    cssFilePath: "styles/dotmatrix-loader.css",
+    cssFilePath: "components/dotmatrix-loader.css",
     cssSource
   };
 }
