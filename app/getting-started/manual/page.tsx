@@ -35,7 +35,7 @@ export default async function ManualGettingStartedPage() {
             title={manualSetup.cssFilePath}
             code={manualSetup.cssSource}
             lang="css"
-            scrollClassName="min-h-[60dvh] max-h-[60dvh] overflow-x-auto overflow-y-auto"
+            scrollClassName="min-h-[60dvh] max-h-[60dvh] overflow-x-auto"
           />
           <ManualCodePanel
             title="Import in your global CSS"

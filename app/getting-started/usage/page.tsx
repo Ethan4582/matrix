@@ -80,7 +80,7 @@ export default function UsagePage() {
             title="components.json"
             code={componentsJsonExample}
             lang="json"
-            scrollClassName="min-h-[45dvh] max-h-[60dvh] overflow-x-auto overflow-y-auto"
+            scrollClassName="min-h-[45dvh] max-h-[60dvh] overflow-x-auto"
           />
         </section>
 
@@ -110,7 +110,7 @@ export default function UsagePage() {
             title="Save button example"
             code={usageExample}
             lang="tsx"
-            scrollClassName="min-h-[40dvh] max-h-[60dvh] overflow-x-auto overflow-y-auto"
+            scrollClassName="min-h-[40dvh] max-h-[60dvh] overflow-x-auto"
           />
         </section>
 

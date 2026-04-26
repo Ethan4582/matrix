@@ -469,7 +469,7 @@ export interface PackageManagerInstallCardCopyProps {
 /** Expanded code region cap (scrollable); paired with collapse UX in {@link CodeBlockWithCopy}. */
 export const CODE_EXPAND_MAX_HEIGHT_CLASS = "max-h-[80dvh]" as const;
 
-const CODE_COLLAPSED_MAX_DEFAULT = "max-h-[min(220px,40dvh)]";
+const CODE_COLLAPSED_MAX_DEFAULT = "!max-h-[min(220px,40dvh)]";
 
 export type PackageManagerInstallCardProps = PackageManagerInstallToolbarProps &
   PackageManagerInstallCardCopyProps & {
@@ -595,7 +595,12 @@ function CodeBlockWithCopy({
         codeScrollClassName,
         codeExpanded
           ? [CODE_EXPAND_MAX_HEIGHT_CLASS, "overflow-y-auto overflow-x-auto"].join(" ")
-          : [codeCollapsedMaxHeightClassName, "overflow-hidden"].join(" ")
+          : [
+              "!min-h-0",
+              codeCollapsedMaxHeightClassName,
+              // Beat `overflow-y-*` from `codeScrollClassName` (CSS: longhand can win over `overflow` shorthand).
+              "overflow-x-auto !overflow-y-hidden"
+            ].join(" ")
       ]
         .filter(Boolean)
         .join(" ")}
