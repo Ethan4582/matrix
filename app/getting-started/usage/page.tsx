@@ -20,7 +20,7 @@ const componentsJsonExample = `{
     "hooks": "@/hooks"
   },
   "registries": {
-    "@dotmatrix": "https://dotmatrix-loader.com/r/{name}.json"
+    "@dotmatrix": "https://dotmatrix.zzzzshawn.cloud/r/{name}.json"
   }
 }`;
 

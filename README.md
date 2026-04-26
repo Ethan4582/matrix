@@ -18,4 +18,4 @@ Single Next.js app: loader components live in `loaders/`, app routes in `app/`, 
 
 ## Registry publishing
 
-- Set `REGISTRY_HOMEPAGE` when building to emit the live site URL in registry metadata.
+- Set `REGISTRY_HOMEPAGE` when building to override the homepage in registry metadata (default is `https://dotmatrix.zzzzshawn.cloud`).

@@ -12,7 +12,7 @@ const docsRoot = process.cwd();
 const loadersRoot = path.join(docsRoot, "loaders");
 const manualRoot = path.join(loadersRoot, "manual");
 const publicRegistryDir = path.join(docsRoot, "public", "r");
-const fallbackHomepage = "https://dotmatrix-registry.example.com";
+const fallbackHomepage = "https://dotmatrix.zzzzshawn.cloud";
 
 const sharedSourceFiles: Array<{ absolutePath: string; targetPath: string; type: RegistryFile["type"] }> = [
   {

@@ -1,6 +1,7 @@
 "use client";
 
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   LoaderDetailsDrawer,
@@ -203,17 +204,54 @@ const EXAMPLE_EX_OPACITY_FOR_TRIANGLE: Partial<DotMatrixCommonProps> = {
 interface LoaderGridCardProps {
   item: LoaderCard;
   onSelect: (slug: string) => void;
+  isAnimationEnabled: boolean;
 }
 
-const LoaderGridCard = memo(function LoaderGridCard({ item, onSelect }: LoaderGridCardProps) {
+const LoaderGridCard = memo(function LoaderGridCard({
+  item,
+  onSelect,
+  isAnimationEnabled
+}: LoaderGridCardProps) {
   const Component = componentMap[item.slug as keyof typeof componentMap] ?? DotMatrixIcon;
   const previewProps = previewPropsMap[item.slug] ?? previewPropsMap["dotm-square-1"];
+  const cardRef = useRef<HTMLButtonElement | null>(null);
+  const [isNearViewport, setIsNearViewport] = useState(false);
   const handleSelect = useCallback(() => {
     onSelect(item.slug);
   }, [onSelect, item.slug]);
+  const shouldAnimate = Boolean(isAnimationEnabled && isNearViewport && (previewProps.animated ?? true));
+
+  useEffect(() => {
+    const node = cardRef.current;
+    if (!node) {
+      return;
+    }
+    if (typeof IntersectionObserver === "undefined") {
+      setIsNearViewport(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        setIsNearViewport(Boolean(entry?.isIntersecting));
+      },
+      {
+        root: null,
+        rootMargin: "150px 0px",
+        threshold: 0
+      }
+    );
+
+    observer.observe(node);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   return (
     <button
+      ref={cardRef}
       type="button"
       onClick={handleSelect}
       className="aspect-square cursor-pointer relative group"
@@ -244,7 +282,7 @@ const LoaderGridCard = memo(function LoaderGridCard({ item, onSelect }: LoaderGr
 
       <div className="relative flex h-full flex-col">
         <div className="flex flex-1 items-center justify-center ">
-          <Component {...previewProps} />
+          <Component {...previewProps} animated={shouldAnimate} />
         </div>
       </div>
     </button>
@@ -314,6 +352,7 @@ const HeroInstallCommand = memo(function HeroInstallCommand() {
 export function LoaderGallery({ items }: LoaderGalleryProps) {
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [activeExampleId, setActiveExampleId] = useState<ExamplePreviewId | null>(null);
+  const isCardAnimationEnabled = true;
   const handleSelectSlug = useCallback((slug: string) => {
     setSelectedSlug(slug);
   }, []);
@@ -405,7 +444,21 @@ export function LoaderGallery({ items }: LoaderGalleryProps) {
               <div className="flex  justify-between w-full sm:gap-4">
 
                 <h1 className="theme-text-strong text-balance text-3xl tracking-tight sm:text-8xl">
-                  <span className="block">Dot matrix loaders for React</span>
+                  <span className="block">
+                    Dot{" "}
+                    <span className=" inline-block -mx-0.5 sm:-ml-1 sm:-mr-3 rotate-5 p-1 bg-[#dfdfdf] rounded-[20px] size-[0.9em] translate-y-1 sm:translate-y-3" aria-hidden="true">
+                      <Image
+                        src="/icon.svg"
+                        alt=""
+                        width={190}
+                        height={190}
+                        unoptimized
+                        className=" select-none"
+                        draggable={false}
+                      />
+                    </span>{" "}
+                    matrix loaders for React
+                  </span>
                 </h1>
                 <div className="flex w-max shrink-0 flex-col items-end gap-1 sm:gap-2 text-xs sm:text-2xl pt-1">
                   <Link href="/getting-started/introduction" className={heroNavLinkClassName}>
@@ -434,7 +487,12 @@ export function LoaderGallery({ items }: LoaderGalleryProps) {
         className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-6 md:grid-cols-4 xl:grid-cols-5"
       >
         {items.map((item) => (
-          <LoaderGridCard key={item.slug} item={item} onSelect={handleSelectSlug} />
+          <LoaderGridCard
+            key={item.slug}
+            item={item}
+            onSelect={handleSelectSlug}
+            isAnimationEnabled={isCardAnimationEnabled}
+          />
         ))}
       </section>
 
