@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   LoaderDetailsDrawer,
+  type ExamplePreviewId,
   type LoaderCard
 } from "@/components/loader-details-drawer";
 
@@ -161,30 +162,94 @@ const previewPropsMap: Record<string, DotMatrixCommonProps> = {
   "dotm-triangle-6": { size: 24, dotSize: 5, pattern: "full", animated: true, speed: 2.2 }
 };
 
+/** Default gallery preview; must stay aligned with "Example usage" snippets in the drawer. */
+const EXAMPLE_SNIPPET_PROPS: Record<ExamplePreviewId, Partial<DotMatrixCommonProps>> = {
+  "ex-opacity": {
+    size: 32,
+    dotSize: 4,
+    speed: 1.4,
+    opacityBase: 0.1,
+    opacityMid: 0.4,
+    opacityPeak: 0.95
+  },
+  "ex-layout": {
+    dotSize: 3,
+    cellPadding: 2,
+    boxSize: 64,
+    minSize: 48
+  },
+  "ex-look": {
+    pattern: "cross",
+    color: "hsl(220 90% 60%)",
+    speed: 0.8,
+    muted: true,
+    animated: true
+  }
+};
+
 export function LoaderGallery({ items }: LoaderGalleryProps) {
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
+  const [activeExampleId, setActiveExampleId] = useState<ExamplePreviewId | null>(null);
 
   const selected = useMemo(
     () => items.find((item) => item.slug === selectedSlug) ?? null,
     [items, selectedSlug]
   );
+
+  const toggleExamplePreview = useCallback((id: ExamplePreviewId) => {
+    setActiveExampleId((p) => (p === id ? null : id));
+  }, []);
+
+  useEffect(() => {
+    setActiveExampleId(null);
+  }, [selected?.slug]);
+
   const selectedPreview = useMemo(() => {
     if (!selected) {
       return <DotMatrixIcon />;
     }
 
     const SelectedComponent = componentMap[selected.slug as keyof typeof componentMap] ?? DotMatrixIcon;
-    const previewProps = previewPropsMap[selected.slug] ?? previewPropsMap["dotm-square-1"];
-    const detailSize = previewProps.size ?? 30;
-    const detailDotSize = previewProps.dotSize ?? 4;
-    const detailPreviewProps: DotMatrixCommonProps = {
-      ...previewProps,
-      size: Math.round(detailSize * 2.1),
-      dotSize: detailDotSize + 5
-    };
+    const base: DotMatrixCommonProps = previewPropsMap[selected.slug] ?? previewPropsMap["dotm-square-1"];
+    const detailSize = base.size ?? 30;
+    const detailDotSize = base.dotSize ?? 4;
+    const largeSize = Math.round(detailSize * 2.1);
+    const largeDotSize = detailDotSize + 5;
+    const previewKey = `${selected.slug}-${activeExampleId ?? "default"}`;
 
-    return <SelectedComponent {...detailPreviewProps} />;
-  }, [selected]);
+    if (activeExampleId) {
+      const snippet = EXAMPLE_SNIPPET_PROPS[activeExampleId];
+      const merged: DotMatrixCommonProps = { ...base, ...snippet };
+      // Same on-screen scale as the default (large) detail preview, not the snippet’s size/dotSize
+      merged.size = largeSize;
+      merged.dotSize = largeDotSize;
+      // Snippet is about fixed box/slot; left preview should match the default (no `boxSize` frame)
+      delete merged.boxSize;
+      delete merged.minSize;
+      // Keep the same speed / motion as the default (grid) view; "Pattern & look" is the
+      // exception — that preview must show `pattern` from the snippet (e.g. cross).
+      if (activeExampleId !== "ex-look") {
+        merged.pattern = base.pattern;
+      }
+      merged.speed = base.speed;
+      merged.animated = base.animated;
+      return (
+        <SelectedComponent
+          key={previewKey}
+          {...merged}
+        />
+      );
+    }
+
+    return (
+      <SelectedComponent
+        key={previewKey}
+        {...base}
+        size={largeSize}
+        dotSize={largeDotSize}
+      />
+    );
+  }, [selected, activeExampleId]);
 
   return (
     <main className="relative mx-auto min-h-dvh w-full max-w-[1400px] px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
@@ -257,10 +322,13 @@ export function LoaderGallery({ items }: LoaderGalleryProps) {
         onOpenChange={(open) => {
           if (!open) {
             setSelectedSlug(null);
+            setActiveExampleId(null);
           }
         }}
         selected={selected}
         preview={selectedPreview}
+        activeExamplePreviewId={activeExampleId}
+        onExamplePreview={toggleExamplePreview}
       />
     </main>
   );

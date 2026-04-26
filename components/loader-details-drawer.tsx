@@ -11,10 +11,23 @@ import {
 import { HIDE_CODE_SCROLLBARS } from "@/lib/hide-code-scrollbar-class";
 import { GeistSans } from "geist/font/sans";
 import Link from "next/link";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode
+} from "react";
 
 const CLI_MANUAL_DOT_ROW_H = 6;
 const CLI_MANUAL_DOT_GAP_PX = 9;
+
+/** Shiki / install command blocks in this dialog: cap height so the panel can scroll. */
+const DIALOG_CODE_SCROLL_CLASS = ["min-h-0 max-h-[60dvh] overflow-y-auto overflow-x-auto", HIDE_CODE_SCROLLBARS].join(
+  " "
+);
 
 function MeasuredCliManualDotRail({
   activeTab,
@@ -132,18 +145,24 @@ export interface ManualSetupSources {
   cssSource: string;
 }
 
+export type ExamplePreviewId = "ex-opacity" | "ex-layout" | "ex-look";
+
 interface LoaderDetailsDrawerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   selected: LoaderCard | null;
   preview: ReactNode;
+  activeExamplePreviewId: ExamplePreviewId | null;
+  onExamplePreview: (id: ExamplePreviewId) => void;
 }
 
 export function LoaderDetailsDrawer({
   open,
   onOpenChange,
   selected,
-  preview
+  preview,
+  activeExamplePreviewId,
+  onExamplePreview
 }: LoaderDetailsDrawerProps) {
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"cli" | "manual">("cli");
@@ -158,6 +177,70 @@ export function Example() {
   return <${selected.componentName} />;
 }`
     : "";
+
+  const propExampleCards = useMemo(() => {
+    if (!selected) {
+      return [];
+    }
+    const C = selected.componentName;
+    const from = selected.slug;
+    return [
+      {
+        id: "ex-opacity" as const,
+        title: "Opacity & speed",
+        copyToken: "example-usage-opacity" as const,
+        code: `import { ${C} } from "@/components/ui/${from}";
+
+export function OpacityAndSpeed() {
+  return (
+    <${C}
+      size={32}
+      dotSize={4}
+      speed={1.4}
+      opacityBase={0.1}
+      opacityMid={0.4}
+      opacityPeak={0.95}
+    />
+  );
+}`
+      },
+      {
+        id: "ex-layout" as const,
+        title: "Fixed gap & box slot",
+        copyToken: "example-usage-layout" as const,
+        code: `import { ${C} } from "@/components/ui/${from}";
+
+export function LayoutSlot() {
+  return (
+    <${C}
+      dotSize={3}
+      cellPadding={2}
+      boxSize={64}
+      minSize={48}
+    />
+  );
+}`
+      },
+      {
+        id: "ex-look" as const,
+        title: "Pattern & look",
+        copyToken: "example-usage-look" as const,
+        code: `import { ${C} } from "@/components/ui/${from}";
+
+export function PatternAndLook() {
+  return (
+    <${C}
+      pattern="cross"
+      color="hsl(220 90% 60%)"
+      speed={0.8}
+      muted
+      animated
+    />
+  );
+}`
+      }
+    ];
+  }, [selected]);
 
   useEffect(() => {
     setActiveTab("cli");
@@ -180,13 +263,59 @@ export function Example() {
     }
   };
 
+  const exampleUsageDotRail = (
+    <div className="flex items-center gap-1 overflow-hidden">
+      {Array.from({ length: 150 }).map((_, i) => (
+        <div key={i} className="size-0.5 shrink-0 rounded-full bg-white/10" />
+      ))}
+    </div>
+  );
+
+  const exampleUsageCardList = (
+    <div className="grid gap-3">
+      <p className="text-xs font-medium text-zinc-400">Example usage</p>
+      {propExampleCards.map((card) => {
+        const active = activeExamplePreviewId === card.id;
+        return (
+          <TitledCodeCopyCard
+            key={card.id}
+            title={card.title}
+            titleEnd={
+              <button
+                type="button"
+                onClick={() => onExamplePreview(card.id)}
+                className={[
+                  "shrink-0 rounded-md px-2 py-0.5 text-[11px] font-medium tabular-nums text-zinc-200 transition",
+                  "border focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-white/30",
+                  active ? "border-white/25 bg-white/10" : "border-zinc-600/80 bg-transparent hover:border-zinc-500/90 hover:text-white"
+                ].join(" ")}
+                aria-pressed={active}
+              >
+                Preview
+              </button>
+            }
+            code={card.code}
+            highlightLang="tsx"
+            copied={copiedToken === card.copyToken}
+            onCopy={() => copySnippet(card.copyToken, card.code)}
+            copyAriaLabel={`Copy ${card.title} example`}
+            codeBlockClassName={HIDE_CODE_SCROLLBARS}
+            codeScrollClassName={DIALOG_CODE_SCROLL_CLASS}
+            titleClassName="min-w-0 text-left text-xs font-medium normal-case tracking-normal text-zinc-200"
+            showCodeLineNumbers={false}
+          />
+        );
+      })}
+    </div>
+  );
+
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Backdrop className="fixed inset-0 z-50 bg-black/70 backdrop-blur-[2px] transition-opacity duration-175 ease-[cubic-bezier(.215, .61, .355, 1)] data-starting-style:opacity-0 data-ending-style:opacity-0" />
         <Dialog.Viewport className="fixed inset-0 z-50">
           <Dialog.Popup
-            className={`${GeistSans.className} absolute left-2 inset-y-2 w-[calc(50%-0.75rem)] rounded-lg bg-[#0c0c0c] transition-transform duration-175 ease-[cubic-bezier(.215, .61, .355, 1)] data-starting-style:-translate-x-full data-ending-style:-translate-x-full`}
+            className={`${GeistSans.className} absolute left-2 inset-y-2 flex h-[calc(100dvh-1rem)] max-h-[calc(100dvh-1rem)] w-[calc(50%-0.75rem)] flex-col overflow-y-auto overflow-x-hidden overscroll-y-contain rounded-lg bg-[#0c0c0c] transition-transform duration-175 ease-[cubic-bezier(.215, .61, .355, 1)] data-starting-style:-translate-x-full data-ending-style:-translate-x-full`}
           >
             {selected ? (
               <section className="grid h-full place-items-center rounded-lg">
@@ -195,15 +324,14 @@ export function Example() {
             ) : null}
           </Dialog.Popup>
           <Dialog.Popup
-            className={`${GeistSans.className} absolute right-2 inset-y-2 flex min-h-0 w-[calc(50%-0.75rem)] flex-col rounded-lg bg-[#0c0c0c] transition-transform duration-175 ease-[cubic-bezier(.215, .61, .355, 1)] data-starting-style:translate-x-full data-ending-style:translate-x-full`}
+            className={`${GeistSans.className} absolute right-2 inset-y-2 flex h-[calc(100dvh-1rem)] max-h-[calc(100dvh-1rem)] min-h-0 w-[calc(50%-0.75rem)] flex-col overflow-hidden rounded-lg bg-[#0c0c0c] transition-transform duration-175 ease-[cubic-bezier(.215, .61, .355, 1)] data-starting-style:translate-x-full data-ending-style:translate-x-full`}
           >
             {selected ? (
-              <div className="flex min-h-0 flex-1 flex-col pb-4">
-                <section className="flex min-h-0 flex-1 flex-col gap-3 p-4">
-                  <div className="shrink-0">
-                    <MeasuredCliManualDotRail activeTab={activeTab} onTabChange={setActiveTab} />
-                  </div>
-
+              <div className="flex h-full min-h-0 w-full min-w-0 flex-1 flex-col overflow-hidden">
+                <div className="shrink-0 px-4 pt-4">
+                  <MeasuredCliManualDotRail activeTab={activeTab} onTabChange={setActiveTab} />
+                </div>
+                <section className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain px-4 pt-2 pb-6">
                   {activeTab === "cli" ? (
                     <div className="grid gap-4">
                       <PackageManagerInstallCard
@@ -213,6 +341,7 @@ export function Example() {
                         onCopy={() => copySnippet("install-command", installCommand)}
                         command={installCommand}
                         codeBlockClassName={HIDE_CODE_SCROLLBARS}
+                        codeScrollClassName={DIALOG_CODE_SCROLL_CLASS}
                       />
                       <TitledCodeCopyCard
                         title="Demo Usage"
@@ -222,21 +351,14 @@ export function Example() {
                         onCopy={() => copySnippet("demo-usage", demoUsageCode)}
                         copyAriaLabel="Copy demo usage"
                         codeBlockClassName={HIDE_CODE_SCROLLBARS}
+                        codeScrollClassName={DIALOG_CODE_SCROLL_CLASS}
                       />
-                      <div className="flex items-center gap-1 overflow-hidden">
-                        {Array.from({ length: 150 }).map((_, i) => (
-                          <div
-                            key={i}
-                            className="size-0.5 rounded-full bg-white/10 shrink-0"
-                          >
-                          </div>
-                        ))}
-                      </div>
 
-                      
+                      {exampleUsageDotRail}
+                      {exampleUsageCardList}
                     </div>
                   ) : (
-                    <div className="flex min-h-0 flex-1 flex-col gap-4">
+                    <div className="flex min-h-0 flex-col gap-4">
                       <div className="grid shrink-0 gap-1">
                         <h3 className="text-lg text-zinc-200">
                           Manual Usage
@@ -257,17 +379,15 @@ export function Example() {
                         titleClassName="truncate text-left font-mono text-xs font-medium normal-case tracking-normal text-zinc-500"
                         code={selected.sourceCode}
                         highlightLang="tsx"
-                        shellClassName="flex min-h-0 flex-1 flex-col"
-                        codeWrapperClassName="flex min-h-0 flex-1 flex-col"
-                        codeBlockClassName="min-h-0 flex-1"
-                        codeScrollClassName={[
-                          "min-h-0 flex-1 overflow-y-auto overflow-x-auto",
-                          HIDE_CODE_SCROLLBARS
-                        ].join(" ")}
+                        shellClassName="flex min-h-0 flex-col"
+                        codeWrapperClassName="flex min-h-0 flex-col"
+                        codeBlockClassName="min-h-0"
+                        codeScrollClassName={DIALOG_CODE_SCROLL_CLASS}
                         copied={copiedToken === "loader-source"}
                         onCopy={() => copySnippet("loader-source", selected.sourceCode)}
                         copyAriaLabel="Copy loader source"
                       />
+                      {exampleUsageCardList}
                     </div>
                   )}
                 </section>

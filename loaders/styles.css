@@ -5,6 +5,10 @@
   vertical-align: middle;
   /* One base loop at speed=1; --dmx-speed from JS scales inversely with the speed prop */
   --dmx-cycle: 1500ms;
+  /* Rest / mid / bright — override via opacityBase, opacityMid, opacityPeak on the component */
+  --dmx-opacity-base: 0.16;
+  --dmx-opacity-mid: 0.32;
+  --dmx-opacity-peak: 1;
 }
 
 .dmx-grid {
@@ -17,14 +21,15 @@
   border-radius: 999px;
   display: block;
   background: currentColor;
-  opacity: 0.24;
+  /* Matches prior 0.24 with default base/mid */
+  opacity: calc(0.5 * (var(--dmx-opacity-base) + var(--dmx-opacity-mid)));
   transform-origin: center;
   transform: none;
   will-change: opacity;
 }
 
 .dmx-muted .dmx-dot {
-  opacity: 0.14;
+  opacity: calc(0.44 * var(--dmx-opacity-mid));
 }
 
 /* Inactive off-cells (Base also sets inline opacity/animation:none so keyframes cannot win). */
@@ -119,161 +124,161 @@
 @keyframes dmx-ripple {
   0%,
   100% {
-    opacity: 0.16;
+    opacity: var(--dmx-opacity-base);
   }
 
   50% {
-    opacity: 1;
+    opacity: var(--dmx-opacity-peak);
   }
 }
 
 @keyframes dmx-ripple-echo {
   0%,
   100% {
-    opacity: 0.1;
+    opacity: calc(0.625 * var(--dmx-opacity-base));
   }
 
   28% {
-    opacity: 0.98;
+    opacity: calc(0.98 * var(--dmx-opacity-peak));
   }
 
   56% {
-    opacity: 0.32;
+    opacity: var(--dmx-opacity-mid);
   }
 
   78% {
-    opacity: 0.78;
+    opacity: calc(0.68 * var(--dmx-opacity-peak) + 0.32 * var(--dmx-opacity-mid));
   }
 }
 
 @keyframes dmx-center-origin-ripple {
   0%,
   100% {
-    opacity: 0.1;
+    opacity: calc(0.625 * var(--dmx-opacity-base));
   }
 
   34% {
-    opacity: 1;
+    opacity: var(--dmx-opacity-peak);
   }
 
   60% {
-    opacity: 0.24;
+    opacity: calc(0.5 * (var(--dmx-opacity-base) + var(--dmx-opacity-mid)));
   }
 }
 
 @keyframes dmx-collapse {
   0% {
-    opacity: 0.95;
+    opacity: calc(0.95 * var(--dmx-opacity-peak) + 0.05 * var(--dmx-opacity-mid));
   }
 
   100% {
-    opacity: 0.06;
+    opacity: calc(0.375 * var(--dmx-opacity-base));
   }
 }
 
 @keyframes dmx-hover-ripple {
   0% {
-    opacity: 0.08;
+    opacity: calc(0.5 * var(--dmx-opacity-base));
   }
 
   45% {
-    opacity: 1;
+    opacity: var(--dmx-opacity-peak);
   }
 
   100% {
-    opacity: 0.16;
+    opacity: var(--dmx-opacity-base);
   }
 }
 
 @keyframes dmx-diagonal-alt-sweep {
   0%,
   100% {
-    opacity: 0.08;
+    opacity: calc(0.5 * var(--dmx-opacity-base));
   }
 
   14% {
-    opacity: 1;
+    opacity: var(--dmx-opacity-peak);
   }
 
   30% {
-    opacity: 0.12;
+    opacity: calc(0.75 * var(--dmx-opacity-base));
   }
 }
 
 @keyframes dmx-spiral-snake {
   0%,
   100% {
-    opacity: 0.08;
+    opacity: calc(0.5 * var(--dmx-opacity-base));
   }
 
   8% {
-    opacity: 1;
+    opacity: var(--dmx-opacity-peak);
   }
 
   16% {
-    opacity: 0.66;
+    opacity: calc(0.5 * var(--dmx-opacity-peak) + 0.4 * var(--dmx-opacity-mid) + 0.1 * var(--dmx-opacity-base));
   }
 
   24% {
-    opacity: 0.44;
+    opacity: calc(0.25 * var(--dmx-opacity-peak) + 0.45 * var(--dmx-opacity-mid) + 0.3 * var(--dmx-opacity-base));
   }
 
   32% {
-    opacity: 0.24;
+    opacity: calc(0.5 * var(--dmx-opacity-mid) + 0.5 * var(--dmx-opacity-base));
   }
 
   40% {
-    opacity: 0.12;
+    opacity: calc(0.75 * var(--dmx-opacity-base));
   }
 }
 
 @keyframes dmx-diagonal-snake {
   0%,
   100% {
-    opacity: 0.08;
+    opacity: calc(0.5 * var(--dmx-opacity-base));
   }
 
   8% {
-    opacity: 1;
+    opacity: var(--dmx-opacity-peak);
   }
 
   16% {
-    opacity: 0.66;
+    opacity: calc(0.5 * var(--dmx-opacity-peak) + 0.4 * var(--dmx-opacity-mid) + 0.1 * var(--dmx-opacity-base));
   }
 
   24% {
-    opacity: 0.44;
+    opacity: calc(0.25 * var(--dmx-opacity-peak) + 0.45 * var(--dmx-opacity-mid) + 0.3 * var(--dmx-opacity-base));
   }
 
   32% {
-    opacity: 0.24;
+    opacity: calc(0.5 * var(--dmx-opacity-mid) + 0.5 * var(--dmx-opacity-base));
   }
 
   40% {
-    opacity: 0.12;
+    opacity: calc(0.75 * var(--dmx-opacity-base));
   }
 }
 
 @keyframes dmx-ring-snake {
   0%,
   100% {
-    opacity: 0.08;
+    opacity: calc(0.5 * var(--dmx-opacity-base));
   }
 
   10% {
-    opacity: 1;
+    opacity: var(--dmx-opacity-peak);
   }
 
   20% {
-    opacity: 0.62;
+    opacity: calc(0.45 * var(--dmx-opacity-peak) + 0.45 * var(--dmx-opacity-mid) + 0.1 * var(--dmx-opacity-base));
   }
 
   30% {
-    opacity: 0.36;
+    opacity: calc(0.2 * var(--dmx-opacity-peak) + 0.4 * var(--dmx-opacity-mid) + 0.4 * var(--dmx-opacity-base));
   }
 
   40% {
-    opacity: 0.14;
+    opacity: calc(0.875 * var(--dmx-opacity-base));
   }
 }
 

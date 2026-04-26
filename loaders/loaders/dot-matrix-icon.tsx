@@ -53,7 +53,8 @@ export function DotMatrixIcon({
   muted = false,
   animated = false,
   hoverAnimated = true,
-  dotClassName
+  dotClassName,
+  ...rest
 }: DotMatrixIconProps) {
   const reducedMotion = usePrefersReducedMotion();
 
@@ -79,6 +80,7 @@ export function DotMatrixIcon({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       animationResolver={animationResolver}
+      {...rest}
     />
   );
 }

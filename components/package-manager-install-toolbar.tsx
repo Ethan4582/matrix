@@ -334,6 +334,8 @@ export type PackageManagerInstallCardProps = PackageManagerInstallToolbarProps &
     shellClassName?: string;
     /** Extra classes on the `<pre>` wrapping the command. */
     codeBlockClassName?: string;
+    /** When set, command block scrolls inside this region (e.g. `max-h-[60dvh] overflow-y-auto`). */
+    codeScrollClassName?: string;
   };
 
 export type TitledCodeCopyCardProps = PackageManagerInstallCardCopyProps & {
@@ -347,6 +349,8 @@ export type TitledCodeCopyCardProps = PackageManagerInstallCardCopyProps & {
   codeWrapperClassName?: string;
   /** Merged onto the title `<h3>`; defaults to section-style typography. */
   titleClassName?: string;
+  /** Rendered at the end of the title row (e.g. a Preview action). */
+  titleEnd?: ReactNode;
 };
 
 function CodeBlockWithCopy({
@@ -468,6 +472,7 @@ export function TitledCodeCopyCard({
   codeScrollClassName,
   codeWrapperClassName,
   titleClassName,
+  titleEnd,
   highlightLang,
   showCodeLineNumbers = true,
   copied,
@@ -488,8 +493,9 @@ export function TitledCodeCopyCard({
         .filter(Boolean)
         .join(" ")}
     >
-      <div className="flex shrink-0 min-w-0 items-center bg-[#141414] rounded-t-lg gap-1 py-1.5 pt-2.5 px-3">
-        <h3 className={["min-w-0", headingClass].filter(Boolean).join(" ")}>{title}</h3>
+      <div className="flex shrink-0 min-w-0 items-center justify-between gap-2 bg-[#141414] rounded-t-lg py-1.5 pt-2.5 pl-3 pr-2.5">
+        <h3 className={["min-w-0 flex-1 truncate", headingClass].filter(Boolean).join(" ")}>{title}</h3>
+        {titleEnd}
       </div>
       <CodeBlockWithCopy
         code={code}
@@ -535,6 +541,7 @@ export function PackageManagerInstallCard({
   command,
   shellClassName,
   codeBlockClassName,
+  codeScrollClassName,
   copied,
   onCopy,
   copyAriaLabel = "Copy install command",
@@ -560,6 +567,7 @@ export function PackageManagerInstallCard({
         copyAriaLabel={copyAriaLabel}
         copyAriaLabelCopied={copyAriaLabelCopied}
         codeBlockClassName={codeBlockClassName}
+        codeScrollClassName={codeScrollClassName}
         highlightLang={highlightLang}
         showCodeLineNumbers={showCodeLineNumbers}
       />
