@@ -169,7 +169,7 @@ export function useDotMatrixPhases({
 }: UseDotMatrixPhasesOptions): DotMatrixPhasesResult {
   const safeSpeed = speed > 0 ? speed : 1;
   const autoRun = Boolean(animated && !hoverAnimated);
-  const [phase, setPhase] = useState<DotMatrixPhase>(() => (autoRun ? "loadingRipple" : "idle"));
+  const [hoverPhase, setHoverPhase] = useState<DotMatrixPhase>("idle");
   const timeouts = useRef<number[]>([]);
   const hoverGen = useRef(0);
 
@@ -181,14 +181,10 @@ export function useDotMatrixPhases({
   }, []);
 
   useEffect(() => {
+    hoverGen.current += 1;
     clearTimers();
-    if (autoRun) {
-      setPhase("loadingRipple");
-    } else {
-      setPhase("idle");
-    }
     return clearTimers;
-  }, [autoRun, clearTimers]);
+  }, [autoRun, hoverAnimated, clearTimers]);
 
   const onMouseEnter = useCallback(() => {
     if (!hoverAnimated || autoRun) {
@@ -196,13 +192,13 @@ export function useDotMatrixPhases({
     }
     clearTimers();
     const gen = ++hoverGen.current;
-    setPhase("collapse");
+    setHoverPhase("collapse");
     const collapseMs = Math.max(80, Math.round(300 / safeSpeed));
     const id = window.setTimeout(() => {
       if (hoverGen.current !== gen) {
         return;
       }
-      setPhase("hoverRipple");
+      setHoverPhase("hoverRipple");
     }, collapseMs);
     timeouts.current.push(id);
   }, [hoverAnimated, autoRun, safeSpeed, clearTimers]);
@@ -213,8 +209,10 @@ export function useDotMatrixPhases({
     }
     hoverGen.current += 1;
     clearTimers();
-    setPhase("idle");
+    setHoverPhase("idle");
   }, [hoverAnimated, autoRun, clearTimers]);
+
+  const phase: DotMatrixPhase = autoRun ? "loadingRipple" : hoverAnimated ? hoverPhase : "idle";
 
   return useMemo(
     () => ({
