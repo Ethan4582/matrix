@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dotm-square-10",
+  "type": "registry:ui",
+  "title": "Phosphor Sweep",
+  "description": "A CRT-style horizontal scanline moves down the matrix; swept rows leave a soft phosphor trail with a slight column-wise warp.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "meta": {
+    "animation": "css-only"
+  },
+  "files": [
+    {
+      "path": "components/ui/dotm-square-10.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "components/ui/dotmatrix-core.tsx",
+      "type": "registry:lib"
+    },
+    {
+      "path": "components/ui/dotmatrix-hooks.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "styles/dotmatrix-loader.css",
+      "type": "registry:style"
+    }
+  ]
+}

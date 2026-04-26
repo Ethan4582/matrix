@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dotm-circular-5",
+  "type": "registry:ui",
+  "title": "Circular Pinwheel",
+  "description": "Four rotating pinwheel blades spin through the circular matrix with a glowing center and soft trailing halo.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "meta": {
+    "animation": "css-only"
+  },
+  "files": [
+    {
+      "path": "components/ui/dotm-circular-5.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "components/ui/dotmatrix-core.tsx",
+      "type": "registry:lib"
+    },
+    {
+      "path": "components/ui/dotmatrix-hooks.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "styles/dotmatrix-loader.css",
+      "type": "registry:style"
+    }
+  ]
+}

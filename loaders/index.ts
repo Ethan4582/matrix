@@ -3,147 +3,106 @@ export type { DotMatrixCommonProps, DotMatrixPhase, MatrixPattern } from "./type
 export { DotMatrixIcon } from "./loaders/dot-matrix-icon";
 export type { DotMatrixIconProps } from "./loaders/dot-matrix-icon";
 
-export { DiagonalTrBlSweepMatrix } from "./loaders/diagonal-trbl-sweep-matrix";
-export type { DiagonalTrBlSweepMatrixProps } from "./loaders/diagonal-trbl-sweep-matrix";
+export { DotmSquare1 } from "./loaders/dotm-square-1";
+export type { DotmSquare1Props } from "./loaders/dotm-square-1";
+export { DotmSquare2 } from "./loaders/dotm-square-2";
+export type { DotmSquare2Props } from "./loaders/dotm-square-2";
+export { DotmSquare3 } from "./loaders/dotm-square-3";
+export type { DotmSquare3Props } from "./loaders/dotm-square-3";
+export { DotmSquare4 } from "./loaders/dotm-square-4";
+export type { DotmSquare4Props } from "./loaders/dotm-square-4";
+export { DotmSquare5 } from "./loaders/dotm-square-5";
+export type { DotmSquare5Props } from "./loaders/dotm-square-5";
+export { DotmSquare6 } from "./loaders/dotm-square-6";
+export type { DotmSquare6Props } from "./loaders/dotm-square-6";
+export { DotmSquare7 } from "./loaders/dotm-square-7";
+export type { DotmSquare7Props } from "./loaders/dotm-square-7";
+export { DotmSquare8 } from "./loaders/dotm-square-8";
+export type { DotmSquare8Props } from "./loaders/dotm-square-8";
+export { DotmSquare9 } from "./loaders/dotm-square-9";
+export type { DotmSquare9Props } from "./loaders/dotm-square-9";
+export { DotmSquare10 } from "./loaders/dotm-square-10";
+export type { DotmSquare10Props } from "./loaders/dotm-square-10";
+export { DotmSquare11 } from "./loaders/dotm-square-11";
+export type { DotmSquare11Props } from "./loaders/dotm-square-11";
+export { DotmSquare12 } from "./loaders/dotm-square-12";
+export type { DotmSquare12Props } from "./loaders/dotm-square-12";
+export { DotmSquare13 } from "./loaders/dotm-square-13";
+export type { DotmSquare13Props } from "./loaders/dotm-square-13";
+export { DotmSquare14 } from "./loaders/dotm-square-14";
+export type { DotmSquare14Props } from "./loaders/dotm-square-14";
+export { DotmSquare15 } from "./loaders/dotm-square-15";
+export type { DotmSquare15Props } from "./loaders/dotm-square-15";
+export { DotmSquare16 } from "./loaders/dotm-square-16";
+export type { DotmSquare16Props } from "./loaders/dotm-square-16";
+export { DotmSquare17 } from "./loaders/dotm-square-17";
+export type { DotmSquare17Props } from "./loaders/dotm-square-17";
+export { DotmSquare18 } from "./loaders/dotm-square-18";
+export type { DotmSquare18Props } from "./loaders/dotm-square-18";
+export { DotmSquare19 } from "./loaders/dotm-square-19";
+export type { DotmSquare19Props } from "./loaders/dotm-square-19";
+export { DotmSquare20 } from "./loaders/dotm-square-20";
+export type { DotmSquare20Props } from "./loaders/dotm-square-20";
+export { DotmSquare21 } from "./loaders/dotm-square-21";
+export type { DotmSquare21Props } from "./loaders/dotm-square-21";
+export { DotmSquare22 } from "./loaders/dotm-square-22";
+export type { DotmSquare22Props } from "./loaders/dotm-square-22";
+export { DotmSquare23 } from "./loaders/dotm-square-23";
+export type { DotmSquare23Props } from "./loaders/dotm-square-23";
 
-export { SnakePathMatrix } from "./loaders/snake-path-matrix";
-export type { SnakePathMatrixProps } from "./loaders/snake-path-matrix";
+export { DotmCircular1 } from "./loaders/dotm-circular-1";
+export type { DotmCircular1Props } from "./loaders/dotm-circular-1";
+export { DotmCircular2 } from "./loaders/dotm-circular-2";
+export type { DotmCircular2Props } from "./loaders/dotm-circular-2";
+export { DotmCircular3 } from "./loaders/dotm-circular-3";
+export type { DotmCircular3Props } from "./loaders/dotm-circular-3";
+export { DotmCircular4 } from "./loaders/dotm-circular-4";
+export type { DotmCircular4Props } from "./loaders/dotm-circular-4";
+export { DotmCircular5 } from "./loaders/dotm-circular-5";
+export type { DotmCircular5Props } from "./loaders/dotm-circular-5";
+export { DotmCircular6 } from "./loaders/dotm-circular-6";
+export type { DotmCircular6Props } from "./loaders/dotm-circular-6";
+export { DotmCircular7 } from "./loaders/dotm-circular-7";
+export type { DotmCircular7Props } from "./loaders/dotm-circular-7";
+export { DotmCircular8 } from "./loaders/dotm-circular-8";
+export type { DotmCircular8Props } from "./loaders/dotm-circular-8";
+export { DotmCircular9 } from "./loaders/dotm-circular-9";
+export type { DotmCircular9Props } from "./loaders/dotm-circular-9";
+export { DotmCircular10 } from "./loaders/dotm-circular-10";
+export type { DotmCircular10Props } from "./loaders/dotm-circular-10";
+export { DotmCircular11 } from "./loaders/dotm-circular-11";
+export type { DotmCircular11Props } from "./loaders/dotm-circular-11";
+export { DotmCircular12 } from "./loaders/dotm-circular-12";
+export type { DotmCircular12Props } from "./loaders/dotm-circular-12";
+export { DotmCircular13 } from "./loaders/dotm-circular-13";
+export type { DotmCircular13Props } from "./loaders/dotm-circular-13";
+export { DotmCircular14 } from "./loaders/dotm-circular-14";
+export type { DotmCircular14Props } from "./loaders/dotm-circular-14";
+export { DotmCircular15 } from "./loaders/dotm-circular-15";
+export type { DotmCircular15Props } from "./loaders/dotm-circular-15";
+export { DotmCircular16 } from "./loaders/dotm-circular-16";
+export type { DotmCircular16Props } from "./loaders/dotm-circular-16";
+export { DotmCircular17 } from "./loaders/dotm-circular-17";
+export type { DotmCircular17Props } from "./loaders/dotm-circular-17";
+export { DotmCircular18 } from "./loaders/dotm-circular-18";
+export type { DotmCircular18Props } from "./loaders/dotm-circular-18";
+export { DotmCircular19 } from "./loaders/dotm-circular-19";
+export type { DotmCircular19Props } from "./loaders/dotm-circular-19";
+export { DotmCircular20 } from "./loaders/dotm-circular-20";
+export type { DotmCircular20Props } from "./loaders/dotm-circular-20";
 
-export { RowWaveMatrix } from "./loaders/row-wave-matrix";
-export type { RowWaveMatrixProps } from "./loaders/row-wave-matrix";
-
-export { ColWaveMatrix } from "./loaders/col-wave-matrix";
-export type { ColWaveMatrixProps } from "./loaders/col-wave-matrix";
-
-export { ConcentricRingMatrix } from "./loaders/concentric-ring-matrix";
-export type { ConcentricRingMatrixProps } from "./loaders/concentric-ring-matrix";
-
-export { SpiralSnakeMatrix } from "./loaders/spiral-snake-matrix";
-export type { SpiralSnakeMatrixProps } from "./loaders/spiral-snake-matrix";
-
-export { TripleSnakeMatrix } from "./loaders/triple-snake-matrix";
-export type { TripleSnakeMatrixProps } from "./loaders/triple-snake-matrix";
-
-export { DiagonalSnakeMatrix } from "./loaders/diagonal-snake-matrix";
-export type { DiagonalSnakeMatrixProps } from "./loaders/diagonal-snake-matrix";
-
-export { ColumnSnakeMatrix } from "./loaders/column-snake-matrix";
-export type { ColumnSnakeMatrixProps } from "./loaders/column-snake-matrix";
-
-export { TetrisStackMatrix } from "./loaders/tetris-stack-matrix";
-export type { TetrisStackMatrixProps } from "./loaders/tetris-stack-matrix";
-
-export { ColumnStaggerBlinkMatrix } from "./loaders/column-stagger-blink-matrix";
-export type { ColumnStaggerBlinkMatrixProps } from "./loaders/column-stagger-blink-matrix";
-
-export { BraillePatternMatrix } from "./loaders/braille-pattern-matrix";
-export type { BraillePatternMatrixProps } from "./loaders/braille-pattern-matrix";
-
-export { PhosphorSweepMatrix } from "./loaders/phosphor-sweep-matrix";
-export type { PhosphorSweepMatrixProps } from "./loaders/phosphor-sweep-matrix";
-
-export { RippleEchoMatrix } from "./loaders/ripple-echo-matrix";
-export type { RippleEchoMatrixProps } from "./loaders/ripple-echo-matrix";
-
-export { CenterOriginRippleMatrix } from "./loaders/center-origin-ripple-matrix";
-export type { CenterOriginRippleMatrixProps } from "./loaders/center-origin-ripple-matrix";
-
-export { DigitalCounterMatrix } from "./loaders/digital-counter-matrix";
-export type { DigitalCounterMatrixProps } from "./loaders/digital-counter-matrix";
-
-export { KaleidoscopeMatrix } from "./loaders/kaleidoscope-matrix";
-export type { KaleidoscopeMatrixProps } from "./loaders/kaleidoscope-matrix";
-
-export { DnaHelixMatrix } from "./loaders/dna-helix-matrix";
-export type { DnaHelixMatrixProps } from "./loaders/dna-helix-matrix";
-
-export { DnaHelixCompactMatrix } from "./loaders/dna-helix-compact-matrix";
-export type { DnaHelixCompactMatrixProps } from "./loaders/dna-helix-compact-matrix";
-
-export { DnaHalfHelixMatrix } from "./loaders/dna-half-helix-matrix";
-export type { DnaHalfHelixMatrixProps } from "./loaders/dna-half-helix-matrix";
-
-export { AudioBarsMatrix } from "./loaders/audio-bars-matrix";
-export type { AudioBarsMatrixProps } from "./loaders/audio-bars-matrix";
-
-export { InfinityLoopMatrix } from "./loaders/infinity-loop-matrix";
-export type { InfinityLoopMatrixProps } from "./loaders/infinity-loop-matrix";
-
-export { MobiusStripMatrix } from "./loaders/mobius-strip-matrix";
-export type { MobiusStripMatrixProps } from "./loaders/mobius-strip-matrix";
-
-export { CircularColumnSnakeMatrix } from "./loaders/circular-column-snake-matrix";
-export type { CircularColumnSnakeMatrixProps } from "./loaders/circular-column-snake-matrix";
-
-export { CircularTripleSnakeMatrix } from "./loaders/circular-triple-snake-matrix";
-export type { CircularTripleSnakeMatrixProps } from "./loaders/circular-triple-snake-matrix";
-
-export { CircularMobiusStripMatrix } from "./loaders/circular-mobius-strip-matrix";
-export type { CircularMobiusStripMatrixProps } from "./loaders/circular-mobius-strip-matrix";
-
-export { CircularRadarSweepMatrix } from "./loaders/circular-radar-sweep-matrix";
-export type { CircularRadarSweepMatrixProps } from "./loaders/circular-radar-sweep-matrix";
-
-export { CircularPinwheelMatrix } from "./loaders/circular-pinwheel-matrix";
-export type { CircularPinwheelMatrixProps } from "./loaders/circular-pinwheel-matrix";
-
-export { CircularPhaseOrbitMatrix } from "./loaders/circular-phase-orbit-matrix";
-export type { CircularPhaseOrbitMatrixProps } from "./loaders/circular-phase-orbit-matrix";
-
-export { CircularGateFlipMatrix } from "./loaders/circular-gate-flip-matrix";
-export type { CircularGateFlipMatrixProps } from "./loaders/circular-gate-flip-matrix";
-
-export { CircularHeartbeatMatrix } from "./loaders/circular-heartbeat-matrix";
-export type { CircularHeartbeatMatrixProps } from "./loaders/circular-heartbeat-matrix";
-
-export { CircularConstellationMatrix } from "./loaders/circular-constellation-matrix";
-export type { CircularConstellationMatrixProps } from "./loaders/circular-constellation-matrix";
-
-export { CircularBinaryBloomMatrix } from "./loaders/circular-binary-bloom-matrix";
-export type { CircularBinaryBloomMatrixProps } from "./loaders/circular-binary-bloom-matrix";
-
-export { CircularQuadrantBreatheMatrix } from "./loaders/circular-quadrant-breathe-matrix";
-export type { CircularQuadrantBreatheMatrixProps } from "./loaders/circular-quadrant-breathe-matrix";
-
-export { CircularArcCascadeMatrix } from "./loaders/circular-arc-cascade-matrix";
-export type { CircularArcCascadeMatrixProps } from "./loaders/circular-arc-cascade-matrix";
-
-export { CircularDnaTwinHelixMatrix } from "./loaders/circular-dna-twin-helix-matrix";
-export type { CircularDnaTwinHelixMatrixProps } from "./loaders/circular-dna-twin-helix-matrix";
-
-export { CircularDnaRungShiftMatrix } from "./loaders/circular-dna-rung-shift-matrix";
-export type { CircularDnaRungShiftMatrixProps } from "./loaders/circular-dna-rung-shift-matrix";
-
-export { CircularBrailleClusterMatrix } from "./loaders/circular-braille-cluster-matrix";
-export type { CircularBrailleClusterMatrixProps } from "./loaders/circular-braille-cluster-matrix";
-
-export { CircularBrailleScanlineMatrix } from "./loaders/circular-braille-scanline-matrix";
-export type { CircularBrailleScanlineMatrixProps } from "./loaders/circular-braille-scanline-matrix";
-
-export { CircularBrailleCheckerShiftMatrix } from "./loaders/circular-braille-checker-shift-matrix";
-export type { CircularBrailleCheckerShiftMatrixProps } from "./loaders/circular-braille-checker-shift-matrix";
-
-export { CircularBraillePulsePairMatrix } from "./loaders/circular-braille-pulse-pair-matrix";
-export type { CircularBraillePulsePairMatrixProps } from "./loaders/circular-braille-pulse-pair-matrix";
-
-export { CircularBrailleOrbitCellsMatrix } from "./loaders/circular-braille-orbit-cells-matrix";
-export type { CircularBrailleOrbitCellsMatrixProps } from "./loaders/circular-braille-orbit-cells-matrix";
-
-export { CircularBrailleGlyphCycleMatrix } from "./loaders/circular-braille-glyph-cycle-matrix";
-export type { CircularBrailleGlyphCycleMatrixProps } from "./loaders/circular-braille-glyph-cycle-matrix";
-
-export { TriangleCenterSpokesMatrix } from "./loaders/triangle-center-spokes-matrix";
-export type { TriangleCenterSpokesMatrixProps } from "./loaders/triangle-center-spokes-matrix";
-export { TriangleAltitudePulseMatrix } from "./loaders/triangle-altitude-pulse-matrix";
-export type { TriangleAltitudePulseMatrixProps } from "./loaders/triangle-altitude-pulse-matrix";
-export { TriangleCornerBounceMatrix } from "./loaders/triangle-corner-bounce-matrix";
-export type { TriangleCornerBounceMatrixProps } from "./loaders/triangle-corner-bounce-matrix";
-export { TriangleVertexChaseMatrix } from "./loaders/triangle-vertex-chase-matrix";
-export type { TriangleVertexChaseMatrixProps } from "./loaders/triangle-vertex-chase-matrix";
-export { TriangleRowScanMatrix } from "./loaders/triangle-row-scan-matrix";
-export type { TriangleRowScanMatrixProps } from "./loaders/triangle-row-scan-matrix";
-export { TriangleBrailleBeatMatrix } from "./loaders/triangle-braille-beat-matrix";
-export type { TriangleBrailleBeatMatrixProps } from "./loaders/triangle-braille-beat-matrix";
+export { DotmTriangle1 } from "./loaders/dotm-triangle-1";
+export type { DotmTriangle1Props } from "./loaders/dotm-triangle-1";
+export { DotmTriangle2 } from "./loaders/dotm-triangle-2";
+export type { DotmTriangle2Props } from "./loaders/dotm-triangle-2";
+export { DotmTriangle3 } from "./loaders/dotm-triangle-3";
+export type { DotmTriangle3Props } from "./loaders/dotm-triangle-3";
+export { DotmTriangle4 } from "./loaders/dotm-triangle-4";
+export type { DotmTriangle4Props } from "./loaders/dotm-triangle-4";
+export { DotmTriangle5 } from "./loaders/dotm-triangle-5";
+export type { DotmTriangle5Props } from "./loaders/dotm-triangle-5";
+export { DotmTriangle6 } from "./loaders/dotm-triangle-6";
+export type { DotmTriangle6Props } from "./loaders/dotm-triangle-6";
 
 export {
   CROSS_INDEXES,

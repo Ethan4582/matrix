@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dotm-square-2",
+  "type": "registry:ui",
+  "title": "Row Wave",
+  "description": "Clockwise snake route: starts bottom-left up column 1, jumps to column 3 down, then column 2 up, and continues the same cycle to the right.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "meta": {
+    "animation": "css-only"
+  },
+  "files": [
+    {
+      "path": "components/ui/dotm-square-2.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "components/ui/dotmatrix-core.tsx",
+      "type": "registry:lib"
+    },
+    {
+      "path": "components/ui/dotmatrix-hooks.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "styles/dotmatrix-loader.css",
+      "type": "registry:style"
+    }
+  ]
+}

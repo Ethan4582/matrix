@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dotm-circular-6",
+  "type": "registry:ui",
+  "title": "Circular Phase Orbit",
+  "description": "An off-center orbiting energy point traces a phase-shifted loop, creating a drifting orbital glow inside the circular matrix.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "meta": {
+    "animation": "css-only"
+  },
+  "files": [
+    {
+      "path": "components/ui/dotm-circular-6.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "components/ui/dotmatrix-core.tsx",
+      "type": "registry:lib"
+    },
+    {
+      "path": "components/ui/dotmatrix-hooks.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "styles/dotmatrix-loader.css",
+      "type": "registry:style"
+    }
+  ]
+}

@@ -1,9 +1,81 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@source "./**/*.{ts,tsx}";
+@source "../components/**/*.{ts,tsx}";
+@source "../lib/**/*.{ts,tsx}";
+@source "../loaders/**/*.{ts,tsx}";
+
+@theme {
+  --color-dotmatrix: hsl(var(--dotmatrix-color, 220 90% 56%));
+
+  /* Default UI font: Geist Pixel Circle (variable set on <body> by next/font). */
+  --font-sans: var(--font-geist-pixel-circle), ui-sans-serif, system-ui, sans-serif;
+
+  --font-pixel-square: var(--font-geist-pixel-square);
+  --font-pixel-grid: var(--font-geist-pixel-grid);
+  --font-pixel-circle: var(--font-geist-pixel-circle);
+  --font-pixel-triangle: var(--font-geist-pixel-triangle);
+  --font-pixel-line: var(--font-geist-pixel-line);
+
+  --animate-dot-pulse: dot-pulse calc(900ms * var(--dmx-speed, 1)) ease-in-out infinite;
+  --animate-dot-collapse: dot-collapse calc(260ms * var(--dmx-speed, 1))
+    cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  --animate-dot-ripple: dot-ripple calc(1000ms * var(--dmx-speed, 1)) ease-in-out infinite;
+  --animate-scanline: scanline calc(1800ms * var(--dmx-speed, 1)) linear infinite;
+
+  @keyframes dot-pulse {
+    0%,
+    100% {
+      opacity: 0.22;
+      transform: scale(0.78);
+    }
+
+    50% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dot-collapse {
+    0% {
+      transform: translate(var(--dmx-x, 0px), var(--dmx-y, 0px));
+    }
+
+    100% {
+      transform: translate(0px, 0px);
+    }
+  }
+
+  @keyframes dot-ripple {
+    0% {
+      opacity: 0.16;
+      transform: scale(0.7);
+    }
+
+    50% {
+      opacity: 1;
+      transform: scale(1.08);
+    }
+
+    100% {
+      opacity: 0.3;
+      transform: scale(0.86);
+    }
+  }
+
+  @keyframes scanline {
+    0% {
+      background-position: 0 -140%;
+    }
+
+    100% {
+      background-position: 0 220%;
+    }
+  }
+}
 
 :root {
-  --background: #0a0a0a;
+  --background: #000000;
   --foreground: #fafafa;
   --muted-foreground: #a1a1aa;
   --surface: #111113;
@@ -13,13 +85,7 @@
 body {
   margin: 0;
   min-height: 100dvh;
-  font-family:
-    var(--font-geist-sans),
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    Segoe UI,
-    sans-serif;
+  /* Default typeface: Geist Pixel Circle via GeistPixelCircle.className on <body> in layout. */
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   background: radial-gradient(900px 520px at 50% -180px, rgba(255, 255, 255, 0.08), transparent 58%),
@@ -41,6 +107,11 @@ pre {
     Monaco,
     Consolas,
     monospace;
+}
+
+:focus-visible {
+  outline: 1px solid rgb(255 255 255 / 0.2);
+  outline-offset: 2px;
 }
 
 .modal-shell {

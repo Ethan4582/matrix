@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dotm-square-4",
+  "type": "registry:ui",
+  "title": "Triple Snake",
+  "description": "Outer ring snake moves clockwise, middle ring snake moves anticlockwise, and the center dot stays inactive.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "meta": {
+    "animation": "css-only"
+  },
+  "files": [
+    {
+      "path": "components/ui/dotm-square-4.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "components/ui/dotmatrix-core.tsx",
+      "type": "registry:lib"
+    },
+    {
+      "path": "components/ui/dotmatrix-hooks.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "styles/dotmatrix-loader.css",
+      "type": "registry:style"
+    }
+  ]
+}

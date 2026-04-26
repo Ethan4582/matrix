@@ -1,277 +1,249 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import {
+  LoaderDetailsDrawer,
+  type LoaderCard
+} from "@/components/loader-details-drawer";
 
 import {
-  AudioBarsMatrix,
-  BraillePatternMatrix,
-  CenterOriginRippleMatrix,
-  CircularArcCascadeMatrix,
-  CircularBrailleCheckerShiftMatrix,
-  CircularBrailleClusterMatrix,
-  CircularBrailleGlyphCycleMatrix,
-  CircularBrailleOrbitCellsMatrix,
-  CircularBraillePulsePairMatrix,
-  CircularBrailleScanlineMatrix,
-  CircularBinaryBloomMatrix,
-  CircularConstellationMatrix,
-  CircularColumnSnakeMatrix,
-  CircularDnaRungShiftMatrix,
-  CircularDnaTwinHelixMatrix,
-  CircularGateFlipMatrix,
-  CircularHeartbeatMatrix,
-  CircularMobiusStripMatrix,
-  CircularPhaseOrbitMatrix,
-  CircularPinwheelMatrix,
-  CircularQuadrantBreatheMatrix,
-  CircularRadarSweepMatrix,
-  CircularTripleSnakeMatrix,
-  ColumnSnakeMatrix,
-  ColumnStaggerBlinkMatrix,
-  DiagonalSnakeMatrix,
-  DiagonalTrBlSweepMatrix,
-  DigitalCounterMatrix,
   DotMatrixIcon,
-  DnaHalfHelixMatrix,
-  DnaHelixCompactMatrix,
-  DnaHelixMatrix,
-  KaleidoscopeMatrix,
-  InfinityLoopMatrix,
-  MobiusStripMatrix,
-  PhosphorSweepMatrix,
-  RippleEchoMatrix,
-  RowWaveMatrix,
-  SpiralSnakeMatrix,
-  TetrisStackMatrix,
-  TriangleAltitudePulseMatrix,
-  TriangleBrailleBeatMatrix,
-  TriangleCenterSpokesMatrix,
-  TriangleCornerBounceMatrix,
-  TriangleRowScanMatrix,
-  TriangleVertexChaseMatrix,
-  TripleSnakeMatrix,
+  DotmCircular1,
+  DotmCircular10,
+  DotmCircular11,
+  DotmCircular12,
+  DotmCircular13,
+  DotmCircular14,
+  DotmCircular15,
+  DotmCircular16,
+  DotmCircular17,
+  DotmCircular18,
+  DotmCircular19,
+  DotmCircular2,
+  DotmCircular20,
+  DotmCircular3,
+  DotmCircular4,
+  DotmCircular5,
+  DotmCircular6,
+  DotmCircular7,
+  DotmCircular8,
+  DotmCircular9,
+  DotmSquare1,
+  DotmSquare10,
+  DotmSquare11,
+  DotmSquare12,
+  DotmSquare13,
+  DotmSquare14,
+  DotmSquare15,
+  DotmSquare16,
+  DotmSquare17,
+  DotmSquare18,
+  DotmSquare19,
+  DotmSquare2,
+  DotmSquare20,
+  DotmSquare3,
+  DotmSquare4,
+  DotmSquare5,
+  DotmSquare6,
+  DotmSquare7,
+  DotmSquare8,
+  DotmSquare9,
+  DotmTriangle1,
+  DotmTriangle2,
+  DotmTriangle3,
+  DotmTriangle4,
+  DotmTriangle5,
+  DotmTriangle6,
   type DotMatrixCommonProps
 } from "@/loaders";
 
-interface LoaderCard {
-  slug: string;
-  title: string;
-  description: string;
-  componentName: string;
-  motionOptional: boolean;
-  sourceCode: string;
-}
-
-interface ManualSetupSources {
-  coreFilePath: string;
-  coreSource: string;
-  hooksFilePath: string;
-  hooksSource: string;
-  cssFilePath: string;
-  cssSource: string;
-}
-
 interface LoaderGalleryProps {
   items: LoaderCard[];
-  manualSetup: ManualSetupSources;
 }
 
 const componentMap = {
-  "diagonal-trbl-sweep-matrix": DiagonalTrBlSweepMatrix,
-  "row-wave-matrix": RowWaveMatrix,
-  "spiral-snake-matrix": SpiralSnakeMatrix,
-  "triple-snake-matrix": TripleSnakeMatrix,
-  "diagonal-snake-matrix": DiagonalSnakeMatrix,
-  "column-snake-matrix": ColumnSnakeMatrix,
-  "tetris-stack-matrix": TetrisStackMatrix,
-  "column-stagger-blink-matrix": ColumnStaggerBlinkMatrix,
-  "braille-pattern-matrix": BraillePatternMatrix,
-  "phosphor-sweep-matrix": PhosphorSweepMatrix,
-  "ripple-echo-matrix": RippleEchoMatrix,
-  "center-origin-ripple-matrix": CenterOriginRippleMatrix,
-  "digital-counter-matrix": DigitalCounterMatrix,
-  "kaleidoscope-matrix": KaleidoscopeMatrix,
-  "dna-helix-matrix": DnaHelixMatrix,
-  "dna-helix-compact-matrix": DnaHelixCompactMatrix,
-  "dna-half-helix-matrix": DnaHalfHelixMatrix,
-  "audio-bars-matrix": AudioBarsMatrix,
-  "infinity-loop-matrix": InfinityLoopMatrix,
-  "mobius-strip-matrix": MobiusStripMatrix,
-  "circular-column-snake-matrix": CircularColumnSnakeMatrix,
-  "circular-constellation-matrix": CircularConstellationMatrix,
-  "circular-binary-bloom-matrix": CircularBinaryBloomMatrix,
-  "circular-triple-snake-matrix": CircularTripleSnakeMatrix,
-  "circular-mobius-strip-matrix": CircularMobiusStripMatrix,
-  "circular-radar-sweep-matrix": CircularRadarSweepMatrix,
-  "circular-pinwheel-matrix": CircularPinwheelMatrix,
-  "circular-phase-orbit-matrix": CircularPhaseOrbitMatrix,
-  "circular-gate-flip-matrix": CircularGateFlipMatrix,
-  "circular-heartbeat-matrix": CircularHeartbeatMatrix,
-  "circular-quadrant-breathe-matrix": CircularQuadrantBreatheMatrix,
-  "circular-arc-cascade-matrix": CircularArcCascadeMatrix,
-  "circular-dna-twin-helix-matrix": CircularDnaTwinHelixMatrix,
-  "circular-dna-rung-shift-matrix": CircularDnaRungShiftMatrix,
-  "circular-braille-cluster-matrix": CircularBrailleClusterMatrix,
-  "circular-braille-scanline-matrix": CircularBrailleScanlineMatrix,
-  "circular-braille-checker-shift-matrix": CircularBrailleCheckerShiftMatrix,
-  "circular-braille-pulse-pair-matrix": CircularBraillePulsePairMatrix,
-  "circular-braille-orbit-cells-matrix": CircularBrailleOrbitCellsMatrix,
-  "circular-braille-glyph-cycle-matrix": CircularBrailleGlyphCycleMatrix,
-  "triangle-center-spokes-matrix": TriangleCenterSpokesMatrix,
-  "triangle-altitude-pulse-matrix": TriangleAltitudePulseMatrix,
-  "triangle-corner-bounce-matrix": TriangleCornerBounceMatrix,
-  "triangle-vertex-chase-matrix": TriangleVertexChaseMatrix,
-  "triangle-row-scan-matrix": TriangleRowScanMatrix,
-  "triangle-braille-beat-matrix": TriangleBrailleBeatMatrix
+  "dotm-square-1": DotmSquare1,
+  "dotm-square-2": DotmSquare2,
+  "dotm-square-3": DotmSquare3,
+  "dotm-square-4": DotmSquare4,
+  "dotm-square-5": DotmSquare5,
+  "dotm-square-6": DotmSquare6,
+  "dotm-square-7": DotmSquare7,
+  "dotm-square-8": DotmSquare8,
+  "dotm-square-9": DotmSquare9,
+  "dotm-square-10": DotmSquare10,
+  "dotm-square-11": DotmSquare11,
+  "dotm-square-12": DotmSquare12,
+  "dotm-square-13": DotmSquare13,
+  "dotm-square-14": DotmSquare14,
+  "dotm-square-15": DotmSquare15,
+  "dotm-square-16": DotmSquare16,
+  "dotm-square-17": DotmSquare17,
+  "dotm-square-18": DotmSquare18,
+  "dotm-square-19": DotmSquare19,
+  "dotm-square-20": DotmSquare20,
+  "dotm-circular-1": DotmCircular1,
+  "dotm-circular-2": DotmCircular2,
+  "dotm-circular-3": DotmCircular3,
+  "dotm-circular-4": DotmCircular4,
+  "dotm-circular-5": DotmCircular5,
+  "dotm-circular-6": DotmCircular6,
+  "dotm-circular-7": DotmCircular7,
+  "dotm-circular-8": DotmCircular8,
+  "dotm-circular-9": DotmCircular9,
+  "dotm-circular-10": DotmCircular10,
+  "dotm-circular-11": DotmCircular11,
+  "dotm-circular-12": DotmCircular12,
+  "dotm-circular-13": DotmCircular13,
+  "dotm-circular-14": DotmCircular14,
+  "dotm-circular-15": DotmCircular15,
+  "dotm-circular-16": DotmCircular16,
+  "dotm-circular-17": DotmCircular17,
+  "dotm-circular-18": DotmCircular18,
+  "dotm-circular-19": DotmCircular19,
+  "dotm-circular-20": DotmCircular20,
+  "dotm-triangle-1": DotmTriangle1,
+  "dotm-triangle-2": DotmTriangle2,
+  "dotm-triangle-3": DotmTriangle3,
+  "dotm-triangle-4": DotmTriangle4,
+  "dotm-triangle-5": DotmTriangle5,
+  "dotm-triangle-6": DotmTriangle6
 };
 
 const previewSpeed = 1.35;
 
 const previewPropsMap: Record<string, DotMatrixCommonProps> = {
-  "diagonal-trbl-sweep-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.1 },
-  "row-wave-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.15 },
-  "spiral-snake-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: previewSpeed },
-  "triple-snake-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.35 },
-  "diagonal-snake-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: previewSpeed },
-  "column-snake-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 2.2 },
-  "tetris-stack-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: previewSpeed },
-  "column-stagger-blink-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.4 },
-  "braille-pattern-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.5 },
-  "phosphor-sweep-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 2.5 },
-  "ripple-echo-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.25 },
-  "center-origin-ripple-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: previewSpeed },
-  "digital-counter-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.85 },
-  "kaleidoscope-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.25 },
-  "dna-helix-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.25 },
-  "dna-helix-compact-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 2.5 },
-  "dna-half-helix-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 2.5 },
-  "audio-bars-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.35 },
-  "infinity-loop-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.45 },
-  "mobius-strip-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.45 },
-  "circular-column-snake-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 2.5 },
-  "circular-constellation-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 5.55 },
-  "circular-binary-bloom-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.75 },
-  "circular-triple-snake-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.8 },
-  "circular-mobius-strip-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.6 },
-  "circular-radar-sweep-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.55 },
-  "circular-pinwheel-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.7 },
-  "circular-phase-orbit-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.6 },
-  "circular-gate-flip-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.8 },
-  "circular-heartbeat-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.95 },
-  "circular-quadrant-breathe-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.65 },
-  "circular-arc-cascade-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.7 },
-  "circular-dna-twin-helix-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.55 },
-  "circular-dna-rung-shift-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.75 },
-  "circular-braille-cluster-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.65 },
-  "circular-braille-scanline-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.1 },
-  "circular-braille-checker-shift-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.55 },
-  "circular-braille-pulse-pair-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.75 },
-  "circular-braille-orbit-cells-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.6 },
-  "circular-braille-glyph-cycle-matrix": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.5 },
-  "triangle-center-spokes-matrix": { size: 24, dotSize: 5, pattern: "full", animated: true, speed: 5 },
-  "triangle-altitude-pulse-matrix": { size: 24, dotSize: 5, pattern: "full", animated: true, speed: 1.5 },
-  "triangle-corner-bounce-matrix": { size: 24, dotSize: 5, pattern: "full", animated: true, speed: 1.45 },
-  "triangle-vertex-chase-matrix": { size: 24, dotSize: 5, pattern: "full", animated: true, speed: 1.5 },
-  "triangle-row-scan-matrix": { size: 24, dotSize: 5, pattern: "full", animated: true, speed: 1.8 },
-  "triangle-braille-beat-matrix": { size: 24, dotSize: 5, pattern: "full", animated: true, speed: 2.2 }
+  "dotm-square-1": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.1 },
+  "dotm-square-2": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.15 },
+  "dotm-square-3": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: previewSpeed },
+  "dotm-square-4": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.35 },
+  "dotm-square-5": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: previewSpeed },
+  "dotm-square-6": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 2.2 },
+  "dotm-square-7": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: previewSpeed },
+  "dotm-square-8": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.4 },
+  "dotm-square-9": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.5 },
+  "dotm-square-10": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 2.5 },
+  "dotm-square-11": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.25 },
+  "dotm-square-12": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: previewSpeed },
+  "dotm-square-13": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.85 },
+  "dotm-square-14": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.25 },
+  "dotm-square-15": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.25 },
+  "dotm-square-16": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 2.5 },
+  "dotm-square-17": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 2.5 },
+  "dotm-square-18": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.35 },
+  "dotm-square-19": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.45 },
+  "dotm-square-20": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.45 },
+  "dotm-circular-1": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 2.5 },
+  "dotm-circular-2": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.8 },
+  "dotm-circular-3": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.6 },
+  "dotm-circular-4": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.55 },
+  "dotm-circular-5": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.7 },
+  "dotm-circular-6": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.6 },
+  "dotm-circular-7": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.8 },
+  "dotm-circular-8": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.95 },
+  "dotm-circular-9": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 5.55 },
+  "dotm-circular-10": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.75 },
+  "dotm-circular-11": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.65 },
+  "dotm-circular-12": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.7 },
+  "dotm-circular-13": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.55 },
+  "dotm-circular-14": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.75 },
+  "dotm-circular-15": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.65 },
+  "dotm-circular-16": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.1 },
+  "dotm-circular-17": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.55 },
+  "dotm-circular-18": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.75 },
+  "dotm-circular-19": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.6 },
+  "dotm-circular-20": { size: 30, dotSize: 4, pattern: "full", animated: true, speed: 1.5 },
+  "dotm-triangle-1": { size: 24, dotSize: 5, pattern: "full", animated: true, speed: 5 },
+  "dotm-triangle-2": { size: 24, dotSize: 5, pattern: "full", animated: true, speed: 1.5 },
+  "dotm-triangle-3": { size: 24, dotSize: 5, pattern: "full", animated: true, speed: 1.45 },
+  "dotm-triangle-4": { size: 24, dotSize: 5, pattern: "full", animated: true, speed: 1.5 },
+  "dotm-triangle-5": { size: 24, dotSize: 5, pattern: "full", animated: true, speed: 1.8 },
+  "dotm-triangle-6": { size: 24, dotSize: 5, pattern: "full", animated: true, speed: 2.2 }
 };
 
-export function LoaderGallery({ items, manualSetup }: LoaderGalleryProps) {
+export function LoaderGallery({ items }: LoaderGalleryProps) {
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
-  const [origin, setOrigin] = useState("https://your-docs-domain.com");
-  const [copiedToken, setCopiedToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setOrigin(window.location.origin);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!selectedSlug) {
-      return;
-    }
-
-
-    const onEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setSelectedSlug(null);
-      }
-    };
-
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", onEscape);
-
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", onEscape);
-    };
-  }, [selectedSlug]);
 
   const selected = useMemo(
     () => items.find((item) => item.slug === selectedSlug) ?? null,
     [items, selectedSlug]
   );
-
-  const installUrl = selected ? `${origin}/r/${selected.slug}.json` : "";
-  const installCommand = `npx shadcn@latest add ${installUrl}`;
-  const cssImportLine = `@import "@/styles/dotmatrix-loader.css";`;
-
-  const copySnippet = async (token: string, content: string) => {
-    if (typeof navigator === "undefined" || !navigator.clipboard) {
-      return;
+  const selectedPreview = useMemo(() => {
+    if (!selected) {
+      return <DotMatrixIcon />;
     }
-    try {
-      await navigator.clipboard.writeText(content);
-      setCopiedToken(token);
-      window.setTimeout(() => {
-        setCopiedToken((prev) => (prev === token ? null : prev));
-      }, 1400);
-    } catch {
-      // Ignore copy failures in unsupported environments.
-    }
-  };
+
+    const SelectedComponent = componentMap[selected.slug as keyof typeof componentMap] ?? DotMatrixIcon;
+    const previewProps = previewPropsMap[selected.slug] ?? previewPropsMap["dotm-square-1"];
+    const detailSize = previewProps.size ?? 30;
+    const detailDotSize = previewProps.dotSize ?? 4;
+    const detailPreviewProps: DotMatrixCommonProps = {
+      ...previewProps,
+      size: Math.round(detailSize * 2.1),
+      dotSize: detailDotSize + 5
+    };
+
+    return <SelectedComponent {...detailPreviewProps} />;
+  }, [selected]);
 
   return (
-    <main className="relative mx-auto min-h-[100dvh] w-full max-w-[1400px] px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-      <section className="mb-8 rounded-[1.75rem] border border-white/10 bg-[var(--surface)]/50 p-6 shadow-[0_1px_0_rgba(255,255,255,0.04)] sm:p-8">
-        <p className="text-xs uppercase tracking-[0.2em] text-zinc-400">Dotmatrix loader library</p>
+    <main className="relative mx-auto min-h-dvh w-full max-w-[1400px] px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      <section className="mb-20">
         <div className="mt-4 grid gap-6 lg:grid-cols-[1.4fr_auto] lg:items-end">
-          <div>
-            <h1 className="text-balance text-3xl font-semibold tracking-tight text-zinc-100 sm:text-5xl">
-              Minimal dotmatrix loaders, ready for shadcn
-            </h1>
-            <p className="mt-4 max-w-[65ch] text-pretty text-sm leading-relaxed text-zinc-400 sm:text-base">
-              Single page gallery. Click any loader card to open install steps and manual source in a
-              focused modal.
-            </p>
+          <div className="flex flex-col gap-8">
+            <div className="space-y-4">
+              <h1 className="text-balance text-3xl tracking-tight text-zinc-100 sm:text-9xl">
+                Dot matrix{" "}
+                {" "}
+                loaders for React
+              </h1>
+              <p className=" max-w-[65ch] text-pretty tracking-tight text-sm leading-relaxed  sm:text-2xl">
+                This site is a gallery of dotmatrix-style loading components. Open a card for the shadcn add
+                command and source files.
+              </p>
+            </div>
+            <p className="">npx shadcn@latest add @dotmatrix/dotm-square-3</p>
           </div>
-          <a
-            href="#loader-grid"
-            className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/15 bg-white/5 px-5 text-sm font-medium text-zinc-100 transition-[transform,background-color,border-color] duration-200 hover:border-white/25 hover:bg-white/10 active:scale-[0.96]"
-          >
-            Browse loaders
-          </a>
         </div>
       </section>
 
       <section
         id="loader-grid"
-        className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 xl:grid-cols-5"
+        className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-6 md:grid-cols-4 xl:grid-cols-5"
       >
         {items.map((item) => {
           const Component = componentMap[item.slug as keyof typeof componentMap] ?? DotMatrixIcon;
-          const previewProps = previewPropsMap[item.slug] ?? previewPropsMap["dot-matrix-icon"];
+          const previewProps = previewPropsMap[item.slug] ?? previewPropsMap["dotm-square-1"];
 
           return (
             <button
               key={item.slug}
               type="button"
               onClick={() => setSelectedSlug(item.slug)}
-              className="group relative min-h-[176px] rounded-2xl text-left shadow-[0_1px_0_rgba(255,255,255,0.04)] outline-none transition-[transform,background-color,border-color] duration-200 hover:-translate-y-[1px] hover:border-white/20 hover:bg-zinc-900 focus-visible:border-zinc-200 focus-visible:ring-2 focus-visible:ring-zinc-600/40 active:scale-[0.98]"
+              className="aspect-square  relative group"
             >
+              <div
+                style={{
+                  maskImage: 'linear-gradient(45deg, rgba(0,0,0,0) 35%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0) 65%)'
+                }}
+                className="absolute inset-0 size-full shadow-[0_0_5px_0.5px_#ffffff80_inset] group-hover:shadow-[0_0_15px_0.5px_#ffffffcc_inset] transition-shadow duration-50 ease-out"></div>
+              <div
+                style={{
+                  maskImage: 'linear-gradient(135deg, rgba(0,0,0,0) 35%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0) 65%)'
+                }}
+                className="absolute inset-0 size-full z-10 shadow-[0_0_5px_0.5px_#ffffff80_inset] group-hover:shadow-[0_0_15px_0.5px_#ffffffcc_inset] transition-shadow duration-50 ease-out"></div>
+              <div
+                style={{
+                  maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 10%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0) 90%)'
+                }}
+                className="absolute inset-3 z-10 shadow-[0_0_0px_0.5px_#ffffff60_inset]  transition-shadow duration-50 ease-out"></div>
+
+              <div className="pointer-events-none absolute inset-x-2 bottom-2 z-20 rounded-md px-2 py-1 text-center text-[11px] font-medium tracking-wide text-zinc-100">
+                {item.title}
+              </div>
+
               <div className="relative flex h-full flex-col">
-                <div className="flex flex-1 items-center justify-center rounded-xl border border-white/5 ">
+                <div className="flex flex-1 items-center justify-center ">
                   <Component {...previewProps} />
                 </div>
               </div>
@@ -280,132 +252,16 @@ export function LoaderGallery({ items, manualSetup }: LoaderGalleryProps) {
         })}
       </section>
 
-      {selected ? (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-[2px]"
-          onClick={() => setSelectedSlug(null)}
-        >
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-label={`${selected.title} installation details`}
-            onClick={(event) => event.stopPropagation()}
-            className="modal-shell max-h-[92vh] w-full max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-[var(--surface)] shadow-[0_22px_70px_rgba(0,0,0,0.5)]"
-          >
-            <div className="flex items-center justify-between border-b border-white/10 px-5 py-4 sm:px-6">
-              <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-zinc-500">Loader</p>
-                <h2 className="mt-1 text-2xl font-semibold text-zinc-100">{selected.title}</h2>
-              </div>
-              <button
-                type="button"
-                onClick={() => setSelectedSlug(null)}
-                className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-xl border border-white/10 bg-black/20 text-sm text-zinc-300 transition-[transform,background-color] duration-200 hover:bg-white/10 active:scale-[0.96]"
-              >
-                Close
-              </button>
-            </div>
-
-            <div className="grid max-h-[calc(92vh-84px)] gap-5 overflow-y-auto p-5 sm:p-6 lg:grid-cols-2">
-              <section className="grid content-start gap-3 rounded-2xl border border-white/10 bg-black/20 p-4">
-                <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-zinc-200">
-                  Registry Install
-                </h3>
-                <p className="text-sm text-zinc-400">{selected.description}</p>
-                <pre className="overflow-x-auto rounded-xl border border-white/10 bg-black/30 p-4 text-xs text-zinc-100">
-                  <code>{installCommand}</code>
-                </pre>
-              </section>
-
-              <section className="grid content-start gap-3 rounded-2xl border border-white/10 bg-black/20 p-4">
-                <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-zinc-200">
-                  Manual Usage
-                </h3>
-                <p className="text-sm text-zinc-400">
-                  One-time setup: create shared runtime files once, then paste any loader component.
-                </p>
-
-                <div className="grid gap-2">
-                  <div className="flex items-center justify-between gap-2">
-                    <p className="text-xs uppercase tracking-[0.12em] text-zinc-500">{manualSetup.coreFilePath}</p>
-                    <button
-                      type="button"
-                      onClick={() => copySnippet("setup-core", manualSetup.coreSource)}
-                      className="inline-flex min-h-8 items-center justify-center rounded-lg border border-white/10 bg-black/30 px-3 text-xs text-zinc-300 transition hover:bg-white/10"
-                    >
-                      {copiedToken === "setup-core" ? "Copied" : "Copy"}
-                    </button>
-                  </div>
-                  <pre className="max-h-[140px] overflow-auto rounded-xl border border-white/10 bg-black/30 p-4 text-xs text-zinc-100">
-                    <code>{manualSetup.coreSource}</code>
-                  </pre>
-                </div>
-
-                <div className="grid gap-2">
-                  <div className="flex items-center justify-between gap-2">
-                    <p className="text-xs uppercase tracking-[0.12em] text-zinc-500">{manualSetup.hooksFilePath}</p>
-                    <button
-                      type="button"
-                      onClick={() => copySnippet("setup-hooks", manualSetup.hooksSource)}
-                      className="inline-flex min-h-8 items-center justify-center rounded-lg border border-white/10 bg-black/30 px-3 text-xs text-zinc-300 transition hover:bg-white/10"
-                    >
-                      {copiedToken === "setup-hooks" ? "Copied" : "Copy"}
-                    </button>
-                  </div>
-                  <pre className="max-h-[140px] overflow-auto rounded-xl border border-white/10 bg-black/30 p-4 text-xs text-zinc-100">
-                    <code>{manualSetup.hooksSource}</code>
-                  </pre>
-                </div>
-
-                <div className="grid gap-2">
-                  <div className="flex items-center justify-between gap-2">
-                    <p className="text-xs uppercase tracking-[0.12em] text-zinc-500">{manualSetup.cssFilePath}</p>
-                    <button
-                      type="button"
-                      onClick={() => copySnippet("setup-css", manualSetup.cssSource)}
-                      className="inline-flex min-h-8 items-center justify-center rounded-lg border border-white/10 bg-black/30 px-3 text-xs text-zinc-300 transition hover:bg-white/10"
-                    >
-                      {copiedToken === "setup-css" ? "Copied" : "Copy"}
-                    </button>
-                  </div>
-                  <pre className="max-h-[120px] overflow-auto rounded-xl border border-white/10 bg-black/30 p-4 text-xs text-zinc-100">
-                    <code>{manualSetup.cssSource}</code>
-                  </pre>
-                  <pre className="overflow-x-auto rounded-xl border border-white/10 bg-black/30 p-4 text-xs text-zinc-100">
-                    <code>{cssImportLine}</code>
-                  </pre>
-                </div>
-
-                <div className="grid gap-2">
-                  <div className="flex items-center justify-between gap-2">
-                    <p className="text-xs uppercase tracking-[0.12em] text-zinc-500">
-                      components/ui/{selected.slug}.tsx
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => copySnippet("loader-source", selected.sourceCode)}
-                      className="inline-flex min-h-8 items-center justify-center rounded-lg border border-white/10 bg-black/30 px-3 text-xs text-zinc-300 transition hover:bg-white/10"
-                    >
-                      {copiedToken === "loader-source" ? "Copied" : "Copy"}
-                    </button>
-                  </div>
-                  <pre className="max-h-[260px] overflow-auto rounded-xl border border-white/10 bg-black/30 p-4 text-xs text-zinc-100">
-                    <code>{selected.sourceCode}</code>
-                  </pre>
-                </div>
-
-                <pre className="overflow-x-auto rounded-xl border border-white/10 bg-black/30 p-4 text-xs text-zinc-100">
-                  <code>{`import { ${selected.componentName} } from "@/components/ui/${selected.slug}";
-
-export function Example() {
-  return <${selected.componentName} />;
-}`}</code>
-                </pre>
-              </section>
-            </div>
-          </div>
-        </div>
-      ) : null}
+      <LoaderDetailsDrawer
+        open={Boolean(selected)}
+        onOpenChange={(open) => {
+          if (!open) {
+            setSelectedSlug(null);
+          }
+        }}
+        selected={selected}
+        preview={selectedPreview}
+      />
     </main>
   );
 }

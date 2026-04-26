@@ -10,7 +10,7 @@ interface RegistryManifest {
 
 interface RegistryItem {
   name: string;
-  files: Array<{ path: string; content: string }>;
+  files: Array<{ path: string }>;
 }
 
 async function run() {

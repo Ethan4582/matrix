@@ -6,13 +6,13 @@ import { loaderRegistry } from "../lib/registry-config";
 interface RegistryFile {
   path: string;
   type: "registry:ui" | "registry:lib" | "registry:style";
-  content: string;
 }
 
 const docsRoot = process.cwd();
 const loadersRoot = path.join(docsRoot, "loaders");
 const manualRoot = path.join(loadersRoot, "manual");
 const publicRegistryDir = path.join(docsRoot, "public", "r");
+const fallbackHomepage = "https://dotmatrix-registry.example.com";
 
 const sharedSourceFiles: Array<{ absolutePath: string; targetPath: string; type: RegistryFile["type"] }> = [
   {
@@ -38,6 +38,12 @@ async function readSource(relativePath: string): Promise<string> {
 
 async function readAbsolute(filePath: string): Promise<string> {
   return readFile(filePath, "utf-8");
+}
+
+async function writeRegistrySource(pathInRegistry: string, content: string): Promise<void> {
+  const absolutePath = path.join(publicRegistryDir, pathInRegistry);
+  await mkdir(path.dirname(absolutePath), { recursive: true });
+  await writeFile(absolutePath, content, "utf-8");
 }
 
 const importRewrites: ReadonlyArray<{ from: string; to: string }> = [
@@ -66,17 +72,18 @@ async function build() {
         (current, { from, to }) => current.replaceAll(`"${from}"`, `"${to}"`),
         await readSource(path.join("loaders", loader.fileName))
       );
+      const componentPath = `components/ui/${loader.fileName}`;
       files.push({
-        path: `components/ui/${loader.fileName}`,
-        type: "registry:ui",
-        content: componentSource
+        path: componentPath,
+        type: "registry:ui"
       });
+      await writeRegistrySource(componentPath, componentSource);
 
       for (const sharedFile of sharedSourceFiles) {
+        await writeRegistrySource(sharedFile.targetPath, await readAbsolute(sharedFile.absolutePath));
         files.push({
           path: sharedFile.targetPath,
-          type: sharedFile.type,
-          content: await readAbsolute(sharedFile.absolutePath)
+          type: sharedFile.type
         });
       }
 
@@ -117,7 +124,7 @@ async function build() {
   const registry = {
     $schema: "https://ui.shadcn.com/schema/registry.json",
     name: "dotmatrix-loaders",
-    homepage: "https://your-docs-domain.com",
+    homepage: process.env.REGISTRY_HOMEPAGE ?? fallbackHomepage,
     items: registryItems
   };
 
@@ -130,6 +137,12 @@ async function build() {
   await writeFile(
     path.join(publicRegistryDir, "index.json"),
     JSON.stringify(registryItems, null, 2) + "\n",
+    "utf-8"
+  );
+
+  await writeFile(
+    path.join(publicRegistryDir, "registry.json"),
+    JSON.stringify(registry, null, 2) + "\n",
     "utf-8"
   );
 }

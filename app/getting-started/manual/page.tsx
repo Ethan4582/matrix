@@ -1,0 +1,50 @@
+import { ManualCodePanel } from "@/components/manual-code-panel";
+import { getManualSetupSources } from "@/lib/source";
+
+const cssImportLine = `@import "@/styles/dotmatrix-loader.css";`;
+
+export default async function ManualGettingStartedPage() {
+  const manualSetup = await getManualSetupSources();
+
+  return (
+    <main className="mx-auto min-h-dvh w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      <section className="grid gap-6 rounded-2xl bg-black/20 p-5 sm:p-6">
+        <header className="grid gap-3">
+          <p className="text-xs">Getting Started</p>
+          <h1 className="text-2xl tracking-tight text-white sm:text-3xl">Manual Setup Guide</h1>
+          <p className="max-w-[72ch] text-sm leading-relaxed">
+            Before you paste any individual loader component, add these shared runtime files once.
+            After this setup, you can copy any loader source snippet from the gallery and use it directly.
+          </p>
+        </header>
+
+        <ManualCodePanel
+          title={manualSetup.coreFilePath}
+          code={manualSetup.coreSource}
+          lang="tsx"
+        />
+
+        <ManualCodePanel
+          title={manualSetup.hooksFilePath}
+          code={manualSetup.hooksSource}
+          lang="typescript"
+        />
+
+        <div className="grid gap-4">
+          <ManualCodePanel
+            title={manualSetup.cssFilePath}
+            code={manualSetup.cssSource}
+            lang="css"
+            scrollClassName="min-h-[60dvh] max-h-[60dvh] overflow-x-auto overflow-y-auto"
+          />
+          <ManualCodePanel
+            title="Import in your global CSS"
+            code={cssImportLine}
+            lang="css"
+            scrollClassName="overflow-x-auto"
+          />
+        </div>
+      </section>
+    </main>
+  );
+}

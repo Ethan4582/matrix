@@ -12,6 +12,10 @@ Single Next.js app: loader components live in `loaders/`, app routes in `app/`, 
 ## Commands
 
 - `pnpm dev`: run the docs app
-- `pnpm registry:build`: generate `registry.json` and `public/r/*`
+- `pnpm registry:build`: generate `registry.json` plus `public/r/registry.json` and `public/r/*`
 - `pnpm test`: run tests
 - `pnpm typecheck`: run TypeScript checks
+
+## Registry publishing
+
+- Set `REGISTRY_HOMEPAGE` when building to emit the live site URL in registry metadata.
