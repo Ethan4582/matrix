@@ -6,6 +6,7 @@ import { loaderRegistry } from "../lib/registry-config";
 interface RegistryFile {
   path: string;
   type: "registry:ui" | "registry:lib" | "registry:style";
+  content: string;
 }
 
 const docsRoot = process.cwd();
@@ -65,6 +66,13 @@ async function build() {
   await rm(publicRegistryDir, { recursive: true, force: true });
   await mkdir(publicRegistryDir, { recursive: true });
 
+  const sharedSources = await Promise.all(
+    sharedSourceFiles.map(async (sharedFile) => ({
+      ...sharedFile,
+      content: await readAbsolute(sharedFile.absolutePath)
+    }))
+  );
+
   const registryItems = await Promise.all(
     loaderRegistry.map(async (loader) => {
       const files: RegistryFile[] = [];
@@ -76,15 +84,17 @@ async function build() {
       const componentPath = `components/ui/${loader.fileName}`;
       files.push({
         path: componentPath,
-        type: "registry:ui"
+        type: "registry:ui",
+        content: componentSource
       });
       await writeRegistrySource(componentPath, componentSource);
 
-      for (const sharedFile of sharedSourceFiles) {
-        await writeRegistrySource(sharedFile.targetPath, await readAbsolute(sharedFile.absolutePath));
+      for (const sharedFile of sharedSources) {
+        await writeRegistrySource(sharedFile.targetPath, sharedFile.content);
         files.push({
           path: sharedFile.targetPath,
-          type: sharedFile.type
+          type: sharedFile.type,
+          content: sharedFile.content
         });
       }
 

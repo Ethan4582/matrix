@@ -10,7 +10,7 @@ interface RegistryManifest {
 
 interface RegistryItem {
   name: string;
-  files: Array<{ path: string }>;
+  files: Array<{ path: string; content?: string }>;
 }
 
 async function run() {
@@ -33,6 +33,12 @@ async function run() {
 
     if (!item.files.length) {
       throw new Error(`No installable files for ${manifestItem.name}.`);
+    }
+
+    for (const file of item.files) {
+      if (typeof file.content !== "string" || file.content.length === 0) {
+        throw new Error(`Missing file content for ${manifestItem.name}: ${file.path}`);
+      }
     }
   }
 
