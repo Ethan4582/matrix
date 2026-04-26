@@ -66,8 +66,7 @@ const importRewrites: ReadonlyArray<{ from: string; to: string }> = [
 function rewriteRegistrySharedCrossImports(source: string): string {
   return source
     .replaceAll('from "./dotmatrix-core"', 'from "@/components/ui/dotmatrix-core"')
-    .replaceAll('from "./dotmatrix-hooks"', 'from "@/components/ui/dotmatrix-hooks"')
-    .replaceAll('"../styles.css"', '"../dotmatrix-loader.css"');
+    .replaceAll('from "./dotmatrix-hooks"', 'from "@/components/ui/dotmatrix-hooks"');
 }
 
 async function build() {
