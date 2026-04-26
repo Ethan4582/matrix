@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import { DotMatrixBase } from "../base/dot-matrix-base";
 import { useDotMatrixPhases } from "../core/phases";
 import { MATRIX_SIZE } from "../core/patterns";
 import { usePrefersReducedMotion } from "../hooks/use-prefers-reduced-motion";
+import { useSteppedCycle } from "../hooks/use-stepped-cycle";
 import type { DotAnimationResolver, DotMatrixCommonProps } from "../types";
 
 export type DotmSquare10Props = DotMatrixCommonProps;
@@ -30,23 +31,13 @@ export function DotmSquare10({
     hoverAnimated: Boolean(hoverAnimated && !reducedMotion),
     speed
   });
-  const [scanRow, setScanRow] = useState(0);
-
-  useEffect(() => {
-    if (reducedMotion || matrixPhase === "idle") {
-      setScanRow(0);
-      return;
-    }
-
-    const safeSpeed = speed > 0 ? speed : 1;
-    const sweepMs = 1500 / safeSpeed;
-    const stepMs = Math.max(40, Math.round(sweepMs / ROWS));
-    const timer = window.setInterval(() => {
-      setScanRow((prev) => (prev + 1) % ROWS);
-    }, stepMs);
-
-    return () => window.clearInterval(timer);
-  }, [matrixPhase, reducedMotion, speed]);
+  const scanRow = useSteppedCycle({
+    active: !reducedMotion && matrixPhase !== "idle",
+    cycleMsBase: 1500,
+    steps: ROWS,
+    speed,
+    minStepMs: 40
+  });
 
   const resolver = useMemo<DotAnimationResolver>(() => {
     return ({ isActive, row, col, phase }) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import type { CSSProperties } from "react";
 
 import { DotMatrixBase } from "../base/dot-matrix-base";
 import { useDotMatrixPhases } from "../core/phases";
@@ -10,8 +10,6 @@ import type { DotAnimationResolver, DotMatrixCommonProps } from "../types";
 export type DotmSquare6Props = DotMatrixCommonProps;
 
 const COLUMN_HEIGHT = 5;
-const BASE_OPACITY = 0.08;
-const SNAKE_TAIL = [0.8, 0.6, 0.4, 0.2, 0.1] as const;
 
 export function DotmSquare6({
   speed = 1,
@@ -26,23 +24,6 @@ export function DotmSquare6({
     hoverAnimated: Boolean(hoverAnimated && !reducedMotion),
     speed
   });
-  const [head, setHead] = useState(0);
-
-  useEffect(() => {
-    if (reducedMotion || matrixPhase === "idle") {
-      setHead(0);
-      return;
-    }
-
-    const safeSpeed = speed > 0 ? speed : 1;
-    const cycleMs = 1500 / safeSpeed;
-    const stepMs = Math.max(24, Math.round(cycleMs / COLUMN_HEIGHT));
-    const timer = window.setInterval(() => {
-      setHead((prev) => (prev + 1) % COLUMN_HEIGHT);
-    }, stepMs);
-
-    return () => window.clearInterval(timer);
-  }, [matrixPhase, reducedMotion, speed]);
 
   const animationResolver: DotAnimationResolver = ({ isActive, row, col, phase }) => {
     if (!isActive) {
@@ -56,9 +37,10 @@ export function DotmSquare6({
       return { style: { opacity: 0.22 + (position / (COLUMN_HEIGHT - 1)) * 0.66 } };
     }
 
-    const distance = (head - position + COLUMN_HEIGHT) % COLUMN_HEIGHT;
-    const opacity = distance < SNAKE_TAIL.length ? SNAKE_TAIL[distance]! : BASE_OPACITY;
-    return { style: { opacity } };
+    return {
+      className: "dmx-square6-col-snake",
+      style: { "--dmx-col-pos": position } as CSSProperties
+    };
   };
 
   return (

@@ -1,12 +1,12 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import { useEffect, useState } from "react";
 
 import { cx } from "../core/cx";
 import { useDotMatrixPhases } from "../core/phases";
 import { styleOpacity, stylePx } from "../core/hydration-inline-style";
 import { usePrefersReducedMotion } from "../hooks/use-prefers-reduced-motion";
+import { useSteppedCycle } from "../hooks/use-stepped-cycle";
 import type { DotMatrixCommonProps } from "../types";
 
 export type DotmTriangle3Props = DotMatrixCommonProps;
@@ -57,23 +57,13 @@ export function DotmTriangle3({
     hoverAnimated: Boolean(hoverAnimated && !reducedMotion),
     speed
   });
-  const [step, setStep] = useState(0);
-
-  useEffect(() => {
-    if (reducedMotion || matrixPhase === "idle") {
-      setStep(0);
-      return;
-    }
-
-    const safeSpeed = speed > 0 ? speed : 1;
-    const cycleMs = 1950 / safeSpeed;
-    const stepMs = Math.max(18, Math.round(cycleMs / STEP_COUNT));
-    const timer = window.setInterval(() => {
-      setStep((prev) => (prev + 1) % STEP_COUNT);
-    }, stepMs);
-
-    return () => window.clearInterval(timer);
-  }, [matrixPhase, reducedMotion, speed]);
+  const step = useSteppedCycle({
+    active: !reducedMotion && matrixPhase !== "idle",
+    cycleMsBase: 1950,
+    steps: STEP_COUNT,
+    speed,
+    minStepMs: 18
+  });
 
   const frame = reducedMotion || matrixPhase === "idle" ? 0 : step;
   const theta = (frame / STEP_COUNT) * Math.PI * 2;

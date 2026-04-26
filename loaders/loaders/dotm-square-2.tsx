@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import { DotMatrixBase } from "../base/dot-matrix-base";
 import { useDotMatrixPhases } from "../core/phases";
 import { rowMajorIndex } from "../core/patterns";
 import { usePrefersReducedMotion } from "../hooks/use-prefers-reduced-motion";
+import { useSteppedCycle } from "../hooks/use-stepped-cycle";
 import type { DotAnimationResolver, DotMatrixCommonProps } from "../types";
 
 export type DotmSquare2Props = DotMatrixCommonProps;
@@ -61,7 +62,13 @@ export function DotmSquare2({
   });
   const route = useMemo(() => buildRowCyclePath(), []);
   const routeLen = route.length;
-  const [head, setHead] = useState(0);
+  const head = useSteppedCycle({
+    active: !reducedMotion && matrixPhase !== "idle" && routeLen > 0,
+    cycleMsBase: 1500,
+    steps: routeLen,
+    speed,
+    minStepMs: 24
+  });
 
   const visitsByIndex = useMemo(() => {
     const visits = new Map<number, number[]>();
@@ -73,22 +80,6 @@ export function DotmSquare2({
     }
     return visits;
   }, [route, routeLen]);
-
-  useEffect(() => {
-    if (reducedMotion || matrixPhase === "idle" || routeLen === 0) {
-      setHead(0);
-      return;
-    }
-
-    const safeSpeed = speed > 0 ? speed : 1;
-    const cycleMs = 1500 / safeSpeed;
-    const stepMs = Math.max(24, Math.round(cycleMs / routeLen));
-    const timer = window.setInterval(() => {
-      setHead((prev) => (prev + 1) % routeLen);
-    }, stepMs);
-
-    return () => window.clearInterval(timer);
-  }, [matrixPhase, reducedMotion, routeLen, speed]);
 
   const animationResolver: DotAnimationResolver = ({ isActive, index }) => {
     if (!isActive) {

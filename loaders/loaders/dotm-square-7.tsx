@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import { DotMatrixBase } from "../base/dot-matrix-base";
 import { useDotMatrixPhases } from "../core/phases";
 import { rowMajorIndex } from "../core/patterns";
 import { usePrefersReducedMotion } from "../hooks/use-prefers-reduced-motion";
+import { useSteppedCycle } from "../hooks/use-stepped-cycle";
 import type { DotAnimationResolver, DotMatrixCommonProps } from "../types";
 
 export type DotmSquare7Props = DotMatrixCommonProps;
@@ -50,24 +51,15 @@ export function DotmSquare7({
     hoverAnimated: Boolean(hoverAnimated && !reducedMotion),
     speed
   });
-  const [step, setStep] = useState(0);
   const sequenceLength = FRAME_SEQUENCE.length;
-
-  useEffect(() => {
-    if (reducedMotion || matrixPhase === "idle" || sequenceLength === 0) {
-      setStep(Math.min(IDLE_STEP, sequenceLength - 1));
-      return;
-    }
-
-    const safeSpeed = speed > 0 ? speed : 1;
-    const cycleMs = 1900 / safeSpeed;
-    const stepMs = Math.max(56, Math.round(cycleMs / sequenceLength));
-    const timer = window.setInterval(() => {
-      setStep((prev) => (prev + 1) % sequenceLength);
-    }, stepMs);
-
-    return () => window.clearInterval(timer);
-  }, [matrixPhase, reducedMotion, sequenceLength, speed]);
+  const step = useSteppedCycle({
+    active: !reducedMotion && matrixPhase !== "idle" && sequenceLength > 0,
+    cycleMsBase: 1900,
+    steps: sequenceLength,
+    speed,
+    minStepMs: 56,
+    idleStep: Math.min(IDLE_STEP, sequenceLength - 1)
+  });
 
   const frame = FRAME_SEQUENCE[step] ?? FRAME_SEQUENCE[0] ?? 0;
 
