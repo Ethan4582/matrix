@@ -61,7 +61,6 @@ export function DotmTriangle2({
     cycleMsBase: 1650,
     steps: STEP_COUNT,
     speed,
-    minStepMs: 18
   });
 
   const frame = reducedMotion || matrixPhase === "idle" ? 0 : step;

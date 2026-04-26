@@ -41,7 +41,8 @@ export function useCyclePhase({ active, cycleMsBase, speed = 1 }: UseCyclePhaseO
     }
 
     const safeSpeed = speed > 0 ? speed : 1;
-    const cycleMs = Math.max(120, cycleMsBase / safeSpeed);
+    const raw = cycleMsBase / safeSpeed;
+    const cycleMs = raw > 0 && Number.isFinite(raw) ? raw : 1000;
     const start = performance.now();
     let rafId = 0;
 
@@ -63,7 +64,6 @@ interface UseSteppedCycleOptions {
   cycleMsBase: number;
   steps: number;
   speed?: number;
-  minStepMs?: number;
   idleStep?: number;
 }
 
@@ -106,14 +106,13 @@ export function useSteppedCycle({
   cycleMsBase,
   steps,
   speed = 1,
-  minStepMs = 0,
   idleStep = 0
 }: UseSteppedCycleOptions): number {
   const safeSteps = Math.max(1, Math.floor(steps));
   const safeSpeed = speed > 0 ? speed : 1;
   const rawCycleMs = cycleMsBase / safeSpeed;
   const rawStepMs = rawCycleMs / safeSteps;
-  const stepMs = Math.max(minStepMs, rawStepMs);
+  const stepMs = rawStepMs > 0 && Number.isFinite(rawStepMs) ? rawStepMs : 1;
   const cycleMs = stepMs * safeSteps;
 
   const [step, setStep] = useState(() => (active ? 0 : idleStep));
@@ -193,7 +192,7 @@ export function useDotMatrixPhases({
     clearTimers();
     const gen = ++hoverGen.current;
     setHoverPhase("collapse");
-    const collapseMs = Math.max(80, Math.round(300 / safeSpeed));
+    const collapseMs = Math.max(1, Math.round(300 / safeSpeed));
     const id = window.setTimeout(() => {
       if (hoverGen.current !== gen) {
         return;

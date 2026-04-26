@@ -416,6 +416,42 @@
       "dependencies": [],
       "registryDependencies": [],
       "url": "/r/dotm-triangle-6.json"
+    },
+    {
+      "name": "dotm-triangle-7",
+      "type": "registry:ui",
+      "title": "Oblique Weave",
+      "description": "Diagonal harmonics keyed on row + col: bright bands glide along oblique lines through the triangle with a subtle second harmonic for texture.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "url": "/r/dotm-triangle-7.json"
+    },
+    {
+      "name": "dotm-triangle-8",
+      "type": "registry:ui",
+      "title": "Wing Metronome",
+      "description": "The lower triangle splits into left and right wings that trade emphasis on a pendulum beat; apex and center pulse brightest when both sides meet in the middle.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "url": "/r/dotm-triangle-8.json"
+    },
+    {
+      "name": "dotm-triangle-9",
+      "type": "registry:ui",
+      "title": "Corona Tier",
+      "description": "Eight-connected distance rings from the heart cell: a bright corona sweeps outward through discrete tiers then back, so depth reads as concentric energy shells.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "url": "/r/dotm-triangle-9.json"
+    },
+    {
+      "name": "dotm-triangle-10",
+      "type": "registry:ui",
+      "title": "Column Rake",
+      "description": "A stepped head and tail snake the mask in strict column order (bottom to top per column, columns left to right), unlike perimeter chases or diagonal waves.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "url": "/r/dotm-triangle-10.json"
     }
   ]
 }

@@ -24,7 +24,8 @@ export function useCyclePhase({ active, cycleMsBase, speed = 1 }: UseCyclePhaseO
     }
 
     const safeSpeed = speed > 0 ? speed : 1;
-    const cycleMs = Math.max(120, cycleMsBase / safeSpeed);
+    const raw = cycleMsBase / safeSpeed;
+    const cycleMs = raw > 0 && Number.isFinite(raw) ? raw : 1000;
     const start = performance.now();
     let rafId = 0;
 

@@ -55,7 +55,7 @@ export function useDotMatrixPhases({
     clearTimers();
     const gen = ++hoverGen.current;
     setPhase("collapse");
-    const collapseMs = Math.max(80, Math.round(300 / safeSpeed));
+    const collapseMs = Math.max(1, Math.round(300 / safeSpeed));
     const id = window.setTimeout(() => {
       if (hoverGen.current !== gen) {
         return;

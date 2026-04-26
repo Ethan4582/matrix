@@ -105,7 +105,7 @@ export function ThemeToggle() {
           onClick={toggleTheme}
           className="inline-flex min-w-0 items-center justify-center text-fg-strong transition-[opacity,color] duration-150 ease-out hover:opacity-90"
         >
-          <ThemeMatrixIcon className="size-4 sm:size-6" />
+          <ThemeMatrixIcon className="size-4 sm:size-5" />
         </button>
       </div>
     </div>

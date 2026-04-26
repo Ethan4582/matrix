@@ -54,7 +54,6 @@ export function DotmSquare14({
     cycleMsBase: 1900,
     steps: sequenceLength,
     speed,
-    minStepMs: 64
   });
 
   const resolver = useMemo<DotAnimationResolver>(() => {

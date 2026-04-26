@@ -52,7 +52,6 @@ export function DotmCircular3({
     cycleMsBase: 1650,
     steps: STEP_COUNT,
     speed,
-    minStepMs: 20,
     idleStep: 6
   });
 

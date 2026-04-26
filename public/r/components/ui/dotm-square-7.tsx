@@ -57,7 +57,6 @@ export function DotmSquare7({
     cycleMsBase: 1900,
     steps: sequenceLength,
     speed,
-    minStepMs: 56,
     idleStep: Math.min(IDLE_STEP, sequenceLength - 1)
   });
 

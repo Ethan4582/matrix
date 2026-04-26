@@ -67,7 +67,6 @@ export function DotmSquare2({
     cycleMsBase: 1500,
     steps: routeLen,
     speed,
-    minStepMs: 24
   });
 
   const visitsByIndex = useMemo(() => {

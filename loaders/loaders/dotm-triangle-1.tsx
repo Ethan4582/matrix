@@ -76,7 +76,6 @@ export function DotmTriangle1({
     cycleMsBase: 1650,
     steps: STEP_COUNT,
     speed,
-    minStepMs: 18
   });
 
   const gap = Math.max(1, Math.floor((size - dotSize * MATRIX_SIZE) / (MATRIX_SIZE - 1)));

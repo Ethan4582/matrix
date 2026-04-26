@@ -34,7 +34,6 @@ export function DotmCircular13({
     cycleMsBase: 1750,
     steps: STEP_COUNT,
     speed,
-    minStepMs: 20
   });
 
   const resolver = useMemo<DotAnimationResolver>(() => {

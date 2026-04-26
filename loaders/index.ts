@@ -103,6 +103,14 @@ export { DotmTriangle5 } from "./loaders/dotm-triangle-5";
 export type { DotmTriangle5Props } from "./loaders/dotm-triangle-5";
 export { DotmTriangle6 } from "./loaders/dotm-triangle-6";
 export type { DotmTriangle6Props } from "./loaders/dotm-triangle-6";
+export { DotmTriangle7 } from "./loaders/dotm-triangle-7";
+export type { DotmTriangle7Props } from "./loaders/dotm-triangle-7";
+export { DotmTriangle8 } from "./loaders/dotm-triangle-8";
+export type { DotmTriangle8Props } from "./loaders/dotm-triangle-8";
+export { DotmTriangle9 } from "./loaders/dotm-triangle-9";
+export type { DotmTriangle9Props } from "./loaders/dotm-triangle-9";
+export { DotmTriangle10 } from "./loaders/dotm-triangle-10";
+export type { DotmTriangle10Props } from "./loaders/dotm-triangle-10";
 
 export {
   CROSS_INDEXES,

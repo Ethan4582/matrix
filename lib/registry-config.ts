@@ -454,6 +454,46 @@ export const loaderRegistry: LoaderRegistryEntry[] = [
     fileName: "dotm-triangle-6.tsx",
     dependencies: [],
     motionOptional: false
+  },
+  {
+    slug: "dotm-triangle-7",
+    title: "Oblique Weave",
+    description:
+      "Diagonal harmonics keyed on row + col: bright bands glide along oblique lines through the triangle with a subtle second harmonic for texture.",
+    componentName: "DotmTriangle7",
+    fileName: "dotm-triangle-7.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-triangle-8",
+    title: "Wing Metronome",
+    description:
+      "The lower triangle splits into left and right wings that trade emphasis on a pendulum beat; apex and center pulse brightest when both sides meet in the middle.",
+    componentName: "DotmTriangle8",
+    fileName: "dotm-triangle-8.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-triangle-9",
+    title: "Corona Tier",
+    description:
+      "Eight-connected distance rings from the heart cell: a bright corona sweeps outward through discrete tiers then back, so depth reads as concentric energy shells.",
+    componentName: "DotmTriangle9",
+    fileName: "dotm-triangle-9.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-triangle-10",
+    title: "Column Rake",
+    description:
+      "A stepped head and tail snake the mask in strict column order (bottom to top per column, columns left to right), unlike perimeter chases or diagonal waves.",
+    componentName: "DotmTriangle10",
+    fileName: "dotm-triangle-10.tsx",
+    dependencies: [],
+    motionOptional: false
   }
 ];
 

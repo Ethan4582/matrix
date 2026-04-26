@@ -58,6 +58,10 @@ import {
   DotmTriangle4,
   DotmTriangle5,
   DotmTriangle6,
+  DotmTriangle7,
+  DotmTriangle8,
+  DotmTriangle9,
+  DotmTriangle10,
   type DotMatrixCommonProps
 } from "@/loaders";
 
@@ -111,7 +115,11 @@ const componentMap = {
   "dotm-triangle-3": DotmTriangle3,
   "dotm-triangle-4": DotmTriangle4,
   "dotm-triangle-5": DotmTriangle5,
-  "dotm-triangle-6": DotmTriangle6
+  "dotm-triangle-6": DotmTriangle6,
+  "dotm-triangle-7": DotmTriangle7,
+  "dotm-triangle-8": DotmTriangle8,
+  "dotm-triangle-9": DotmTriangle9,
+  "dotm-triangle-10": DotmTriangle10
 };
 
 const heroNavLinkClassName =
@@ -167,7 +175,11 @@ const previewPropsMap: Record<string, DotMatrixCommonProps> = {
   "dotm-triangle-3": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.45 },
   "dotm-triangle-4": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.5 },
   "dotm-triangle-5": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.8 },
-  "dotm-triangle-6": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 2.2 }
+  "dotm-triangle-6": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 2.2 },
+  "dotm-triangle-7": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.65 },
+  "dotm-triangle-8": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.55 },
+  "dotm-triangle-9": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.5 },
+  "dotm-triangle-10": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.7 }
 };
 
 /** Default gallery preview; must stay aligned with "Example usage" snippets in the drawer. */
