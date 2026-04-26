@@ -3,6 +3,7 @@
 import { useMemo, useRef } from "react";
 
 import { DotMatrixBase } from "../base/dot-matrix-base";
+import { useDotMatrixPhases } from "../core/phases";
 import { isWithinCircularMask } from "../core/circle-mask";
 import { useCyclePhase } from "../hooks/use-cycle-phase";
 import { usePrefersReducedMotion } from "../hooks/use-prefers-reduced-motion";
@@ -23,8 +24,13 @@ export function DotmCircular17({
   ...rest
 }: DotmCircular17Props) {
   const reducedMotion = usePrefersReducedMotion();
+  const { phase: matrixPhase, onMouseEnter, onMouseLeave } = useDotMatrixPhases({
+    animated: Boolean(animated && !reducedMotion),
+    hoverAnimated: Boolean(hoverAnimated && !reducedMotion),
+    speed
+  });
   const animPhase = useCyclePhase({
-    active: animated && !reducedMotion && !hoverAnimated,
+    active: !reducedMotion && matrixPhase !== "idle",
     cycleMsBase: 1500,
     speed
   });
@@ -33,12 +39,12 @@ export function DotmCircular17({
   animPhaseRef.current = animPhase;
 
   const resolver = useMemo<DotAnimationResolver>(() => {
-    return ({ row, col, phase: matrixPhase }) => {
+    return ({ row, col, phase: dmxPhase }) => {
       if (!isWithinCircularMask(row, col)) {
         return { className: "dmx-inactive" };
       }
 
-      const holdStill = reducedMotion || matrixPhase === "idle";
+      const holdStill = reducedMotion || dmxPhase === "idle";
       const t = holdStill
         ? 0
         : Math.floor(animPhaseRef.current * CHECKER_STEPS) % CHECKER_STEPS;
@@ -65,8 +71,9 @@ export function DotmCircular17({
       speed={speed}
       pattern="full"
       animated={animated}
-      hoverAnimated={hoverAnimated}
-      phase={animated && !reducedMotion ? "loadingRipple" : "idle"}
+      phase={matrixPhase}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       reducedMotion={reducedMotion}
       animationResolver={resolver}
     />

@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
 
 import { cx } from "../core/cx";
+import { useDotMatrixPhases } from "../core/phases";
 import { styleOpacity, stylePx } from "../core/hydration-inline-style";
 import { usePrefersReducedMotion } from "../hooks/use-prefers-reduced-motion";
 import type { DotMatrixCommonProps } from "../types";
@@ -65,10 +66,15 @@ export function DotmTriangle1({
   hoverAnimated = false,
 }: DotmTriangle1Props) {
   const reducedMotion = usePrefersReducedMotion();
+  const { phase: matrixPhase, onMouseEnter, onMouseLeave } = useDotMatrixPhases({
+    animated: Boolean(animated && !reducedMotion),
+    hoverAnimated: Boolean(hoverAnimated && !reducedMotion),
+    speed
+  });
   const [step, setStep] = useState(0);
 
   useEffect(() => {
-    if (reducedMotion || !animated) {
+    if (reducedMotion || matrixPhase === "idle") {
       setStep(0);
       return;
     }
@@ -81,7 +87,7 @@ export function DotmTriangle1({
     }, stepMs);
 
     return () => window.clearInterval(timer);
-  }, [animated, reducedMotion, speed]);
+  }, [matrixPhase, reducedMotion, speed]);
 
   const gap = Math.max(1, Math.floor((size - dotSize * MATRIX_SIZE) / (MATRIX_SIZE - 1)));
   const rootStyle = {
@@ -91,7 +97,15 @@ export function DotmTriangle1({
   } as CSSProperties;
 
   return (
-    <div role="status" aria-live="polite" aria-label={ariaLabel} className={cx("dmx-root", muted && "dmx-muted", className)} style={rootStyle}>
+    <div
+      role="status"
+      aria-live="polite"
+      aria-label={ariaLabel}
+      className={cx("dmx-root", muted && "dmx-muted", className)}
+      style={rootStyle}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       <div
         className="dmx-grid"
         style={{
@@ -107,7 +121,7 @@ export function DotmTriangle1({
 
           let opacity = 0;
           if (isActive) {
-            const frame = reducedMotion || !animated || hoverAnimated ? 0 : step;
+            const frame = reducedMotion || matrixPhase === "idle" ? 0 : step;
             opacity = BASE_OPACITY;
 
             if (row === CENTER_ROW && col === CENTER_COL) {

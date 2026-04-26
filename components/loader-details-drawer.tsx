@@ -9,6 +9,8 @@ import {
   type ShadcnPackageManager
 } from "@/components/package-manager-install-toolbar";
 import { HIDE_CODE_SCROLLBARS } from "@/lib/hide-code-scrollbar-class";
+import { LoaderPropsReference } from "@/lib/loader-props-reference";
+import { usePrefersReducedMotion } from "@/loaders/hooks/use-prefers-reduced-motion";
 import { GeistSans } from "geist/font/sans";
 import Link from "next/link";
 import {
@@ -28,6 +30,57 @@ const CLI_MANUAL_DOT_GAP_PX = 9;
 const DIALOG_CODE_SCROLL_CLASS = ["min-h-0 max-h-[60dvh] overflow-y-auto overflow-x-auto", HIDE_CODE_SCROLLBARS].join(
   " "
 );
+
+/** Flat index (row-major 5×5): chase order along main diag then anti-diag (center once). */
+const CLOSE_CROSS_CHASE_ORDER: Record<number, number> = {
+  0: 0,
+  6: 1,
+  12: 2,
+  18: 3,
+  24: 4,
+  16: 5,
+  20: 6,
+  8: 7,
+  4: 8
+};
+
+function FloatingCloseCrossDots() {
+  const reducedMotion = usePrefersReducedMotion();
+  const stepMs = 70;
+  const cycleMs = stepMs * 9;
+
+  return (
+    <span className="grid grid-cols-5 gap-px" aria-hidden>
+      {Array.from({ length: 25 }).map((_, index) => {
+        const row = Math.floor(index / 5);
+        const col = index % 5;
+        const isCross = row === col || row + col === 4;
+        if (!isCross) {
+          return <span key={index} className="h-[3px] w-[3px] rounded-full bg-white/5" />;
+        }
+        if (reducedMotion) {
+          return <span key={index} className="h-[3px] w-[3px] rounded-full bg-white" />;
+        }
+        const order = CLOSE_CROSS_CHASE_ORDER[index] ?? 0;
+        return (
+          <motion.span
+            key={index}
+            className="h-[3px] w-[3px] rounded-full bg-white"
+            initial={false}
+            animate={{ opacity: [0.2, 1, 0.2] }}
+            transition={{
+              duration: cycleMs / 1000,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: (order * stepMs) / 1000,
+              times: [0, 0.45, 1]
+            }}
+          />
+        );
+      })}
+    </span>
+  );
+}
 
 function MeasuredCliManualDotRail({
   activeTab,
@@ -184,8 +237,26 @@ export function Example() {
     }
     const C = selected.componentName;
     const from = selected.slug;
-    return [
-      {
+    const isSquareMatrix = from.startsWith("dotm-square-");
+    const isTriangleMatrix = from.startsWith("dotm-triangle-");
+    const opacityItem = isTriangleMatrix
+      ? {
+        id: "ex-opacity" as const,
+        title: "Size & speed",
+        copyToken: "example-usage-opacity" as const,
+        code: `import { ${C} } from "@/components/ui/${from}";
+
+export function SizeAndSpeed() {
+  return (
+    <${C}
+      size={32}
+      dotSize={4}
+      speed={1.4}
+    />
+  );
+}`
+      }
+      : {
         id: "ex-opacity" as const,
         title: "Opacity & speed",
         copyToken: "example-usage-opacity" as const,
@@ -203,12 +274,12 @@ export function OpacityAndSpeed() {
     />
   );
 }`
-      },
-      {
-        id: "ex-layout" as const,
-        title: "Fixed gap & box slot",
-        copyToken: "example-usage-layout" as const,
-        code: `import { ${C} } from "@/components/ui/${from}";
+      };
+    const layoutItem = {
+      id: "ex-layout" as const,
+      title: "Fixed gap & box slot",
+      copyToken: "example-usage-layout" as const,
+      code: `import { ${C} } from "@/components/ui/${from}";
 
 export function LayoutSlot() {
   return (
@@ -220,12 +291,16 @@ export function LayoutSlot() {
     />
   );
 }`
-      },
+    };
+    return [
+      opacityItem,
+      ...(isTriangleMatrix ? [] : [layoutItem]),
       {
         id: "ex-look" as const,
-        title: "Pattern & look",
+        title: isSquareMatrix ? "Pattern & look" : "Color & look",
         copyToken: "example-usage-look" as const,
-        code: `import { ${C} } from "@/components/ui/${from}";
+        code: isSquareMatrix
+          ? `import { ${C} } from "@/components/ui/${from}";
 
 export function PatternAndLook() {
   return (
@@ -235,6 +310,16 @@ export function PatternAndLook() {
       speed={0.8}
       muted
       animated
+    />
+  );
+}`
+          : `import { ${C} } from "@/components/ui/${from}";
+
+export function ColorAndLook() {
+  return (
+    <${C}
+      color="hsl(220 90% 60%)"
+      muted
     />
   );
 }`
@@ -273,7 +358,7 @@ export function PatternAndLook() {
 
   const exampleUsageCardList = (
     <div className="grid gap-3">
-      <p className="text-xs font-medium text-zinc-400">Example usage</p>
+      <p className="text-base font-semibold tracking-tight text-white">Example usage</p>
       {propExampleCards.map((card) => {
         const active = activeExamplePreviewId === card.id;
         return (
@@ -286,8 +371,8 @@ export function PatternAndLook() {
                 onClick={() => onExamplePreview(card.id)}
                 className={[
                   "shrink-0 rounded-md px-2 py-0.5 text-[11px] font-medium tabular-nums text-zinc-200 transition",
-                  "border focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-white/30",
-                  active ? "border-white/25 bg-white/10" : "border-zinc-600/80 bg-transparent hover:border-zinc-500/90 hover:text-white"
+                  "focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-white/30",
+                  active ? "border-white/5 border bg-white/5" : " border border-transparent bg-[#101010]  hover:text-white"
                 ].join(" ")}
                 aria-pressed={active}
               >
@@ -327,7 +412,7 @@ export function PatternAndLook() {
             className={`${GeistSans.className} absolute right-2 inset-y-2 flex h-[calc(100dvh-1rem)] max-h-[calc(100dvh-1rem)] min-h-0 w-[calc(50%-0.75rem)] flex-col overflow-hidden rounded-lg bg-[#0c0c0c] transition-transform duration-175 ease-[cubic-bezier(.215, .61, .355, 1)] data-starting-style:translate-x-full data-ending-style:translate-x-full`}
           >
             {selected ? (
-              <div className="flex h-full min-h-0 w-full min-w-0 flex-1 flex-col overflow-hidden">
+              <div className="flex h-full min-h-0 w-full min-w-0 flex-1 flex-col overflow-hidden px-1.5">
                 <div className="shrink-0 px-4 pt-4">
                   <MeasuredCliManualDotRail activeTab={activeTab} onTabChange={setActiveTab} />
                 </div>
@@ -356,6 +441,7 @@ export function PatternAndLook() {
 
                       {exampleUsageDotRail}
                       {exampleUsageCardList}
+                      <LoaderPropsReference slug={selected.slug} />
                     </div>
                   ) : (
                     <div className="flex min-h-0 flex-col gap-4">
@@ -388,6 +474,7 @@ export function PatternAndLook() {
                         copyAriaLabel="Copy loader source"
                       />
                       {exampleUsageCardList}
+                      <LoaderPropsReference slug={selected.slug} />
                     </div>
                   )}
                 </section>
@@ -402,25 +489,13 @@ export function PatternAndLook() {
                 animate={{ opacity: 1, filter: "blur(0px)", scale: 1, transition: { delay: 0.08 } }}
                 exit={{ opacity: 0, filter: "blur(5px)", scale: 0.9 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
-                className="pointer-events-none absolute inset-x-0 bottom-20 z-50 flex justify-center"
+                className="pointer-events-none absolute inset-x-0 bottom-1 z-50 flex justify-center"
               >
                 <Dialog.Close
                   aria-label="Close dialog"
                   className="pointer-events-auto inline-grid p-2.5  border-white/5 place-items-center rounded-lg text-white bg-black"
                 >
-                  <span className="grid grid-cols-5 gap-px">
-                    {Array.from({ length: 25 }).map((_, index) => {
-                      const row = Math.floor(index / 5);
-                      const col = index % 5;
-                      const isCross = row === col || row + col === 4;
-                      return (
-                        <span
-                          key={index}
-                          className={`h-[2px] w-[2px] rounded-full ${isCross ? "bg-white" : "bg-white/5"}`}
-                        />
-                      );
-                    })}
-                  </span>
+                  <FloatingCloseCrossDots />
                 </Dialog.Close>
               </motion.div>
             ) : null}

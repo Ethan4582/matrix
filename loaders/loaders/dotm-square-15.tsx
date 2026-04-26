@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 
 import { DotMatrixBase } from "../base/dot-matrix-base";
+import { useDotMatrixPhases } from "../core/phases";
 import { useCyclePhase } from "../hooks/use-cycle-phase";
 import { usePrefersReducedMotion } from "../hooks/use-prefers-reduced-motion";
 import type { DotAnimationResolver, DotMatrixCommonProps } from "../types";
@@ -23,8 +24,13 @@ export function DotmSquare15({
   ...rest
 }: DotmSquare15Props) {
   const reducedMotion = usePrefersReducedMotion();
+  const { phase: matrixPhase, onMouseEnter, onMouseLeave } = useDotMatrixPhases({
+    animated: Boolean(animated && !reducedMotion),
+    hoverAnimated: Boolean(hoverAnimated && !reducedMotion),
+    speed
+  });
   const animPhase = useCyclePhase({
-    active: animated && !reducedMotion && !hoverAnimated,
+    active: !reducedMotion && matrixPhase !== "idle",
     cycleMsBase: 1700,
     speed
   });
@@ -63,8 +69,9 @@ export function DotmSquare15({
       speed={speed}
       pattern={pattern}
       animated={animated}
-      hoverAnimated={hoverAnimated}
-      phase={animated && !reducedMotion ? "loadingRipple" : "idle"}
+      phase={matrixPhase}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       reducedMotion={reducedMotion}
       animationResolver={resolver}
     />

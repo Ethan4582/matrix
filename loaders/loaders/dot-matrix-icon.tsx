@@ -60,7 +60,7 @@ export function DotMatrixIcon({
 
   const { phase, onMouseEnter, onMouseLeave } = useDotMatrixPhases({
     animated: animated && !reducedMotion,
-    hoverAnimated: hoverAnimated && !animated && !reducedMotion,
+    hoverAnimated: Boolean(hoverAnimated && !reducedMotion),
     speed
   });
 

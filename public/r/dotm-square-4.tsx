@@ -3,6 +3,7 @@
 import type { CSSProperties } from "react";
 
 import { DotMatrixBase } from "./dotmatrix-core";
+import { useDotMatrixPhases } from "./dotmatrix-hooks";
 import {
   middleRingAntiClockwiseNormFromIndex,
   middleRingAntiClockwiseOrderValue,
@@ -55,20 +56,28 @@ const animationResolver: DotAnimationResolver = ({ isActive, index, row, col, re
 };
 
 export function DotmSquare4({
+  speed = 1,
   pattern = "full",
   animated = true,
   hoverAnimated = false,
   ...rest
 }: DotmSquare4Props) {
   const reducedMotion = usePrefersReducedMotion();
+  const { phase: matrixPhase, onMouseEnter, onMouseLeave } = useDotMatrixPhases({
+    animated: Boolean(animated && !reducedMotion),
+    hoverAnimated: Boolean(hoverAnimated && !reducedMotion),
+    speed
+  });
 
   return (
     <DotMatrixBase
       {...rest}
+      speed={speed}
       pattern={pattern}
       animated={animated}
-      hoverAnimated={hoverAnimated}
-      phase={animated && !reducedMotion ? "loadingRipple" : "idle"}
+      phase={matrixPhase}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       reducedMotion={reducedMotion}
       animationResolver={animationResolver}
     />

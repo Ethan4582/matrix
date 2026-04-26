@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
 
 import { cx } from "./dotmatrix-core";
+import { useDotMatrixPhases } from "./dotmatrix-hooks";
 import { styleOpacity, stylePx } from "./dotmatrix-core";
 import { usePrefersReducedMotion } from "./dotmatrix-hooks";
 import type { DotMatrixCommonProps } from "./dotmatrix-core";
@@ -50,10 +51,15 @@ export function DotmTriangle5({
   hoverAnimated = false
 }: DotmTriangle5Props) {
   const reducedMotion = usePrefersReducedMotion();
+  const { phase: matrixPhase, onMouseEnter, onMouseLeave } = useDotMatrixPhases({
+    animated: Boolean(animated && !reducedMotion),
+    hoverAnimated: Boolean(hoverAnimated && !reducedMotion),
+    speed
+  });
   const [step, setStep] = useState(0);
 
   useEffect(() => {
-    if (reducedMotion || !animated) {
+    if (reducedMotion || matrixPhase === "idle") {
       setStep(0);
       return;
     }
@@ -66,9 +72,9 @@ export function DotmTriangle5({
     }, stepMs);
 
     return () => window.clearInterval(timer);
-  }, [animated, reducedMotion, speed]);
+  }, [matrixPhase, reducedMotion, speed]);
 
-  const frame = reducedMotion || !animated || hoverAnimated ? 0 : step;
+  const frame = reducedMotion || matrixPhase === "idle" ? 0 : step;
   const progress = frame / STEP_COUNT;
   const pingPong = 0.5 - 0.5 * Math.cos(progress * Math.PI * 2);
   const scanRow = 1 + pingPong * 3;
@@ -87,6 +93,8 @@ export function DotmTriangle5({
       aria-label={ariaLabel}
       className={cx("dmx-root", muted && "dmx-muted", className)}
       style={rootStyle}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <div
         className="dmx-grid"

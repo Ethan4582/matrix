@@ -179,12 +179,18 @@ const EXAMPLE_SNIPPET_PROPS: Record<ExamplePreviewId, Partial<DotMatrixCommonPro
     minSize: 48
   },
   "ex-look": {
-    pattern: "cross",
     color: "hsl(220 90% 60%)",
     speed: 0.8,
     muted: true,
     animated: true
   }
+};
+
+/** Triangle 7×7 — no dmx opacity tokens; only size/dot/speed in props. */
+const EXAMPLE_EX_OPACITY_FOR_TRIANGLE: Partial<DotMatrixCommonProps> = {
+  size: 32,
+  dotSize: 4,
+  speed: 1.4
 };
 
 export function LoaderGallery({ items }: LoaderGalleryProps) {
@@ -216,9 +222,26 @@ export function LoaderGallery({ items }: LoaderGalleryProps) {
     const largeSize = Math.round(detailSize * 2.1);
     const largeDotSize = detailDotSize + 5;
     const previewKey = `${selected.slug}-${activeExampleId ?? "default"}`;
+    const isSquareMatrix = selected.slug.startsWith("dotm-square-");
+    const isTriangleMatrix = selected.slug.startsWith("dotm-triangle-");
 
     if (activeExampleId) {
-      const snippet = EXAMPLE_SNIPPET_PROPS[activeExampleId];
+      // DotMatrixBase `cellPadding` / `boxSize` only apply to square & circular; triangle
+      // uses a 7×7 hand-built grid, so the layout example is not shown in the UI.
+      if (activeExampleId === "ex-layout" && isTriangleMatrix) {
+        return (
+          <SelectedComponent
+            key={previewKey}
+            {...base}
+            size={largeSize}
+            dotSize={largeDotSize}
+          />
+        );
+      }
+      const snippet: Partial<DotMatrixCommonProps> =
+        isTriangleMatrix && activeExampleId === "ex-opacity"
+          ? EXAMPLE_EX_OPACITY_FOR_TRIANGLE
+          : EXAMPLE_SNIPPET_PROPS[activeExampleId];
       const merged: DotMatrixCommonProps = { ...base, ...snippet };
       // Same on-screen scale as the default (large) detail preview, not the snippet’s size/dotSize
       merged.size = largeSize;
@@ -226,13 +249,14 @@ export function LoaderGallery({ items }: LoaderGalleryProps) {
       // Snippet is about fixed box/slot; left preview should match the default (no `boxSize` frame)
       delete merged.boxSize;
       delete merged.minSize;
-      // Keep the same speed / motion as the default (grid) view; "Pattern & look" is the
-      // exception — that preview must show `pattern` from the snippet (e.g. cross).
-      if (activeExampleId !== "ex-look") {
-        merged.pattern = base.pattern;
-      }
       merged.speed = base.speed;
       merged.animated = base.animated;
+      // `pattern` only applies to 5×5 square loaders; circular & triangle use fixed silhouttes.
+      if (activeExampleId === "ex-look" && isSquareMatrix) {
+        merged.pattern = "cross";
+      } else {
+        merged.pattern = base.pattern;
+      }
       return (
         <SelectedComponent
           key={previewKey}

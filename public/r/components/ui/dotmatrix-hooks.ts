@@ -72,52 +72,57 @@ interface DotMatrixPhasesResult {
 
 export function useDotMatrixPhases({
   animated = false,
-  hoverAnimated = true,
+  hoverAnimated = false,
   speed = 1
 }: UseDotMatrixPhasesOptions): DotMatrixPhasesResult {
   const safeSpeed = speed > 0 ? speed : 1;
-  const [phase, setPhase] = useState<DotMatrixPhase>(animated ? "loadingRipple" : "idle");
-  const sequence = useRef(0);
+  const autoRun = Boolean(animated && !hoverAnimated);
+  const [phase, setPhase] = useState<DotMatrixPhase>(() => (autoRun ? "loadingRipple" : "idle"));
   const timeouts = useRef<number[]>([]);
+  const hoverGen = useRef(0);
 
   const clearTimers = useCallback(() => {
-    for (const timeout of timeouts.current) {
-      window.clearTimeout(timeout);
+    for (const id of timeouts.current) {
+      window.clearTimeout(id);
     }
     timeouts.current = [];
   }, []);
 
   useEffect(() => {
-    sequence.current += 1;
     clearTimers();
-
-    if (animated) {
+    if (autoRun) {
       setPhase("loadingRipple");
-      return clearTimers;
-    }
-
-    if (!hoverAnimated) {
+    } else {
       setPhase("idle");
-      return clearTimers;
     }
+    return clearTimers;
+  }, [autoRun, clearTimers]);
 
-    const current = sequence.current;
+  const onMouseEnter = useCallback(() => {
+    if (!hoverAnimated || autoRun) {
+      return;
+    }
+    clearTimers();
+    const gen = ++hoverGen.current;
     setPhase("collapse");
-
-    const collapseDuration = 300 / safeSpeed;
-    const collapseTimeout = window.setTimeout(() => {
-      if (sequence.current !== current) {
+    const collapseMs = Math.max(80, Math.round(300 / safeSpeed));
+    const id = window.setTimeout(() => {
+      if (hoverGen.current !== gen) {
         return;
       }
       setPhase("hoverRipple");
-    }, collapseDuration);
+    }, collapseMs);
+    timeouts.current.push(id);
+  }, [hoverAnimated, autoRun, safeSpeed, clearTimers]);
 
-    timeouts.current.push(collapseTimeout);
-    return clearTimers;
-  }, [animated, hoverAnimated, clearTimers, safeSpeed]);
-
-  const onMouseEnter = useCallback(() => {}, []);
-  const onMouseLeave = useCallback(() => {}, []);
+  const onMouseLeave = useCallback(() => {
+    if (!hoverAnimated || autoRun) {
+      return;
+    }
+    hoverGen.current += 1;
+    clearTimers();
+    setPhase("idle");
+  }, [hoverAnimated, autoRun, clearTimers]);
 
   return useMemo(
     () => ({

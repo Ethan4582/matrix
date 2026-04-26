@@ -3,6 +3,7 @@
 import type { CSSProperties } from "react";
 
 import { cx } from "./dotmatrix-core";
+import { useDotMatrixPhases } from "./dotmatrix-hooks";
 import { styleOpacity, stylePx } from "./dotmatrix-core";
 import { useCyclePhase } from "./dotmatrix-hooks";
 import { usePrefersReducedMotion } from "./dotmatrix-hooks";
@@ -189,20 +190,25 @@ export function DotmTriangle6({
   hoverAnimated = false
 }: DotmTriangle6Props) {
   const reducedMotion = usePrefersReducedMotion();
-  const active = animated && !reducedMotion && !hoverAnimated;
-  const phase = useCyclePhase({
-    active,
+  const { phase: matrixPhase, onMouseEnter, onMouseLeave } = useDotMatrixPhases({
+    animated: Boolean(animated && !reducedMotion),
+    hoverAnimated: Boolean(hoverAnimated && !reducedMotion),
+    speed
+  });
+  const cycleActive = !reducedMotion && matrixPhase !== "idle";
+  const cyclePhase = useCyclePhase({
+    active: cycleActive,
     cycleMsBase: 3000,
     speed
   });
 
-  const { fills, blinkMul, resetMul } = reducedMotion || !animated || hoverAnimated
+  const { fills, blinkMul, resetMul } = reducedMotion || matrixPhase === "idle"
     ? {
       fills: [0.55, 0.55, 0.55, 0.55, 0.55, 0.55] as number[],
       blinkMul: 1,
       resetMul: 1
     }
-    : cycleParams(phase);
+    : cycleParams(cyclePhase);
 
   const gap = Math.max(1, Math.floor((size - dotSize * MATRIX_SIZE) / (MATRIX_SIZE - 1)));
   const rootStyle = {
@@ -218,6 +224,8 @@ export function DotmTriangle6({
       aria-label={ariaLabel}
       className={cx("dmx-root", muted && "dmx-muted", className)}
       style={rootStyle}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <div
         className="dmx-grid"

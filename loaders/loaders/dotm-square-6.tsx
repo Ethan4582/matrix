@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { DotMatrixBase } from "../base/dot-matrix-base";
+import { useDotMatrixPhases } from "../core/phases";
 import { usePrefersReducedMotion } from "../hooks/use-prefers-reduced-motion";
 import type { DotAnimationResolver, DotMatrixCommonProps } from "../types";
 
@@ -20,10 +21,15 @@ export function DotmSquare6({
   ...rest
 }: DotmSquare6Props) {
   const reducedMotion = usePrefersReducedMotion();
+  const { phase: matrixPhase, onMouseEnter, onMouseLeave } = useDotMatrixPhases({
+    animated: Boolean(animated && !reducedMotion),
+    hoverAnimated: Boolean(hoverAnimated && !reducedMotion),
+    speed
+  });
   const [head, setHead] = useState(0);
 
   useEffect(() => {
-    if (reducedMotion || !animated) {
+    if (reducedMotion || matrixPhase === "idle") {
       setHead(0);
       return;
     }
@@ -36,7 +42,7 @@ export function DotmSquare6({
     }, stepMs);
 
     return () => window.clearInterval(timer);
-  }, [animated, reducedMotion, speed]);
+  }, [matrixPhase, reducedMotion, speed]);
 
   const animationResolver: DotAnimationResolver = ({ isActive, row, col, phase }) => {
     if (!isActive) {
@@ -61,8 +67,9 @@ export function DotmSquare6({
       speed={speed}
       pattern={pattern}
       animated={animated}
-      hoverAnimated={hoverAnimated}
-      phase={animated && !reducedMotion ? "loadingRipple" : "idle"}
+      phase={matrixPhase}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       reducedMotion={reducedMotion}
       animationResolver={animationResolver}
     />

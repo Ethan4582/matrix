@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import { DotMatrixBase } from "../base/dot-matrix-base";
+import { useDotMatrixPhases } from "../core/phases";
 import { isWithinCircularMask } from "../core/circle-mask";
 import { rowMajorIndex } from "../core/patterns";
 import { usePrefersReducedMotion } from "../hooks/use-prefers-reduced-motion";
@@ -37,10 +38,15 @@ export function DotmCircular2({
   ...rest
 }: DotmCircular2Props) {
   const reducedMotion = usePrefersReducedMotion();
+  const { phase: matrixPhase, onMouseEnter, onMouseLeave } = useDotMatrixPhases({
+    animated: Boolean(animated && !reducedMotion),
+    hoverAnimated: Boolean(hoverAnimated && !reducedMotion),
+    speed
+  });
   const [head, setHead] = useState(0);
 
   useEffect(() => {
-    if (reducedMotion || !animated) {
+    if (reducedMotion || matrixPhase === "idle") {
       setHead(0);
       return;
     }
@@ -53,7 +59,7 @@ export function DotmCircular2({
     }, stepMs);
 
     return () => window.clearInterval(timer);
-  }, [animated, reducedMotion, speed]);
+  }, [matrixPhase, reducedMotion, speed]);
 
   const resolver = useMemo<DotAnimationResolver>(() => {
     return ({ index, row, col, phase }) => {
@@ -88,8 +94,9 @@ export function DotmCircular2({
       speed={speed}
       pattern="full"
       animated={animated}
-      hoverAnimated={hoverAnimated}
-      phase={animated && !reducedMotion ? "loadingRipple" : "idle"}
+      phase={matrixPhase}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       reducedMotion={reducedMotion}
       animationResolver={resolver}
     />

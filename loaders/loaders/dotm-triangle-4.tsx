@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
 
 import { cx } from "../core/cx";
+import { useDotMatrixPhases } from "../core/phases";
 import { styleOpacity, stylePx } from "../core/hydration-inline-style";
 import { usePrefersReducedMotion } from "../hooks/use-prefers-reduced-motion";
 import type { DotMatrixCommonProps } from "../types";
@@ -63,10 +64,15 @@ export function DotmTriangle4({
   hoverAnimated = false
 }: DotmTriangle4Props) {
   const reducedMotion = usePrefersReducedMotion();
+  const { phase: matrixPhase, onMouseEnter, onMouseLeave } = useDotMatrixPhases({
+    animated: Boolean(animated && !reducedMotion),
+    hoverAnimated: Boolean(hoverAnimated && !reducedMotion),
+    speed
+  });
   const [step, setStep] = useState(0);
 
   useEffect(() => {
-    if (reducedMotion || !animated) {
+    if (reducedMotion || matrixPhase === "idle") {
       setStep(0);
       return;
     }
@@ -79,9 +85,9 @@ export function DotmTriangle4({
     }, stepMs);
 
     return () => window.clearInterval(timer);
-  }, [animated, reducedMotion, speed]);
+  }, [matrixPhase, reducedMotion, speed]);
 
-  const frame = reducedMotion || !animated || hoverAnimated ? 0 : step;
+  const frame = reducedMotion || matrixPhase === "idle" ? 0 : step;
   const segmentLength = Math.max(1, Math.floor(STEP_COUNT / 3));
 
   const gap = Math.max(1, Math.floor((size - dotSize * MATRIX_SIZE) / (MATRIX_SIZE - 1)));
@@ -98,6 +104,8 @@ export function DotmTriangle4({
       aria-label={ariaLabel}
       className={cx("dmx-root", muted && "dmx-muted", className)}
       style={rootStyle}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <div
         className="dmx-grid"

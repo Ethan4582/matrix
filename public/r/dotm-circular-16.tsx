@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 
 import { DotMatrixBase } from "./dotmatrix-core";
+import { useDotMatrixPhases } from "./dotmatrix-hooks";
 import { isWithinCircularMask } from "./dotmatrix-core";
 import { useCyclePhase } from "./dotmatrix-hooks";
 import { usePrefersReducedMotion } from "./dotmatrix-hooks";
@@ -22,8 +23,13 @@ export function DotmCircular16({
   ...rest
 }: DotmCircular16Props) {
   const reducedMotion = usePrefersReducedMotion();
+  const { phase: matrixPhase, onMouseEnter, onMouseLeave } = useDotMatrixPhases({
+    animated: Boolean(animated && !reducedMotion),
+    hoverAnimated: Boolean(hoverAnimated && !reducedMotion),
+    speed
+  });
   const animPhase = useCyclePhase({
-    active: animated && !reducedMotion && !hoverAnimated,
+    active: !reducedMotion && matrixPhase !== "idle",
     cycleMsBase: 1700,
     speed
   });
@@ -64,8 +70,9 @@ export function DotmCircular16({
       speed={speed}
       pattern="full"
       animated={animated}
-      hoverAnimated={hoverAnimated}
-      phase={animated && !reducedMotion ? "loadingRipple" : "idle"}
+      phase={matrixPhase}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       reducedMotion={reducedMotion}
       animationResolver={resolver}
     />

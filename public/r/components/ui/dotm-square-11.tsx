@@ -3,6 +3,7 @@
 import type { CSSProperties } from "react";
 
 import { DotMatrixBase } from "./dotmatrix-core";
+import { useDotMatrixPhases } from "./dotmatrix-hooks";
 import { usePrefersReducedMotion } from "./dotmatrix-hooks";
 import type { DotAnimationResolver, DotMatrixCommonProps } from "./dotmatrix-core";
 
@@ -32,20 +33,28 @@ const animationResolver: DotAnimationResolver = ({ isActive, manhattanDistance, 
 };
 
 export function DotmSquare11({
+  speed = 1,
   pattern = "full",
   animated = true,
   hoverAnimated = false,
   ...rest
 }: DotmSquare11Props) {
   const reducedMotion = usePrefersReducedMotion();
+  const { phase: matrixPhase, onMouseEnter, onMouseLeave } = useDotMatrixPhases({
+    animated: Boolean(animated && !reducedMotion),
+    hoverAnimated: Boolean(hoverAnimated && !reducedMotion),
+    speed
+  });
 
   return (
     <DotMatrixBase
       {...rest}
+      speed={speed}
       pattern={pattern}
       animated={animated}
-      hoverAnimated={hoverAnimated}
-      phase={animated && !reducedMotion ? "loadingRipple" : "idle"}
+      phase={matrixPhase}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       reducedMotion={reducedMotion}
       animationResolver={animationResolver}
     />

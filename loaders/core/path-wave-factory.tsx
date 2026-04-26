@@ -3,6 +3,7 @@
 import type { CSSProperties } from "react";
 
 import { DotMatrixBase } from "../base/dot-matrix-base";
+import { useDotMatrixPhases } from "./phases";
 import { usePrefersReducedMotion } from "../hooks/use-prefers-reduced-motion";
 import type {
   DotAnimationContext,
@@ -43,17 +44,25 @@ export function createPathWaveComponent(displayName: string, getPathNorm: NormFn
     pattern = "full",
     animated = true,
     hoverAnimated = false,
+    speed = 1,
     ...rest
   }: PathWaveComponentProps) {
     const reducedMotion = usePrefersReducedMotion();
+    const { phase: matrixPhase, onMouseEnter, onMouseLeave } = useDotMatrixPhases({
+      animated: Boolean(animated && !reducedMotion),
+      hoverAnimated: Boolean(hoverAnimated && !reducedMotion),
+      speed
+    });
     return (
       <DotMatrixBase
         {...rest}
+        speed={speed}
         pattern={pattern}
         animated={animated}
-        hoverAnimated={hoverAnimated}
-        phase={animated && !reducedMotion ? "loadingRipple" : "idle"}
+        phase={matrixPhase}
         reducedMotion={reducedMotion}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         animationResolver={resolve}
       />
     );
