@@ -494,6 +494,106 @@ export const loaderRegistry: LoaderRegistryEntry[] = [
     fileName: "dotm-triangle-10.tsx",
     dependencies: [],
     motionOptional: false
+  },
+  {
+    slug: "dotm-triangle-11",
+    title: "Shelf Descent",
+    description:
+      "Cosine bands keyed on Manhattan distance from the apex (not the center): energy reads as horizontal tiers dropping through the triangle.",
+    componentName: "DotmTriangle11",
+    fileName: "dotm-triangle-11.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-triangle-12",
+    title: "Skew Drift",
+    description:
+      "Traveling harmonics on `row - col` so bright ridges move along NE–SW obliques, orthogonal in feel to diagonal loaders that use `row + col`.",
+    componentName: "DotmTriangle12",
+    fileName: "dotm-triangle-12.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-triangle-13",
+    title: "Serpent Zip",
+    description:
+      "A stepped snake follows row-wise serpentine order (base left→right, then alternating row directions) with a long tail — zigzag motion, not a column path.",
+    componentName: "DotmTriangle13",
+    fileName: "dotm-triangle-13.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-triangle-14",
+    title: "Pillar Sweep",
+    description:
+      "A smooth vertical beam sweeps grid columns 0→6; only triangle-masked dots respond so the silhouette lights one vertical slice at a time.",
+    componentName: "DotmTriangle14",
+    fileName: "dotm-triangle-14.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-triangle-15",
+    title: "Tripod Handoff",
+    description:
+      "Brightness hands off smoothly among the three silhouette vertices (apex, left base, right base) with Manhattan falloff — a corner-to-corner orbit, not a mod-3 lattice.",
+    componentName: "DotmTriangle15",
+    fileName: "dotm-triangle-15.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-triangle-16",
+    title: "Updraft",
+    description:
+      "A V-shaped thermal ridge moves through row-and-column space: brightness peaks along an inverted V so the front climbs the two lower flanks toward the apex, not a flat horizontal row scan like Row Sweep.",
+    componentName: "DotmTriangle16",
+    fileName: "dotm-triangle-16.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-triangle-17",
+    title: "Infinity Trace",
+    description:
+      "A stepped head and tail follow a single 10-cell path: left base up to the apex, down the right rim, then through (4,4) → center → (4,2) for a crossing loop.",
+    componentName: "DotmTriangle17",
+    fileName: "dotm-triangle-17.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-triangle-18",
+    title: "Hollow Shell",
+    description:
+      "The heart cell stays locked dim while every other triangle dot breathes together in phase — a hollow, ring-like pulse.",
+    componentName: "DotmTriangle18",
+    fileName: "dotm-triangle-18.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-triangle-19",
+    title: "Pivot Ray",
+    description:
+      "A Gaussian wedge of brightness rotates around the heart cell using each dot’s polar angle — a clear pivoting searchlight, not a cosine-product moiré field.",
+    componentName: "DotmTriangle19",
+    fileName: "dotm-triangle-19.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-triangle-20",
+    title: "Twin Perimeter",
+    description:
+      "Two stepped heads chase the outer perimeter path half a lap apart, each with its own tail; the heart cell stays quietly dim off the loop.",
+    componentName: "DotmTriangle20",
+    fileName: "dotm-triangle-20.tsx",
+    dependencies: [],
+    motionOptional: false
   }
 ];
 

@@ -5,8 +5,8 @@ import type { CSSProperties } from "react";
 import { cx } from "../core/cx";
 import { useDotMatrixPhases } from "../core/phases";
 import { styleOpacity, stylePx } from "../core/hydration-inline-style";
+import { useCyclePhase } from "../hooks/use-cycle-phase";
 import { usePrefersReducedMotion } from "../hooks/use-prefers-reduced-motion";
-import { useSteppedCycle } from "../hooks/use-stepped-cycle";
 import type { DotMatrixCommonProps } from "../types";
 
 export type DotmTriangle9Props = DotMatrixCommonProps;
@@ -15,7 +15,6 @@ const MATRIX_SIZE = 7;
 
 const BASE_OPACITY = 0.14;
 const HIGH_OPACITY = 0.96;
-const STEP_COUNT = 96;
 
 const TRIANGLE_CELLS = new Set([
   "1,3",
@@ -124,12 +123,10 @@ export function DotmTriangle9({
     speed
   });
   const cycleActive = !reducedMotion && matrixPhase !== "idle";
-  const step = useSteppedCycle({
+  const cyclePhase = useCyclePhase({
     active: cycleActive,
-    cycleMsBase: 1000,
-    steps: STEP_COUNT,
-    speed,
-    idleStep: Math.floor(STEP_COUNT * 0.18)
+    cycleMsBase: 1800,
+    speed
   });
 
   const gap = Math.max(1, Math.floor((size - dotSize * MATRIX_SIZE) / (MATRIX_SIZE - 1)));
@@ -162,10 +159,7 @@ export function DotmTriangle9({
           const col = index % MATRIX_SIZE;
           const isActive = isWithinTriangleMask(row, col);
 
-          const phase =
-            reducedMotion || matrixPhase === "idle"
-              ? 0.18
-              : (step + 0.5) / STEP_COUNT;
+          const phase = reducedMotion || matrixPhase === "idle" ? 0.18 : cyclePhase;
           const opacity = isActive ? opacityForCell(row, col, phase) : 0;
 
           return (

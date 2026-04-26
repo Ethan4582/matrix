@@ -448,5 +448,95 @@
     "dependencies": [],
     "registryDependencies": [],
     "url": "/r/dotm-triangle-10.json"
+  },
+  {
+    "name": "dotm-triangle-11",
+    "type": "registry:ui",
+    "title": "Shelf Descent",
+    "description": "Cosine bands keyed on Manhattan distance from the apex (not the center): energy reads as horizontal tiers dropping through the triangle.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "url": "/r/dotm-triangle-11.json"
+  },
+  {
+    "name": "dotm-triangle-12",
+    "type": "registry:ui",
+    "title": "Skew Drift",
+    "description": "Traveling harmonics on `row - col` so bright ridges move along NE–SW obliques, orthogonal in feel to diagonal loaders that use `row + col`.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "url": "/r/dotm-triangle-12.json"
+  },
+  {
+    "name": "dotm-triangle-13",
+    "type": "registry:ui",
+    "title": "Serpent Zip",
+    "description": "A stepped snake follows row-wise serpentine order (base left→right, then alternating row directions) with a long tail — zigzag motion, not a column path.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "url": "/r/dotm-triangle-13.json"
+  },
+  {
+    "name": "dotm-triangle-14",
+    "type": "registry:ui",
+    "title": "Pillar Sweep",
+    "description": "A smooth vertical beam sweeps grid columns 0→6; only triangle-masked dots respond so the silhouette lights one vertical slice at a time.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "url": "/r/dotm-triangle-14.json"
+  },
+  {
+    "name": "dotm-triangle-15",
+    "type": "registry:ui",
+    "title": "Tripod Handoff",
+    "description": "Brightness hands off smoothly among the three silhouette vertices (apex, left base, right base) with Manhattan falloff — a corner-to-corner orbit, not a mod-3 lattice.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "url": "/r/dotm-triangle-15.json"
+  },
+  {
+    "name": "dotm-triangle-16",
+    "type": "registry:ui",
+    "title": "Updraft",
+    "description": "A V-shaped thermal ridge moves through row-and-column space: brightness peaks along an inverted V so the front climbs the two lower flanks toward the apex, not a flat horizontal row scan like Row Sweep.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "url": "/r/dotm-triangle-16.json"
+  },
+  {
+    "name": "dotm-triangle-17",
+    "type": "registry:ui",
+    "title": "Infinity Trace",
+    "description": "A stepped head and tail follow a single 10-cell path: left base up to the apex, down the right rim, then through (4,4) → center → (4,2) for a crossing loop.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "url": "/r/dotm-triangle-17.json"
+  },
+  {
+    "name": "dotm-triangle-18",
+    "type": "registry:ui",
+    "title": "Hollow Shell",
+    "description": "The heart cell stays locked dim while every other triangle dot breathes together in phase — a hollow, ring-like pulse.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "url": "/r/dotm-triangle-18.json"
+  },
+  {
+    "name": "dotm-triangle-19",
+    "type": "registry:ui",
+    "title": "Pivot Ray",
+    "description": "A Gaussian wedge of brightness rotates around the heart cell using each dot’s polar angle — a clear pivoting searchlight, not a cosine-product moiré field.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "url": "/r/dotm-triangle-19.json"
+  },
+  {
+    "name": "dotm-triangle-20",
+    "type": "registry:ui",
+    "title": "Twin Perimeter",
+    "description": "Two stepped heads chase the outer perimeter path half a lap apart, each with its own tail; the heart cell stays quietly dim off the loop.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "url": "/r/dotm-triangle-20.json"
   }
 ]

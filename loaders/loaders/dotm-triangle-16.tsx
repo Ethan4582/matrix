@@ -2,19 +2,26 @@
 
 import type { CSSProperties } from "react";
 
-import { cx } from "@/components/ui/dotmatrix-core";
-import { useDotMatrixPhases } from "@/components/ui/dotmatrix-hooks";
-import { styleOpacity, stylePx } from "@/components/ui/dotmatrix-core";
-import { useCyclePhase } from "@/components/ui/dotmatrix-hooks";
-import { usePrefersReducedMotion } from "@/components/ui/dotmatrix-hooks";
-import type { DotMatrixCommonProps } from "@/components/ui/dotmatrix-core";
+import { cx } from "../core/cx";
+import { useDotMatrixPhases } from "../core/phases";
+import { styleOpacity, stylePx } from "../core/hydration-inline-style";
+import { useCyclePhase } from "../hooks/use-cycle-phase";
+import { usePrefersReducedMotion } from "../hooks/use-prefers-reduced-motion";
+import type { DotMatrixCommonProps } from "../types";
 
-export type DotmTriangle9Props = DotMatrixCommonProps;
+export type DotmTriangle16Props = DotMatrixCommonProps;
 
 const MATRIX_SIZE = 7;
 
-const BASE_OPACITY = 0.14;
+const BASE_OPACITY = 0.1;
+const MID_OPACITY = 0.36;
 const HIGH_OPACITY = 0.96;
+/**
+ * Inverted-V coordinate: same row is lower on the left/right flanks than in the center column,
+ * so a moving front forms a V rising toward the apex (not a flat row band like Row Sweep).
+ */
+const WING = 0.52;
+const FRONT_SIGMA = 0.88;
 
 const TRIANGLE_CELLS = new Set([
   "1,3",
@@ -28,50 +35,6 @@ const TRIANGLE_CELLS = new Set([
   "4,4",
   "4,6"
 ]);
-
-const DELTAS_8: ReadonlyArray<readonly [number, number]> = [
-  [-1, -1],
-  [-1, 0],
-  [-1, 1],
-  [0, -1],
-  [0, 1],
-  [1, -1],
-  [1, 0],
-  [1, 1]
-];
-
-function buildBfsRingFromCenter(): Map<string, number> {
-  const dist = new Map<string, number>();
-  const start = "3,3";
-  if (!TRIANGLE_CELLS.has(start)) {
-    return dist;
-  }
-
-  const queue: [number, number][] = [[3, 3]];
-  dist.set(start, 0);
-  let head = 0;
-
-  while (head < queue.length) {
-    const [r, c] = queue[head]!;
-    head += 1;
-    const d = dist.get(`${r},${c}`)!;
-
-    for (const [dr, dc] of DELTAS_8) {
-      const nr = r + dr;
-      const nc = c + dc;
-      const key = `${nr},${nc}`;
-      if (TRIANGLE_CELLS.has(key) && !dist.has(key)) {
-        dist.set(key, d + 1);
-        queue.push([nr, nc]);
-      }
-    }
-  }
-
-  return dist;
-}
-
-const BFS_RING = buildBfsRingFromCenter();
-const MAX_RING = Math.max(0, ...BFS_RING.values());
 
 function isWithinTriangleMask(row: number, col: number): boolean {
   if (row < 0 || row >= MATRIX_SIZE || col < 0 || col >= MATRIX_SIZE) {
@@ -90,21 +53,27 @@ function smoothstep01(edge0: number, edge1: number, x: number): number {
 }
 
 /**
- * Concentric tiers from the heart (8-connected). One soft bright band travels outward/inward;
- * smoothstep softens the cosine so ring-to-ring steps do not read as harsh pops between discrete phase steps.
+ * Brightness peaks along a V-shaped isopleth: `row - wing * |col - 3|`.
+ * The "front" oscillates in that space, so the highlight rides up the two lower legs
+ * and meets at the top — convective lift, not a horizontal scanline.
  */
 function opacityForCell(row: number, col: number, phase: number): number {
-  const ring = BFS_RING.get(`${row},${col}`) ?? 0;
-  const span = Math.max(1, MAX_RING);
   const t = phase * Math.PI * 2;
-  const u = (ring / span) * Math.PI * 2 - t;
-  const wave = 0.5 + 0.5 * Math.cos(u);
-  const crest = smoothstep01(0.35, 1, wave);
-  const opacity = BASE_OPACITY + crest * (HIGH_OPACITY - BASE_OPACITY);
+  const v = row - WING * Math.abs(col - 3);
+  const front = 1.85 + 1.4 * Math.sin(t);
+  const d = Math.abs(v - front);
+  const glowRaw = Math.exp(-(d * d) / (FRONT_SIGMA * FRONT_SIGMA));
+  const glow = smoothstep01(0.04, 0.98, glowRaw);
+  let opacity = BASE_OPACITY + glow * (HIGH_OPACITY - BASE_OPACITY);
+
+  if (row === 3 && col === 3) {
+    opacity = Math.max(opacity, MID_OPACITY * 0.58 + glow * (HIGH_OPACITY - MID_OPACITY) * 0.48);
+  }
+
   return Math.min(HIGH_OPACITY, opacity);
 }
 
-export function DotmTriangle9({
+export function DotmTriangle16({
   size = 30,
   dotSize = 4,
   color = "currentColor",
@@ -115,7 +84,7 @@ export function DotmTriangle9({
   speed = 1,
   animated = true,
   hoverAnimated = false
-}: DotmTriangle9Props) {
+}: DotmTriangle16Props) {
   const reducedMotion = usePrefersReducedMotion();
   const { phase: matrixPhase, onMouseEnter, onMouseLeave } = useDotMatrixPhases({
     animated: Boolean(animated && !reducedMotion),
@@ -125,7 +94,7 @@ export function DotmTriangle9({
   const cycleActive = !reducedMotion && matrixPhase !== "idle";
   const cyclePhase = useCyclePhase({
     active: cycleActive,
-    cycleMsBase: 1800,
+    cycleMsBase: 2400,
     speed
   });
 
@@ -159,7 +128,7 @@ export function DotmTriangle9({
           const col = index % MATRIX_SIZE;
           const isActive = isWithinTriangleMask(row, col);
 
-          const phase = reducedMotion || matrixPhase === "idle" ? 0.18 : cyclePhase;
+          const phase = reducedMotion || matrixPhase === "idle" ? 0.12 : cyclePhase;
           const opacity = isActive ? opacityForCell(row, col, phase) : 0;
 
           return (

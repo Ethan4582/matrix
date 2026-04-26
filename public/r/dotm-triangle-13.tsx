@@ -9,12 +9,11 @@ import { useCyclePhase } from "@/components/ui/dotmatrix-hooks";
 import { usePrefersReducedMotion } from "@/components/ui/dotmatrix-hooks";
 import type { DotMatrixCommonProps } from "@/components/ui/dotmatrix-core";
 
-export type DotmTriangle9Props = DotMatrixCommonProps;
+export type DotmTriangle13Props = DotMatrixCommonProps;
 
 const MATRIX_SIZE = 7;
-
-const BASE_OPACITY = 0.14;
-const HIGH_OPACITY = 0.96;
+const BASE_OPACITY = 0.06;
+const HIGH_OPACITY = 0.95;
 
 const TRIANGLE_CELLS = new Set([
   "1,3",
@@ -29,49 +28,23 @@ const TRIANGLE_CELLS = new Set([
   "4,6"
 ]);
 
-const DELTAS_8: ReadonlyArray<readonly [number, number]> = [
-  [-1, -1],
-  [-1, 0],
-  [-1, 1],
-  [0, -1],
-  [0, 1],
-  [1, -1],
-  [1, 0],
-  [1, 1]
+/** Row serpent: base row left→right, row 3 right→left, mid rows alternate — reads as a zigzag zip. */
+const SERPENT_PATH: ReadonlyArray<readonly [number, number]> = [
+  [4, 0],
+  [4, 2],
+  [4, 4],
+  [4, 6],
+  [3, 5],
+  [3, 3],
+  [3, 1],
+  [2, 2],
+  [2, 4],
+  [1, 3]
 ];
 
-function buildBfsRingFromCenter(): Map<string, number> {
-  const dist = new Map<string, number>();
-  const start = "3,3";
-  if (!TRIANGLE_CELLS.has(start)) {
-    return dist;
-  }
-
-  const queue: [number, number][] = [[3, 3]];
-  dist.set(start, 0);
-  let head = 0;
-
-  while (head < queue.length) {
-    const [r, c] = queue[head]!;
-    head += 1;
-    const d = dist.get(`${r},${c}`)!;
-
-    for (const [dr, dc] of DELTAS_8) {
-      const nr = r + dr;
-      const nc = c + dc;
-      const key = `${nr},${nc}`;
-      if (TRIANGLE_CELLS.has(key) && !dist.has(key)) {
-        dist.set(key, d + 1);
-        queue.push([nr, nc]);
-      }
-    }
-  }
-
-  return dist;
-}
-
-const BFS_RING = buildBfsRingFromCenter();
-const MAX_RING = Math.max(0, ...BFS_RING.values());
+const PATH_LEN = SERPENT_PATH.length;
+/** Soft tail length in path units (Braille-style ramp, not discrete steps). */
+const TRAIL_SPAN = 4.25;
 
 function isWithinTriangleMask(row: number, col: number): boolean {
   if (row < 0 || row >= MATRIX_SIZE || col < 0 || col >= MATRIX_SIZE) {
@@ -79,6 +52,24 @@ function isWithinTriangleMask(row: number, col: number): boolean {
   }
 
   return TRIANGLE_CELLS.has(`${row},${col}`);
+}
+
+function pathIndex(row: number, col: number): number | null {
+  for (let i = 0; i < PATH_LEN; i += 1) {
+    const [pr, pc] = SERPENT_PATH[i]!;
+    if (pr === row && pc === col) {
+      return i;
+    }
+  }
+  return null;
+}
+
+function modF(n: number, m: number): number {
+  return ((n % m) + m) % m;
+}
+
+function behindAlongPath(s: number, i: number, L: number): number {
+  return modF(s - i, L);
 }
 
 function smoothstep01(edge0: number, edge1: number, x: number): number {
@@ -89,22 +80,19 @@ function smoothstep01(edge0: number, edge1: number, x: number): number {
   return t * t * (3 - 2 * t);
 }
 
-/**
- * Concentric tiers from the heart (8-connected). One soft bright band travels outward/inward;
- * smoothstep softens the cosine so ring-to-ring steps do not read as harsh pops between discrete phase steps.
- */
 function opacityForCell(row: number, col: number, phase: number): number {
-  const ring = BFS_RING.get(`${row},${col}`) ?? 0;
-  const span = Math.max(1, MAX_RING);
-  const t = phase * Math.PI * 2;
-  const u = (ring / span) * Math.PI * 2 - t;
-  const wave = 0.5 + 0.5 * Math.cos(u);
-  const crest = smoothstep01(0.35, 1, wave);
-  const opacity = BASE_OPACITY + crest * (HIGH_OPACITY - BASE_OPACITY);
-  return Math.min(HIGH_OPACITY, opacity);
+  const idx = pathIndex(row, col);
+  if (idx === null) {
+    return 0;
+  }
+
+  const s = phase * PATH_LEN;
+  const d = behindAlongPath(s, idx, PATH_LEN);
+  const g = 1 - smoothstep01(0, TRAIL_SPAN, d);
+  return BASE_OPACITY + g * (HIGH_OPACITY - BASE_OPACITY);
 }
 
-export function DotmTriangle9({
+export function DotmTriangle13({
   size = 30,
   dotSize = 4,
   color = "currentColor",
@@ -115,7 +103,7 @@ export function DotmTriangle9({
   speed = 1,
   animated = true,
   hoverAnimated = false
-}: DotmTriangle9Props) {
+}: DotmTriangle13Props) {
   const reducedMotion = usePrefersReducedMotion();
   const { phase: matrixPhase, onMouseEnter, onMouseLeave } = useDotMatrixPhases({
     animated: Boolean(animated && !reducedMotion),
@@ -159,7 +147,7 @@ export function DotmTriangle9({
           const col = index % MATRIX_SIZE;
           const isActive = isWithinTriangleMask(row, col);
 
-          const phase = reducedMotion || matrixPhase === "idle" ? 0.18 : cyclePhase;
+          const phase = reducedMotion || matrixPhase === "idle" ? 0.14 : cyclePhase;
           const opacity = isActive ? opacityForCell(row, col, phase) : 0;
 
           return (

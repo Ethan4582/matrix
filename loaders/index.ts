@@ -111,6 +111,26 @@ export { DotmTriangle9 } from "./loaders/dotm-triangle-9";
 export type { DotmTriangle9Props } from "./loaders/dotm-triangle-9";
 export { DotmTriangle10 } from "./loaders/dotm-triangle-10";
 export type { DotmTriangle10Props } from "./loaders/dotm-triangle-10";
+export { DotmTriangle11 } from "./loaders/dotm-triangle-11";
+export type { DotmTriangle11Props } from "./loaders/dotm-triangle-11";
+export { DotmTriangle12 } from "./loaders/dotm-triangle-12";
+export type { DotmTriangle12Props } from "./loaders/dotm-triangle-12";
+export { DotmTriangle13 } from "./loaders/dotm-triangle-13";
+export type { DotmTriangle13Props } from "./loaders/dotm-triangle-13";
+export { DotmTriangle14 } from "./loaders/dotm-triangle-14";
+export type { DotmTriangle14Props } from "./loaders/dotm-triangle-14";
+export { DotmTriangle15 } from "./loaders/dotm-triangle-15";
+export type { DotmTriangle15Props } from "./loaders/dotm-triangle-15";
+export { DotmTriangle16 } from "./loaders/dotm-triangle-16";
+export type { DotmTriangle16Props } from "./loaders/dotm-triangle-16";
+export { DotmTriangle17 } from "./loaders/dotm-triangle-17";
+export type { DotmTriangle17Props } from "./loaders/dotm-triangle-17";
+export { DotmTriangle18 } from "./loaders/dotm-triangle-18";
+export type { DotmTriangle18Props } from "./loaders/dotm-triangle-18";
+export { DotmTriangle19 } from "./loaders/dotm-triangle-19";
+export type { DotmTriangle19Props } from "./loaders/dotm-triangle-19";
+export { DotmTriangle20 } from "./loaders/dotm-triangle-20";
+export type { DotmTriangle20Props } from "./loaders/dotm-triangle-20";
 
 export {
   CROSS_INDEXES,

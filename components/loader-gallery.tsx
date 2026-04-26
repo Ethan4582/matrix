@@ -62,6 +62,16 @@ import {
   DotmTriangle8,
   DotmTriangle9,
   DotmTriangle10,
+  DotmTriangle11,
+  DotmTriangle12,
+  DotmTriangle13,
+  DotmTriangle14,
+  DotmTriangle15,
+  DotmTriangle16,
+  DotmTriangle17,
+  DotmTriangle18,
+  DotmTriangle19,
+  DotmTriangle20,
   type DotMatrixCommonProps
 } from "@/loaders";
 
@@ -119,7 +129,17 @@ const componentMap = {
   "dotm-triangle-7": DotmTriangle7,
   "dotm-triangle-8": DotmTriangle8,
   "dotm-triangle-9": DotmTriangle9,
-  "dotm-triangle-10": DotmTriangle10
+  "dotm-triangle-10": DotmTriangle10,
+  "dotm-triangle-11": DotmTriangle11,
+  "dotm-triangle-12": DotmTriangle12,
+  "dotm-triangle-13": DotmTriangle13,
+  "dotm-triangle-14": DotmTriangle14,
+  "dotm-triangle-15": DotmTriangle15,
+  "dotm-triangle-16": DotmTriangle16,
+  "dotm-triangle-17": DotmTriangle17,
+  "dotm-triangle-18": DotmTriangle18,
+  "dotm-triangle-19": DotmTriangle19,
+  "dotm-triangle-20": DotmTriangle20
 };
 
 const heroNavLinkClassName =
@@ -179,7 +199,17 @@ const previewPropsMap: Record<string, DotMatrixCommonProps> = {
   "dotm-triangle-7": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.65 },
   "dotm-triangle-8": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.55 },
   "dotm-triangle-9": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.5 },
-  "dotm-triangle-10": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.7 }
+  "dotm-triangle-10": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.8 },
+  "dotm-triangle-11": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.75 },
+  "dotm-triangle-12": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.5 },
+  "dotm-triangle-13": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.65 },
+  "dotm-triangle-14": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.45 },
+  "dotm-triangle-15": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.8 },
+  "dotm-triangle-16": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.55 },
+  "dotm-triangle-17": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.8 },
+  "dotm-triangle-18": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.6 },
+  "dotm-triangle-19": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.5 },
+  "dotm-triangle-20": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.7 }
 };
 
 /** Default gallery preview; must stay aligned with "Example usage" snippets in the drawer. */
@@ -336,7 +366,7 @@ const HeroInstallCommand = memo(function HeroInstallCommand() {
     <div className="flex items-center gap-2">
       <div className="w-max rounded-lg bg-surface-soft p-1">
         <div className="flex min-w-0 max-w-full items-center gap-1 rounded-sm bg-bg py-2 px-3">
-          <p className="min-w-0 text-[10px] leading-normal text-fg sm:text-base">
+          <p className="min-w-0 text-[11px] leading-normal text-fg sm:text-base">
             {HERO_SHADCN_INSTALL_COMMAND}
           </p>
         </div>
