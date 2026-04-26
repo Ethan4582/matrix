@@ -11,6 +11,7 @@ import {
 import { HIDE_CODE_SCROLLBARS } from "@/lib/hide-code-scrollbar-class";
 import { LoaderPropsReference } from "@/lib/loader-props-reference";
 import { usePrefersReducedMotion } from "@/loaders/hooks/use-prefers-reduced-motion";
+import { GeistPixelCircle } from "geist/font/pixel";
 import { GeistSans } from "geist/font/sans";
 import Link from "next/link";
 import {
@@ -397,19 +398,26 @@ export function ColorAndLook() {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Backdrop className="fixed inset-0 z-50 bg-backdrop backdrop-blur-[7px] transition-opacity duration-175 ease-[cubic-bezier(.215, .61, .355, 1)] data-starting-style:opacity-0 data-ending-style:opacity-0" />
+        <Dialog.Backdrop className="fixed inset-0 z-50 bg-backdrop backdrop-blur-[7px] transition-opacity duration-190 ease-[cubic-bezier(.215, .61, .355, 1)] data-starting-style:opacity-0 data-ending-style:opacity-0" />
         <Dialog.Viewport className="fixed inset-0 z-50">
           <Dialog.Popup
-            className={`${GeistSans.className} absolute inset-y-2 left-2 hidden h-[calc(100dvh-1rem)] max-h-[calc(100dvh-1rem)] w-[calc(50%-0.75rem)] flex-col overflow-y-auto overflow-x-hidden overscroll-y-contain rounded-lg bg-surface transition-transform duration-175 ease-[cubic-bezier(.215, .61, .355, 1)] data-starting-style:-translate-x-full data-ending-style:-translate-x-full md:flex`}
+            className={`${GeistSans.className} absolute inset-y-2 left-2 hidden h-[calc(100dvh-1rem)] max-h-[calc(100dvh-1rem)] w-[calc(50%-0.75rem)] flex-col overflow-y-auto overflow-x-hidden overscroll-y-contain rounded-lg bg-surface transition-transform duration-190 ease-[cubic-bezier(.215, .61, .355, 1)] data-starting-style:-translate-x-full data-ending-style:-translate-x-full md:flex`}
           >
             {selected ? (
-              <section className="grid h-full place-items-center rounded-lg">
-                <div className="flex items-center justify-center">{preview}</div>
+              <section className="flex h-full min-h-0 flex-col rounded-lg">
+                <h2
+                  className={`${GeistPixelCircle.className} theme-text-strong shrink-0 px-4 pt-4 text-left text-base font-semibold tracking-tight`}
+                >
+                  {selected.title}
+                </h2>
+                <div className="flex min-h-0 flex-1 items-center justify-center px-4 pb-4">
+                  {preview}
+                </div>
               </section>
             ) : null}
           </Dialog.Popup>
           <Dialog.Popup
-            className={`${GeistSans.className} absolute inset-y-2 left-2 right-2 flex h-[calc(100dvh-1rem)] max-h-[calc(100dvh-1rem)] min-h-0 w-auto flex-col overflow-hidden rounded-lg bg-surface transition-transform duration-175 ease-[cubic-bezier(.215, .61, .355, 1)] data-starting-style:translate-x-full data-ending-style:translate-x-full md:left-auto md:right-2 md:w-[calc(50%-0.75rem)] `}
+            className={`${GeistSans.className} absolute inset-y-2 left-2 right-2 flex h-[calc(100dvh-1rem)] max-h-[calc(100dvh-1rem)] min-h-0 w-auto flex-col overflow-hidden rounded-lg bg-surface transition-transform duration-190 ease-[cubic-bezier(.215, .61, .355, 1)] data-starting-style:translate-x-full data-ending-style:translate-x-full md:left-auto md:right-2 md:w-[calc(50%-0.75rem)] `}
           >
             <div
               className="pointer-events-none absolute inset-x-0 bottom-0 z-50 h-16 backdrop-blur-[2px]"
@@ -431,7 +439,7 @@ export function ColorAndLook() {
 
 
             {selected ? (
-              <div className="flex h-full min-h-0 w-full min-w-0 flex-1 flex-col gap-2 overflow-hidden px-1.5">
+              <div className="flex h-full min-h-0 w-full min-w-0 flex-1 flex-col gap-2 overflow-hidden sm:px-1.5">
                 <div className="shrink-0 px-4 pt-4">
                   <MeasuredCliManualDotRail activeTab={activeTab} onTabChange={setActiveTab} />
                 </div>

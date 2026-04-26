@@ -64,7 +64,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         className={`${GeistPixelCircle.className} ${fontVariables} font-medium antialiased`}
         cz-shortcut-listen="true"
       >
-        <div className="fixed right-4 top-4 z-20 flex items-center gap-1">
+        <div className="fixed right-4 top-4 z-20 flex items-center gap-2">
           <HomeLink />
           <ThemeToggle />
         </div>

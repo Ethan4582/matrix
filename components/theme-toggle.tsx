@@ -1,12 +1,61 @@
 "use client";
 
 import { ThemeMatrixIcon } from "@/components/package-manager-install-toolbar";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type ThemeMode = "light" | "dark";
 
 const THEME_STORAGE_KEY = "dotmatrix-theme";
 const DEFAULT_THEME: ThemeMode = "dark";
+const THEME_TRANSITION_STYLE_ID = "dotmatrix-theme-transition-styles";
+
+function updateTransitionStyles(css: string) {
+  const existing = document.getElementById(THEME_TRANSITION_STYLE_ID);
+  const styleElement =
+    existing instanceof HTMLStyleElement ? existing : document.createElement("style");
+
+  styleElement.id = THEME_TRANSITION_STYLE_ID;
+  styleElement.textContent = css;
+
+  if (!existing) {
+    document.head.appendChild(styleElement);
+  }
+}
+
+function createThemeTransitionCss() {
+  return `
+    ::view-transition-group(root) {
+      animation-duration: 700ms;
+      animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    ::view-transition-old(root) {
+      animation: none;
+      z-index: -1;
+    }
+
+    ::view-transition-new(root) {
+      animation-name: dotmatrix-theme-reveal;
+    }
+
+    @keyframes dotmatrix-theme-reveal {
+      from {
+        clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
+      }
+      to {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      ::view-transition-group(root),
+      ::view-transition-new(root),
+      ::view-transition-old(root) {
+        animation-duration: 0ms !important;
+      }
+    }
+  `;
+}
 
 function applyTheme(theme: ThemeMode) {
   const root = document.documentElement;
@@ -29,19 +78,31 @@ export function ThemeToggle() {
     setTheme(DEFAULT_THEME);
   }, []);
 
+  const toggleTheme = useCallback(() => {
+    const current = theme ?? DEFAULT_THEME;
+    const next: ThemeMode = current === "dark" ? "light" : "dark";
+    const switchTheme = () => {
+      applyTheme(next);
+      window.localStorage.setItem(THEME_STORAGE_KEY, next);
+      setTheme(next);
+    };
+
+    if (typeof document.startViewTransition !== "function") {
+      switchTheme();
+      return;
+    }
+
+    updateTransitionStyles(createThemeTransitionCss());
+    document.startViewTransition(switchTheme);
+  }, [theme]);
+
   return (
     <div className="w-max rounded-lg bg-surface-soft p-1">
       <div className="flex min-w-0 items-center justify-center gap-1 rounded-sm bg-bg p-[7px]">
         <button
           type="button"
           aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-          onClick={() => {
-            const current = theme ?? DEFAULT_THEME;
-            const next: ThemeMode = current === "dark" ? "light" : "dark";
-            applyTheme(next);
-            window.localStorage.setItem(THEME_STORAGE_KEY, next);
-            setTheme(next);
-          }}
+          onClick={toggleTheme}
           className="inline-flex min-w-0 items-center justify-center text-fg-strong transition-[opacity,color] duration-150 ease-out hover:opacity-90"
         >
           <ThemeMatrixIcon className="size-4 sm:size-6" />

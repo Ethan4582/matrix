@@ -319,12 +319,12 @@ export function LoaderGallery({ items }: LoaderGalleryProps) {
             <div className="space-y-4">
               <div className="flex  justify-between w-full sm:gap-4">
 
-                <h1 className="theme-text-strong text-balance text-3xl tracking-tight sm:text-9xl">
+                <h1 className="theme-text-strong text-balance text-3xl tracking-tight sm:text-8xl">
                   Dot matrix{" "}
                   {" "}
                   loaders for React
                 </h1>
-                <div className="flex w-max shrink-0 flex-col items-end gap-1 sm:gap-2 text-xs sm:text-2xl">
+                <div className="flex w-max shrink-0 flex-col items-end gap-1 sm:gap-2 text-xs sm:text-2xl pt-1">
                   <Link href="/getting-started/introduction" className={heroNavLinkClassName}>
                     Introduction
                   </Link>

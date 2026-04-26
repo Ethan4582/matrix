@@ -243,7 +243,7 @@ export function LoaderPropsReference({ slug, sourceCode }: { slug: string; sourc
         <div className="grid gap-1.5">
           <p className="theme-text-strong text-base font-semibold tracking-tight">Component props</p>
         </div>
-        <div className="grid gap-6">
+        <div className="grid gap-8">
           {rows.map((row) => {
             const def = resolveDefault(row, kind);
             return (
@@ -253,12 +253,12 @@ export function LoaderPropsReference({ slug, sourceCode }: { slug: string; sourc
                 </div>
                 <p className="theme-text max-w-2xl text-pretty text-[14px]">{inlineCodeDesc(row.description)}</p>
                 <div className="grid gap-2 pl-0.5">
-                  <div className="flex flex-col gap-1.5 min-[400px]:flex-row min-[400px]:items-start min-[400px]:gap-3">
+                  <div className="flex  gap-1.5 min-[400px]:flex-row min-[400px]:items-start min-[400px]:gap-3">
                     <span className={label}>type:</span>
                     <span className={pill}>{row.type}</span>
                   </div>
                   {def != null && def !== "" ? (
-                    <div className="flex flex-col gap-1.5 min-[400px]:flex-row min-[400px]:items-start min-[400px]:gap-3">
+                    <div className="flex  gap-1.5 min-[400px]:flex-row min-[400px]:items-start min-[400px]:gap-3">
                       <span className={label}>default:</span>
                       <span className={pill}>{def}</span>
                     </div>

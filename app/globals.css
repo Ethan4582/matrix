@@ -161,8 +161,8 @@
   --color-spotlight: rgba(255, 255, 255, 0.08);
 
   --loader-mask-diagonal: rgba(0, 0, 0, 0.5);
-  --loader-card-frame-shadow: 0 0 5px 0.5px rgba(255, 255, 255, 0.5) inset;
-  --loader-card-frame-shadow-hover: 0 0 15px 0.5px rgba(255, 255, 255, 0.8) inset;
+  --loader-card-frame-shadow: 0 0 5px 0.5px rgba(255, 255, 255, 0.4) inset;
+  --loader-card-frame-shadow-hover: 0 0 15px 0.5px rgba(255, 255, 255, 0.5) inset;
   --loader-card-inner-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.38) inset;
   --drawer-fade: linear-gradient(
     to top,
@@ -204,8 +204,8 @@
   --color-spotlight: rgba(0, 0, 0, 0.08);
 
   --loader-mask-diagonal: rgba(255, 255, 255, 0.3);
-  --loader-card-frame-shadow: 0 0 5px 0.5px rgba(0, 0, 0, 0.4) inset;
-  --loader-card-frame-shadow-hover: 0 0 15px 0.5px rgba(0, 0, 0, 0.5) inset;
+  --loader-card-frame-shadow: 0 0 5px 0.5px rgba(0, 0, 0, 0.3) inset;
+  --loader-card-frame-shadow-hover: 0 0 15px 0.5px rgba(0, 0, 0, 0.4) inset;
   --loader-card-inner-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.38) inset;
   --drawer-fade: linear-gradient(
     to top,
