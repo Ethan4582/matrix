@@ -8,9 +8,9 @@ export default function IntroductionPage() {
       <section className="theme-page-shell grid gap-8 rounded-2xl py-6 sm:p-6">
         <header className="grid gap-3">
           <p className="theme-text-muted text-xs">Introduction</p>
-          <h1 className="theme-text-strong text-2xl tracking-tight sm:text-3xl">Realm: dot matrix loaders that feel intentional</h1>
+          <h1 className="theme-text-strong text-2xl tracking-tight sm:text-3xl">Dot Matrix: dot matrix loaders that feel intentional</h1>
           <p className="theme-text max-w-[72ch] text-sm leading-relaxed">
-            Realm is a component library built around dot matrix loaders. Install from the shadcn registry
+            Dot Matrix is a component library built around dot matrix loaders. Install from the shadcn registry
             and ship loading states that feel designed, lightweight, and easy to maintain. The collection
             stays focused: expressive loading primitives for modern React interfaces without a full design
             framework.
@@ -20,7 +20,7 @@ export default function IntroductionPage() {
         <section className="grid gap-3">
           <h2 className="theme-text-strong text-lg tracking-tight">What this project is</h2>
           <p className="theme-text max-w-[72ch] text-sm leading-relaxed">
-            Realm follows the same install model many teams already use with shadcn: pull a component into
+            Dot Matrix follows the same install model many teams already use with shadcn: pull a component into
             your codebase, then edit it like local code. The collection stays compact on purpose so loaders
             can blend into your existing UI language instead of forcing a separate aesthetic.
           </p>

@@ -6,8 +6,8 @@ const siteUrl =
     ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
     : undefined;
 
-const realmDescription =
-  "Realm is a React component library of dot matrix loaders—expressive loading primitives you install via the shadcn registry and own as local code.";
+const siteDescription =
+  "Dot Matrix is a React component library of dot matrix loaders—expressive loading primitives you install via the shadcn registry and own as local code.";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import {
@@ -54,14 +54,14 @@ const themeInitScript = `(() => {
 
 export const metadata: Metadata = {
   ...(siteUrl ? { metadataBase: siteUrl } : {}),
-  applicationName: "Realm",
+  applicationName: "Dot Matrix",
   title: {
-    default: "Realm",
-    template: "%s · Realm"
+    default: "Dot Matrix",
+    template: "%s · Dot Matrix"
   },
-  description: realmDescription,
+  description: siteDescription,
   keywords: [
-    "Realm",
+    "Dot Matrix",
     "React",
     "component library",
     "dot matrix",
@@ -72,14 +72,14 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    siteName: "Realm",
-    title: "Realm",
-    description: realmDescription
+    siteName: "Dot Matrix",
+    title: "Dot Matrix",
+    description: siteDescription
   },
   twitter: {
     card: "summary_large_image",
-    title: "Realm",
-    description: realmDescription
+    title: "Dot Matrix",
+    description: siteDescription
   }
 };
 

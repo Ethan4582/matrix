@@ -420,7 +420,7 @@ export function LoaderGallery({ items }: LoaderGalleryProps) {
                 </div>
               </div>
               <p className=" max-w-[65ch] text-pretty tracking-tight text-sm leading-relaxed  sm:text-2xl">
-                Realm is a component library of dot matrix loaders. Browse the gallery, then open a card for
+                Dot Matrix is a component library of dot matrix loaders. Browse the gallery, then open a card for
                 the shadcn add command and source files.
               </p>
             </div>
