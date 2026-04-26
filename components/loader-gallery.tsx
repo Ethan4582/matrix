@@ -1,12 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
   LoaderDetailsDrawer,
   type ExamplePreviewId,
   type LoaderCard
 } from "@/components/loader-details-drawer";
+import { CheckIcon, CopyClipboardIcon } from "@/components/package-manager-install-toolbar";
 
 import {
   DotMatrixIcon,
@@ -112,6 +113,11 @@ const componentMap = {
   "dotm-triangle-6": DotmTriangle6
 };
 
+const heroNavLinkClassName =
+  "text-fg-dim inline-block outline-offset-2 transition-[color,transform] duration-200 ease-out hover:text-link-hover focus-visible:text-link-hover motion-reduce:transition-colors";
+
+const HERO_SHADCN_INSTALL_COMMAND = "npx shadcn@latest add @dotmatrix/dotm-square-3";
+
 const previewSpeed = 1.35;
 
 const previewPropsMap: Record<string, DotMatrixCommonProps> = {
@@ -197,6 +203,8 @@ const EXAMPLE_EX_OPACITY_FOR_TRIANGLE: Partial<DotMatrixCommonProps> = {
 export function LoaderGallery({ items }: LoaderGalleryProps) {
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [activeExampleId, setActiveExampleId] = useState<ExamplePreviewId | null>(null);
+  const [heroInstallCopied, setHeroInstallCopied] = useState(false);
+  const heroCopyResetRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const selected = useMemo(
     () => items.find((item) => item.slug === selectedSlug) ?? null,
@@ -207,9 +215,36 @@ export function LoaderGallery({ items }: LoaderGalleryProps) {
     setActiveExampleId((p) => (p === id ? null : id));
   }, []);
 
+  const copyHeroInstallCommand = useCallback(async () => {
+    if (typeof navigator === "undefined" || !navigator.clipboard?.writeText) {
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(HERO_SHADCN_INSTALL_COMMAND);
+      setHeroInstallCopied(true);
+      if (heroCopyResetRef.current) {
+        clearTimeout(heroCopyResetRef.current);
+      }
+      heroCopyResetRef.current = setTimeout(() => {
+        setHeroInstallCopied(false);
+        heroCopyResetRef.current = null;
+      }, 2000);
+    } catch {
+      // Ignore unsupported contexts.
+    }
+  }, []);
+
   useEffect(() => {
     setActiveExampleId(null);
   }, [selected?.slug]);
+
+  useEffect(() => {
+    return () => {
+      if (heroCopyResetRef.current) {
+        clearTimeout(heroCopyResetRef.current);
+      }
+    };
+  }, []);
 
   const selectedPreview = useMemo(() => {
     if (!selected) {
@@ -278,34 +313,25 @@ export function LoaderGallery({ items }: LoaderGalleryProps) {
 
   return (
     <main className="relative mx-auto min-h-dvh w-full max-w-[1400px] px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-      <section className="mb-20">
-        <div className="mt-4 grid gap-6 lg:grid-cols-[1.4fr_auto] lg:items-end">
+      <section className="mb-10 sm:mb-20">
+        <div className="mt-10 sm:mt-8 grid gap-6 lg:grid-cols-[1.4fr_auto] lg:items-end">
           <div className="flex flex-col gap-8">
             <div className="space-y-4">
-              <div className="flex  justify-baseline gap-4">
+              <div className="flex  justify-between w-full sm:gap-4">
 
                 <h1 className="theme-text-strong text-balance text-3xl tracking-tight sm:text-9xl">
                   Dot matrix{" "}
                   {" "}
                   loaders for React
                 </h1>
-                <div className="theme-text-dim flex w-max shrink-0 flex-col items-end gap-2 text-xs sm:text-2xl">
-                  <Link
-                    href="/getting-started/introduction"
-                    className="theme-link"
-                  >
+                <div className="flex w-max shrink-0 flex-col items-end gap-1 sm:gap-2 text-xs sm:text-2xl">
+                  <Link href="/getting-started/introduction" className={heroNavLinkClassName}>
                     Introduction
                   </Link>
-                  <Link
-                    href="/getting-started/usage"
-                    className="theme-link"
-                  >
+                  <Link href="/getting-started/usage" className={heroNavLinkClassName}>
                     Usage
                   </Link>
-                  <Link
-                    href="/getting-started/manual"
-                    className="theme-link"
-                  >
+                  <Link href="/getting-started/manual" className={heroNavLinkClassName}>
                     Manual setup
                   </Link>
                 </div>
@@ -315,7 +341,32 @@ export function LoaderGallery({ items }: LoaderGalleryProps) {
                 command and source files.
               </p>
             </div>
-            <p className="">npx shadcn@latest add @dotmatrix/dotm-square-3</p>
+            <div className="flex items-center gap-2">
+
+              <div className="w-max rounded-lg bg-surface-soft p-1">
+                <div className="flex min-w-0 max-w-full items-center gap-1 rounded-sm bg-bg py-1 px-3">
+                  <p className="min-w-0 text-[10px] leading-normal text-fg sm:text-base">
+                    {HERO_SHADCN_INSTALL_COMMAND}
+                  </p>
+                </div>
+              </div>
+              <div className="w-max rounded-lg bg-surface-soft p-1">
+                <div className="flex min-w-0 max-w-full items-center gap-1 rounded-sm bg-bg p-1.5 sm:p-[7px]">
+                  <button
+                    type="button"
+                    onClick={() => void copyHeroInstallCommand()}
+                    aria-label={heroInstallCopied ? "Copied" : "Copy install command"}
+                    className="inline-flex min-w-0 items-center justify-center text-fg-strong transition-colors duration-150 ease-out hover:opacity-90"
+                  >
+                    {heroInstallCopied ? (
+                      <CheckIcon className="size-3 sm:size-[18px]" />
+                    ) : (
+                      <CopyClipboardIcon className="size-3 sm:size-[18px]" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -333,26 +384,24 @@ export function LoaderGallery({ items }: LoaderGalleryProps) {
               key={item.slug}
               type="button"
               onClick={() => setSelectedSlug(item.slug)}
-              className="aspect-square  relative group"
+              className="aspect-square cursor-pointer relative group"
             >
               <div
                 style={{
-                  maskImage: "var(--loader-mask-a)",
-                  boxShadow: "var(--loader-card-frame-shadow)"
+                  maskImage: "var(--loader-mask-a)"
                 }}
-                className="absolute inset-0 size-full transition-shadow duration-50 ease-out group-hover:[box-shadow:var(--loader-card-frame-shadow-hover)]"></div>
+                className="absolute  inset-0 size-full shadow-(--loader-card-frame-shadow) transition-shadow duration-50 ease-out group-hover:shadow-(--loader-card-frame-shadow-hover)"></div>
               <div
                 style={{
-                  maskImage: "var(--loader-mask-b)",
-                  boxShadow: "var(--loader-card-frame-shadow)"
+                  maskImage: "var(--loader-mask-b)"
                 }}
-                className="absolute inset-0 z-10 size-full transition-shadow duration-50 ease-out group-hover:[box-shadow:var(--loader-card-frame-shadow-hover)]"></div>
+                className="absolute  inset-0 z-10 size-full shadow-(--loader-card-frame-shadow) transition-shadow duration-50 ease-out group-hover:shadow-(--loader-card-frame-shadow-hover)"></div>
               <div
                 style={{
                   maskImage: "var(--loader-mask-c)",
                   boxShadow: "var(--loader-card-inner-shadow)"
                 }}
-                className="absolute inset-3 z-10 transition-shadow duration-50 ease-out"></div>
+                className="absolute  inset-3 z-10 transition-shadow duration-50 ease-out"></div>
 
               <div className="theme-text-strong pointer-events-none absolute inset-x-2 bottom-2 z-20 rounded-md px-2 py-1 text-center text-[11px] font-medium tracking-wide">
                 {item.title}

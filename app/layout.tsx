@@ -10,6 +10,7 @@ import {
 } from "geist/font/pixel";
 import type { ReactNode } from "react";
 
+import { HomeLink } from "@/components/home-link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import "@/loaders/styles.css";
 import "./globals.css";
@@ -31,9 +32,14 @@ const themeInitScript = `(() => {
     if (stored === "light" || stored === "dark") {
       document.documentElement.dataset.theme = stored;
       document.documentElement.style.colorScheme = stored;
+    } else {
+      document.documentElement.dataset.theme = "dark";
+      document.documentElement.style.colorScheme = "dark";
     }
   } catch {
-    // Ignore storage errors in restricted contexts.
+    // Ignore storage errors in restricted contexts and keep dark default.
+    document.documentElement.dataset.theme = "dark";
+    document.documentElement.style.colorScheme = "dark";
   }
 })();`;
 
@@ -44,7 +50,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" data-diffkit-extension="1">
+    <html
+      lang="en"
+      suppressHydrationWarning
+      data-theme="dark"
+      style={{ colorScheme: "dark" }}
+      data-diffkit-extension="1"
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
@@ -52,7 +64,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         className={`${GeistPixelCircle.className} ${fontVariables} font-medium antialiased`}
         cz-shortcut-listen="true"
       >
-        <ThemeToggle />
+        <div className="fixed right-4 top-4 z-20 flex items-center gap-1">
+          <HomeLink />
+          <ThemeToggle />
+        </div>
         {children}
       </body>
     </html>

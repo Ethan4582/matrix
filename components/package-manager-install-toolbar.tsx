@@ -45,7 +45,13 @@ function dotKey(x: number, y: number) {
   return `${x},${y}`;
 }
 
-function CopyClipboardIcon({ className }: { className?: string }) {
+export type MatrixDotIconProps = {
+  className?: string;
+  /** SVG width/height in CSS pixels. Default 18. */
+  size?: number;
+};
+
+export function CopyClipboardIcon({ className, size = 18 }: MatrixDotIconProps) {
   const activeDots = new Set<string>([
     // top tab (M10 2H14) + cap (M8 4V6H16V4)
     dotKey(10, 2), dotKey(12, 2), dotKey(14, 2),
@@ -61,8 +67,8 @@ function CopyClipboardIcon({ className }: { className?: string }) {
   return (
     <svg
       className={className}
-      width="18"
-      height="18"
+      width={size}
+      height={size}
       viewBox="0 0 24 24"
       aria-hidden
     >
@@ -89,7 +95,7 @@ function CopyClipboardIcon({ className }: { className?: string }) {
   );
 }
 
-function CheckIcon({ className }: { className?: string }) {
+export function CheckIcon({ className, size = 18 }: MatrixDotIconProps) {
   const activeDots = new Set<string>([
     // Clipboard shell
     dotKey(10, 2), dotKey(12, 2), dotKey(14, 2),
@@ -105,8 +111,131 @@ function CheckIcon({ className }: { className?: string }) {
   return (
     <svg
       className={className}
-      width="18"
-      height="18"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      aria-hidden
+    >
+      {ICON_DOT_GRID.map(([x, y]) => (
+        <circle
+          key={`${x}-${y}`}
+          cx={x}
+          cy={y}
+          r="0.7"
+          fill="currentColor"
+          opacity={0.1}
+        />
+      ))}
+      {ICON_DOT_GRID.filter(([x, y]) => activeDots.has(dotKey(x, y))).map(([x, y]) => (
+        <circle
+          key={`active-${x}-${y}`}
+          cx={x}
+          cy={y}
+          r="0.8"
+          fill="currentColor"
+        />
+      ))}
+    </svg>
+  );
+}
+
+export function ThemeMatrixIcon({ className, size = 18 }: MatrixDotIconProps) {
+  const activeDots = new Set<string>([
+    dotKey(2, 8), dotKey(2, 10), dotKey(2, 12), dotKey(2, 14), dotKey(2, 16),
+    dotKey(4, 6), dotKey(4, 8), dotKey(4, 10), dotKey(4, 12), dotKey(4, 14), dotKey(4, 16), dotKey(4, 18),
+    dotKey(6, 4), dotKey(6, 6), dotKey(6, 8), dotKey(6, 14), dotKey(6, 16), dotKey(6, 18), dotKey(6, 20),
+    dotKey(8, 2), dotKey(8, 4), dotKey(8, 6), dotKey(8, 16), dotKey(8, 18), dotKey(8, 20), dotKey(8, 22),
+    dotKey(10, 2), dotKey(10, 4), dotKey(10, 18), dotKey(10, 20), dotKey(10, 22),
+    dotKey(12, 2), dotKey(12, 6), dotKey(12, 8), dotKey(12, 10), dotKey(12, 12), dotKey(12, 14), dotKey(12, 16), dotKey(12, 18), dotKey(12, 22),
+    dotKey(14, 2), dotKey(14, 6), dotKey(14, 8), dotKey(14, 10), dotKey(14, 12), dotKey(14, 14), dotKey(14, 16), dotKey(14, 18), dotKey(14, 22),
+    dotKey(16, 2), dotKey(16, 8), dotKey(16, 10), dotKey(16, 12), dotKey(16, 14), dotKey(16, 16), dotKey(16, 22),
+    dotKey(18, 4), dotKey(18, 10), dotKey(18, 12), dotKey(18, 14), dotKey(18, 20),
+    dotKey(20, 6), dotKey(20, 18),
+    dotKey(22, 8), dotKey(22, 10), dotKey(22, 12), dotKey(22, 14), dotKey(22, 16)
+  ]);
+
+  return (
+    <svg
+      className={className}
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      aria-hidden
+    >
+      {ICON_DOT_GRID.map(([x, y]) => (
+        <circle
+          key={`${x}-${y}`}
+          cx={x}
+          cy={y}
+          r="0.7"
+          fill="currentColor"
+          opacity={0.1}
+        />
+      ))}
+      {ICON_DOT_GRID.filter(([x, y]) => activeDots.has(dotKey(x, y))).map(([x, y]) => (
+        <circle
+          key={`active-${x}-${y}`}
+          cx={x}
+          cy={y}
+          r="0.8"
+          fill="currentColor"
+        />
+      ))}
+    </svg>
+  );
+}
+
+/** Dot-matrix home silhouette; same 24×24 grid and dot style as `ThemeMatrixIcon`. */
+export function HomeMatrixIcon({ className, size = 18 }: MatrixDotIconProps) {
+  const activeDots = new Set<string>([
+    dotKey(16, 2),
+    dotKey(16, 4),
+    dotKey(12, 4),
+    dotKey(10, 6),
+    dotKey(12, 6),
+    dotKey(14, 6),
+    dotKey(8, 8),
+    dotKey(10, 8),
+    dotKey(12, 8),
+    dotKey(14, 8),
+    dotKey(16, 8),
+    dotKey(6, 10),
+    dotKey(8, 10),
+    dotKey(10, 10),
+    dotKey(12, 10),
+    dotKey(14, 10),
+    dotKey(16, 10),
+    dotKey(18, 10),
+    dotKey(6, 12),
+    dotKey(8, 12),
+    dotKey(16, 12),
+    dotKey(18, 12),
+    dotKey(6, 14),
+    dotKey(8, 14),
+    dotKey(16, 14),
+    dotKey(18, 14),
+    dotKey(6, 16),
+    dotKey(8, 16),
+    dotKey(16, 16),
+    dotKey(18, 16),
+    dotKey(6, 18),
+    dotKey(8, 18),
+    dotKey(16, 18),
+    dotKey(18, 18),
+    dotKey(6, 20),
+    dotKey(8, 20),
+    dotKey(10, 20),
+    dotKey(12, 20),
+    dotKey(14, 20),
+    dotKey(16, 20),
+    dotKey(18, 20)
+  ]);
+
+  return (
+    <svg
+      className={className}
+      width={size}
+      height={size}
       viewBox="0 0 24 24"
       aria-hidden
     >

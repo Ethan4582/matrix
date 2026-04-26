@@ -43,7 +43,7 @@ export function SaveButton({ isSaving }: { isSaving: boolean }) {
 
 export default function UsagePage() {
   return (
-    <main className="mx-auto min-h-dvh w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+    <main className="mx-auto min-h-dvh w-full max-w-4xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
       <section className="theme-page-shell grid gap-6 rounded-2xl p-5 sm:p-6">
         <header className="grid gap-3">
           <p className="theme-text-muted text-xs">Usage</p>

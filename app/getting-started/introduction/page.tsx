@@ -1,8 +1,10 @@
 import Link from "next/link";
 
+export const dynamic = "force-static";
+
 export default function IntroductionPage() {
   return (
-    <main className="mx-auto min-h-dvh w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+    <main className="mx-auto min-h-dvh w-full max-w-4xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
       <section className="theme-page-shell grid gap-8 rounded-2xl p-5 sm:p-6">
         <header className="grid gap-3">
           <p className="theme-text-muted text-xs">Introduction</p>
@@ -44,23 +46,14 @@ export default function IntroductionPage() {
         </section>
 
         <section className="grid gap-3">
-          <h2 className="theme-text-strong text-lg tracking-tight">Open source and community</h2>
-          <p className="theme-text max-w-[72ch] text-sm leading-relaxed">
-            Every installed component is inspectable and editable, which matters because loading states
-            often need product-specific tuning for timing, scale, and accessibility. If you find rough
-            edges or have a reusable pattern to share, contributions are welcome.
-          </p>
-        </section>
-
-        <section className="grid gap-3">
           <h2 className="theme-text-strong text-lg tracking-tight">Start here</h2>
           <p className="theme-text max-w-[72ch] text-sm leading-relaxed">
             Jump into{" "}
-            <Link href="/getting-started/usage" className="theme-link underline decoration-(--color-fg-dim) underline-offset-2">
+            <Link href="/getting-started/usage" className="theme-link underline decoration-fg-dim underline-offset-2">
               Usage
             </Link>{" "}
             to install your first component, or review{" "}
-            <Link href="/" className="theme-link underline decoration-(--color-fg-dim) underline-offset-2">
+            <Link href="/" className="theme-link underline decoration-fg-dim underline-offset-2">
               the loader gallery
             </Link>{" "}
             to preview available primitives.

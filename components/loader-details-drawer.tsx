@@ -54,16 +54,16 @@ function FloatingCloseCrossDots() {
         const col = index % 5;
         const isCross = row === col || row + col === 4;
         if (!isCross) {
-          return <span key={index} className="h-[3px] w-[3px] rounded-full bg-(--color-dot-faint)" />;
+          return <span key={index} className="h-[3px] w-[3px] rounded-full bg-dot-faint" />;
         }
         if (reducedMotion) {
-          return <span key={index} className="h-[3px] w-[3px] rounded-full bg-(--color-dot-on)" />;
+          return <span key={index} className="h-[3px] w-[3px] rounded-full bg-dot-on" />;
         }
         const order = CLOSE_CROSS_CHASE_ORDER[index] ?? 0;
         return (
           <motion.span
             key={index}
-            className="h-[3px] w-[3px] rounded-full bg-(--color-dot-on)"
+            className="h-[3px] w-[3px] rounded-full bg-dot-on"
             initial={false}
             animate={{ opacity: [0.2, 1, 0.2] }}
             transition={{
@@ -136,7 +136,7 @@ function MeasuredCliManualDotRail({
           ref={cliRef}
           type="button"
           onClick={() => onTabChange("cli")}
-          className={`rounded-lg pr-2 pl-1.5 text-xs font-medium transition ${activeTab === "cli" ? "theme-text-strong" : "theme-text-muted hover:text-(--color-fg)"
+          className={`rounded-lg pr-2 pl-1.5 text-xs font-medium transition ${activeTab === "cli" ? "text-fg-strong" : "text-fg-muted hover:text-fg"
             }`}
         >
           CLI
@@ -145,7 +145,7 @@ function MeasuredCliManualDotRail({
           ref={manualRef}
           type="button"
           onClick={() => onTabChange("manual")}
-          className={`rounded-lg pl-2 pr-1.5 text-xs font-medium transition ${activeTab === "manual" ? "theme-text-strong" : "theme-text-muted hover:text-(--color-fg)"
+          className={`rounded-lg pl-2 pr-1.5 text-xs font-medium transition ${activeTab === "manual" ? "text-fg-strong" : "text-fg-muted hover:text-fg"
             }`}
         >
           Manual
@@ -166,7 +166,7 @@ function MeasuredCliManualDotRail({
             return (
               <span
                 key={i}
-                className={`absolute top-1/2 size-[2px] -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-200 ease-out ${lit ? "bg-(--color-dot-on)" : "bg-(--color-dot-off)"
+                className={`absolute top-1/2 size-[2px] -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-200 ease-out ${lit ? "bg-dot-on" : "bg-dot-off"
                   }`}
                 style={{ left: `${t * 100}%` }}
               />
@@ -349,7 +349,7 @@ export function ColorAndLook() {
   const exampleUsageDotRail = (
     <div className="flex items-center gap-1 overflow-hidden">
       {Array.from({ length: 150 }).map((_, i) => (
-        <div key={i} className="size-0.5 shrink-0 rounded-full bg-(--color-dot-faint)" />
+        <div key={i} className="size-0.5 shrink-0 rounded-full bg-dot-faint" />
       ))}
     </div>
   );
@@ -371,8 +371,8 @@ export function ColorAndLook() {
                   "theme-text shrink-0 rounded-md border px-2 py-0.5 text-[11px] font-medium tabular-nums transition",
                   "focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-(--focus-ring)",
                   active
-                    ? "border-(--color-border) bg-(--color-shell-overlay)"
-                    : "border-transparent bg-(--color-code-bg) hover:text-(--color-link-hover)"
+                    ? "border-border bg-shell-overlay"
+                    : "border-transparent bg-code-bg hover:text-link-hover"
                 ].join(" ")}
                 aria-pressed={active}
               >
@@ -397,10 +397,10 @@ export function ColorAndLook() {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Backdrop className="fixed inset-0 z-50 bg-(--color-backdrop) backdrop-blur-[2px] transition-opacity duration-175 ease-[cubic-bezier(.215, .61, .355, 1)] data-starting-style:opacity-0 data-ending-style:opacity-0" />
+        <Dialog.Backdrop className="fixed inset-0 z-50 bg-backdrop backdrop-blur-[7px] transition-opacity duration-175 ease-[cubic-bezier(.215, .61, .355, 1)] data-starting-style:opacity-0 data-ending-style:opacity-0" />
         <Dialog.Viewport className="fixed inset-0 z-50">
           <Dialog.Popup
-            className={`${GeistSans.className} absolute left-2 inset-y-2 flex h-[calc(100dvh-1rem)] max-h-[calc(100dvh-1rem)] w-[calc(50%-0.75rem)] flex-col overflow-y-auto overflow-x-hidden overscroll-y-contain rounded-lg bg-(--color-surface) transition-transform duration-175 ease-[cubic-bezier(.215, .61, .355, 1)] data-starting-style:-translate-x-full data-ending-style:-translate-x-full`}
+            className={`${GeistSans.className} absolute inset-y-2 left-2 hidden h-[calc(100dvh-1rem)] max-h-[calc(100dvh-1rem)] w-[calc(50%-0.75rem)] flex-col overflow-y-auto overflow-x-hidden overscroll-y-contain rounded-lg bg-surface transition-transform duration-175 ease-[cubic-bezier(.215, .61, .355, 1)] data-starting-style:-translate-x-full data-ending-style:-translate-x-full md:flex`}
           >
             {selected ? (
               <section className="grid h-full place-items-center rounded-lg">
@@ -409,7 +409,7 @@ export function ColorAndLook() {
             ) : null}
           </Dialog.Popup>
           <Dialog.Popup
-            className={`${GeistSans.className} absolute right-2 inset-y-2 flex h-[calc(100dvh-1rem)] max-h-[calc(100dvh-1rem)] min-h-0 w-[calc(50%-0.75rem)] flex-col overflow-hidden rounded-lg bg-(--color-surface) transition-transform duration-175 ease-[cubic-bezier(.215, .61, .355, 1)] data-starting-style:translate-x-full data-ending-style:translate-x-full`}
+            className={`${GeistSans.className} absolute inset-y-2 left-2 right-2 flex h-[calc(100dvh-1rem)] max-h-[calc(100dvh-1rem)] min-h-0 w-auto flex-col overflow-hidden rounded-lg bg-surface transition-transform duration-175 ease-[cubic-bezier(.215, .61, .355, 1)] data-starting-style:translate-x-full data-ending-style:translate-x-full md:left-auto md:right-2 md:w-[calc(50%-0.75rem)] `}
           >
             <div
               className="pointer-events-none absolute inset-x-0 bottom-0 z-50 h-16 backdrop-blur-[2px]"
@@ -512,7 +512,7 @@ export function ColorAndLook() {
               >
                 <Dialog.Close
                   aria-label="Close dialog"
-                  className="pointer-events-auto inline-grid place-items-center rounded-lg border border-(--color-border-soft) bg-(--color-bg) p-2.5 theme-text-strong"
+                  className="pointer-events-auto inline-grid place-items-center rounded-lg bg-bg p-2.5 text-fg-strong"
                 >
                   <FloatingCloseCrossDots />
                 </Dialog.Close>

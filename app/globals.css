@@ -8,6 +8,38 @@
 @theme {
   --color-dotmatrix: hsl(var(--dotmatrix-color, var(--dotmatrix-accent)));
 
+  /*
+   * Bridge :root[data-theme] → Tailwind color utilities (e.g. bg-background, text-fg-dim, bg-surface).
+   * unprefixed shadcn names (--background, --foreground) map to --color-* for bg-/text- utilities.
+   * Source of truth: :root[data-theme="light" | "dark"] below.
+   */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-bg: var(--color-bg);
+  --color-fg-strong: var(--color-fg-strong);
+  --color-fg: var(--color-fg);
+  --color-fg-muted: var(--color-fg-muted);
+  --color-fg-dim: var(--color-fg-dim);
+  --color-link: var(--color-link);
+  --color-link-hover: var(--color-link-hover);
+
+  --color-surface: var(--color-surface);
+  --color-surface-soft: var(--color-surface-soft);
+  --color-surface-muted: var(--color-surface-muted);
+  --color-surface-raised: var(--color-surface-raised);
+  --color-code-bg: var(--color-code-bg);
+  --color-border: var(--color-border);
+  --color-border-soft: var(--color-border-soft);
+  --color-dot-on: var(--color-dot-on);
+  --color-dot-off: var(--color-dot-off);
+  --color-dot-faint: var(--color-dot-faint);
+  --color-shell: var(--color-shell);
+  --color-shell-overlay: var(--color-shell-overlay);
+  --color-backdrop: var(--color-backdrop);
+  --color-spotlight: var(--color-spotlight);
+
   /* Default UI font: Geist Pixel Circle (variable set on <body> by next/font). */
   --font-sans: var(--font-geist-pixel-circle), ui-sans-serif, system-ui, sans-serif;
 
@@ -74,98 +106,28 @@
   }
 }
 
+@layer base {
+  button,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  [role="button"] {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  input[type="button"]:disabled,
+  input[type="submit"]:disabled,
+  input[type="reset"]:disabled,
+  [role="button"][aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+}
+
 :root {
-  --background: #000000;
-  --foreground: #fafafa;
-  --muted-foreground: #a1a1aa;
-  --surface: #111113;
-  --border: rgba(255, 255, 255, 0.1);
-  --dotmatrix-accent: 220 90% 60%;
-
-  --color-bg: #000000;
-  --color-fg-strong: #fafafa;
-  --color-fg: #e4e4e7;
-  --color-fg-muted: #a1a1aa;
-  --color-fg-dim: #71717a;
-  --color-surface: #0c0c0c;
-  --color-surface-soft: #111113;
-  --color-surface-muted: #171717;
-  --color-surface-raised: #202020;
-  --color-code-bg: #101010;
-  --color-border: rgba(255, 255, 255, 0.12);
-  --color-border-soft: rgba(255, 255, 255, 0.08);
-  --color-link: #f4f4f5;
-  --color-link-hover: #ffffff;
-  --color-dot-on: #f4f4f5;
-  --color-dot-off: #52525b;
-  --color-dot-faint: rgba(255, 255, 255, 0.1);
-  --color-shell: rgba(0, 0, 0, 0.5);
-  --color-shell-overlay: rgba(0, 0, 0, 0.2);
-  --color-backdrop: rgba(0, 0, 0, 0.7);
-  --color-spotlight: rgba(255, 255, 255, 0.08);
-
-  --loader-mask-diagonal: rgba(0, 0, 0, 0.5);
   --loader-mask-a: linear-gradient(45deg, rgba(0, 0, 0, 0) 35%, var(--loader-mask-diagonal) 50%, rgba(0, 0, 0, 0) 65%);
   --loader-mask-b: linear-gradient(135deg, rgba(0, 0, 0, 0) 35%, var(--loader-mask-diagonal) 50%, rgba(0, 0, 0, 0) 65%);
   --loader-mask-c: linear-gradient(to bottom, rgba(0, 0, 0, 0) 10%, var(--loader-mask-diagonal) 50%, rgba(0, 0, 0, 0) 90%);
-  --loader-card-frame-shadow: 0 0 5px 0.5px rgba(255, 255, 255, 0.5) inset;
-  --loader-card-frame-shadow-hover: 0 0 15px 0.5px rgba(255, 255, 255, 0.8) inset;
-  --loader-card-inner-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.38) inset;
-
-  --drawer-fade: linear-gradient(
-    to top,
-    rgba(12, 12, 12, 0.85),
-    rgba(12, 12, 12, 0.35),
-    transparent
-  );
-
-  --focus-ring: rgba(255, 255, 255, 0.2);
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --background: #ffffff;
-    --foreground: #050505;
-    --muted-foreground: #5e5e55;
-    --surface: #eeeeec;
-    --border: rgba(0, 0, 0, 0.1);
-    --dotmatrix-accent: 40 90% 40%;
-
-    --color-bg: #ffffff;
-    --color-fg-strong: #050505;
-    --color-fg: #1b1b18;
-    --color-fg-muted: #5e5e55;
-    --color-fg-dim: #8e8e85;
-    --color-surface: #f3f3f3;
-    --color-surface-soft: #eeeeec;
-    --color-surface-muted: #e8e8e8;
-    --color-surface-raised: #dfdfdf;
-    --color-code-bg: #efefef;
-    --color-border: rgba(0, 0, 0, 0.12);
-    --color-border-soft: rgba(0, 0, 0, 0.08);
-    --color-link: #0b0b0a;
-    --color-link-hover: #000000;
-    --color-dot-on: #0b0b0a;
-    --color-dot-off: #adada4;
-    --color-dot-faint: rgba(0, 0, 0, 0.1);
-    --color-shell: rgba(255, 255, 255, 0.5);
-    --color-shell-overlay: rgba(255, 255, 255, 0.2);
-    --color-backdrop: rgba(255, 255, 255, 0.7);
-    --color-spotlight: rgba(0, 0, 0, 0.08);
-
-    --loader-mask-diagonal: rgba(255, 255, 255, 0.5);
-    --loader-card-frame-shadow: 0 0 5px 0.5px rgba(0, 0, 0, 0.5) inset;
-    --loader-card-frame-shadow-hover: 0 0 15px 0.5px rgba(0, 0, 0, 0.8) inset;
-    --loader-card-inner-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.38) inset;
-    --drawer-fade: linear-gradient(
-      to top,
-      rgba(243, 243, 243, 0.85),
-      rgba(243, 243, 243, 0.35),
-      transparent
-    );
-
-    --focus-ring: rgba(0, 0, 0, 0.2);
-  }
 }
 
 :root[data-theme="dark"] {
@@ -182,7 +144,7 @@
   --color-fg-muted: #a1a1aa;
   --color-fg-dim: #71717a;
   --color-surface: #0c0c0c;
-  --color-surface-soft: #111113;
+  --color-surface-soft: #181818;
   --color-surface-muted: #171717;
   --color-surface-raised: #202020;
   --color-code-bg: #101010;
@@ -212,7 +174,7 @@
 }
 
 :root[data-theme="light"] {
-  --background: #ffffff;
+  --background: #f8f8f8;
   --foreground: #050505;
   --muted-foreground: #5e5e55;
   --surface: #eeeeec;
@@ -224,11 +186,11 @@
   --color-fg: #1b1b18;
   --color-fg-muted: #5e5e55;
   --color-fg-dim: #8e8e85;
-  --color-surface: #f3f3f3;
-  --color-surface-soft: #eeeeec;
+  --color-surface: #f8f8f8;
+  --color-surface-soft: #f2f2f2;
   --color-surface-muted: #e8e8e8;
   --color-surface-raised: #dfdfdf;
-  --color-code-bg: #efefef;
+  --color-code-bg: #fff;
   --color-border: rgba(0, 0, 0, 0.12);
   --color-border-soft: rgba(0, 0, 0, 0.08);
   --color-link: #0b0b0a;
@@ -241,9 +203,9 @@
   --color-backdrop: rgba(255, 255, 255, 0.7);
   --color-spotlight: rgba(0, 0, 0, 0.08);
 
-  --loader-mask-diagonal: rgba(255, 255, 255, 0.5);
-  --loader-card-frame-shadow: 0 0 5px 0.5px rgba(0, 0, 0, 0.5) inset;
-  --loader-card-frame-shadow-hover: 0 0 15px 0.5px rgba(0, 0, 0, 0.8) inset;
+  --loader-mask-diagonal: rgba(255, 255, 255, 0.3);
+  --loader-card-frame-shadow: 0 0 5px 0.5px rgba(0, 0, 0, 0.4) inset;
+  --loader-card-frame-shadow-hover: 0 0 15px 0.5px rgba(0, 0, 0, 0.5) inset;
   --loader-card-inner-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.38) inset;
   --drawer-fade: linear-gradient(
     to top,

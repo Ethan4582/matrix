@@ -15,7 +15,7 @@ function resolveThemeMode(): ThemeMode {
   if (explicit === "light" || explicit === "dark") {
     return explicit;
   }
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  return "dark";
 }
 
 export function ShikiCodeView({
@@ -44,10 +44,6 @@ export function ShikiCodeView({
       setThemeMode(resolveThemeMode());
     };
 
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const onMediaChange = () => updateThemeMode();
-    media.addEventListener("change", onMediaChange);
-
     const observer = new MutationObserver(updateThemeMode);
     observer.observe(document.documentElement, {
       attributes: true,
@@ -57,7 +53,6 @@ export function ShikiCodeView({
     updateThemeMode();
 
     return () => {
-      media.removeEventListener("change", onMediaChange);
       observer.disconnect();
     };
   }, []);
