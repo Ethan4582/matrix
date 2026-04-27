@@ -542,6 +542,15 @@
       "dependencies": [],
       "registryDependencies": [],
       "url": "/r/dotm-triangle-20.json"
+    },
+    {
+      "name": "all",
+      "type": "registry:ui",
+      "title": "All Dot Matrix Loaders",
+      "description": "Installs every Dot Matrix loader and shared runtime files in one command.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "url": "/r/all.json"
     }
   ]
 }

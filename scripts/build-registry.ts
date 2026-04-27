@@ -16,6 +16,7 @@ const manualRoot = path.join(loadersRoot, "manual");
 const publicRegistryDir = path.join(docsRoot, "public", "r");
 const fallbackHomepage = "https://dotmatrix.zzzzshawn.cloud";
 const registryName = "@dotmatrix";
+const allRegistryItemName = "all";
 
 const sharedSourceFiles: Array<{ absolutePath: string; targetPath: string; type: RegistryFile["type"] }> = [
   {
@@ -191,7 +192,7 @@ async function build() {
     })
   );
 
-  const registryItems = await Promise.all(
+  const loaderRegistryItems = await Promise.all(
     loaderRegistry.map(async (loader) => {
       const files: RegistryFile[] = [];
 
@@ -244,6 +245,7 @@ async function build() {
       await writeFile(path.join(publicRegistryDir, `${loader.slug}.tsx`), componentSource, "utf-8");
 
       return {
+        files,
         name: loader.slug,
         type: "registry:ui",
         title: loader.title,
@@ -254,6 +256,57 @@ async function build() {
       };
     })
   );
+
+  const allFilesByPath = new Map<string, RegistryFile>();
+  for (const loaderItem of loaderRegistryItems) {
+    for (const file of loaderItem.files) {
+      if (!allFilesByPath.has(file.path)) {
+        allFilesByPath.set(file.path, file);
+      }
+    }
+  }
+
+  const allRegistryFiles = [...allFilesByPath.values()];
+  const allItem = {
+    $schema: "https://ui.shadcn.com/schema/registry-item.json",
+    name: allRegistryItemName,
+    type: "registry:ui",
+    title: "All Dot Matrix Loaders",
+    description: "Installs every Dot Matrix loader and shared runtime files in one command.",
+    dependencies: [],
+    registryDependencies: [],
+    meta: {
+      animation: "css-only + optional motion"
+    },
+    files: allRegistryFiles
+  };
+
+  await writeFile(
+    path.join(publicRegistryDir, `${allRegistryItemName}.json`),
+    JSON.stringify(allItem, null, 2) + "\n",
+    "utf-8"
+  );
+
+  const registryItems = [
+    ...loaderRegistryItems.map((item) => ({
+      name: item.name,
+      type: item.type,
+      title: item.title,
+      description: item.description,
+      dependencies: item.dependencies,
+      registryDependencies: item.registryDependencies,
+      url: item.url
+    })),
+    {
+      name: allRegistryItemName,
+      type: "registry:ui",
+      title: allItem.title,
+      description: allItem.description,
+      dependencies: allItem.dependencies,
+      registryDependencies: allItem.registryDependencies,
+      url: `/r/${allRegistryItemName}.json`
+    }
+  ];
 
   const registry = {
     $schema: "https://ui.shadcn.com/schema/registry.json",

@@ -25,6 +25,7 @@ const componentsJsonExample = `{
 }`;
 
 const installCommand = `npx shadcn@latest add @dotmatrix/dotm-square-3`;
+const installAllCommand = `npx shadcn@latest add @dotmatrix/all`;
 
 const globalsCssImportExample = `@import "tailwindcss";
 @import "tw-animate-css";
@@ -96,10 +97,15 @@ export default function UsagePage() {
             Pull any loader into your app with the shadcn CLI:
           </p>
           <ManualCodePanel title="Install loader" code={installCommand} lang="bash" />
+          <p className="theme-text text-sm leading-relaxed">
+            Or install everything in one step:
+          </p>
+          <ManualCodePanel title="Install all loaders" code={installAllCommand} lang="bash" />
           <ul className="theme-text grid gap-2 text-sm leading-relaxed">
             <li>- `@dotmatrix/dotm-square-3`</li>
             <li>- `@dotmatrix/dotm-circular-5`</li>
             <li>- `@dotmatrix/dotm-triangle-2`</li>
+            <li>- `@dotmatrix/all`</li>
           </ul>
           <p className="theme-text text-sm leading-relaxed">
             Installed files are local. Rename, restyle, and retime motion as needed.
