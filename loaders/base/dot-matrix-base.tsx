@@ -4,6 +4,7 @@ import { useMemo, type CSSProperties } from "react";
 
 import { cx } from "../core/cx";
 import { getMatrix5Layout, resolveDmxBoxOuterDim } from "../core/matrix-layout";
+import { remapOpacityToTriplet } from "../core/opacity-triplet";
 import {
   distanceFromCenter,
   getPatternIndexes,
@@ -156,7 +157,14 @@ export function DotMatrixBase({
     const dotStyle = !isActive
       ? dot.inactiveStyle
       : animationState?.style
-        ? ({ ...dot.baseStyle, ...animationState.style } as CSSProperties)
+        ? (() => {
+            const resolvedStyle = { ...animationState.style } as CSSProperties;
+            const rawOpacity = resolvedStyle.opacity;
+            if (typeof rawOpacity === "number") {
+              resolvedStyle.opacity = remapOpacityToTriplet(rawOpacity, ob, om, op);
+            }
+            return { ...dot.baseStyle, ...resolvedStyle } as CSSProperties;
+          })()
         : dot.baseStyle;
 
     return (

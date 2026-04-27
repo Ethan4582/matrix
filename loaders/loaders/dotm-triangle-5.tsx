@@ -5,6 +5,7 @@ import type { CSSProperties } from "react";
 import { cx } from "../core/cx";
 import { useDotMatrixPhases } from "../core/phases";
 import { styleOpacity, stylePx } from "../core/hydration-inline-style";
+import { remapOpacityToTriplet } from "../core/opacity-triplet";
 import { usePrefersReducedMotion } from "../hooks/use-prefers-reduced-motion";
 import { useSteppedCycle } from "../hooks/use-stepped-cycle";
 import type { DotMatrixCommonProps } from "../types";
@@ -48,7 +49,11 @@ export function DotmTriangle5({
   dotClassName,
   speed = 1,
   animated = true,
-  hoverAnimated = false
+  hoverAnimated = false,
+  cellPadding,
+  opacityBase,
+  opacityMid,
+  opacityPeak
 }: DotmTriangle5Props) {
   const reducedMotion = usePrefersReducedMotion();
   const { phase: matrixPhase, onMouseEnter, onMouseLeave } = useDotMatrixPhases({
@@ -68,10 +73,12 @@ export function DotmTriangle5({
   const pingPong = 0.5 - 0.5 * Math.cos(progress * Math.PI * 2);
   const scanRow = 1 + pingPong * 3;
 
-  const gap = Math.max(1, Math.floor((size - dotSize * MATRIX_SIZE) / (MATRIX_SIZE - 1)));
+  const gap =
+    cellPadding ?? Math.max(1, Math.floor((size - dotSize * MATRIX_SIZE) / (MATRIX_SIZE - 1)));
+  const matrixSize = dotSize * MATRIX_SIZE + gap * (MATRIX_SIZE - 1);
   const rootStyle = {
-    width: stylePx(size),
-    height: stylePx(size),
+    width: stylePx(cellPadding == null ? size : matrixSize),
+    height: stylePx(cellPadding == null ? size : matrixSize),
     color
   } as CSSProperties;
 
@@ -123,7 +130,7 @@ export function DotmTriangle5({
               style={{
                 width: stylePx(dotSize),
                 height: stylePx(dotSize),
-                opacity: styleOpacity(opacity)
+                opacity: styleOpacity(remapOpacityToTriplet(opacity, opacityBase, opacityMid, opacityPeak))
               }}
             />
           );

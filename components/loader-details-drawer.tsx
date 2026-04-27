@@ -88,29 +88,11 @@ export function Example() {
     const C = selected.componentName;
     const from = selected.slug;
     const isSquareMatrix = from.startsWith("dotm-square-");
-    const isTriangleMatrix = from.startsWith("dotm-triangle-");
-    const opacityItem = isTriangleMatrix
-      ? {
-        id: "ex-opacity" as const,
-        title: "Size & speed",
-        copyToken: "example-usage-opacity" as const,
-        code: `import { ${C} } from "@/components/ui/${from}";
-
-export function SizeAndSpeed() {
-  return (
-    <${C}
-      size={32}
-      dotSize={4}
-      speed={1.4}
-    />
-  );
-}`
-      }
-      : {
-        id: "ex-opacity" as const,
-        title: "Opacity & speed",
-        copyToken: "example-usage-opacity" as const,
-        code: `import { ${C} } from "@/components/ui/${from}";
+    const opacityItem = {
+      id: "ex-opacity" as const,
+      title: "Opacity & speed",
+      copyToken: "example-usage-opacity" as const,
+      code: `import { ${C} } from "@/components/ui/${from}";
 
 export function OpacityAndSpeed() {
   return (
@@ -124,7 +106,7 @@ export function OpacityAndSpeed() {
     />
   );
 }`
-      };
+    };
     const layoutItem = {
       id: "ex-layout" as const,
       title: "Fixed gap & box slot",
@@ -144,7 +126,7 @@ export function LayoutSlot() {
     };
     return [
       opacityItem,
-      ...(isTriangleMatrix ? [] : [layoutItem]),
+      layoutItem,
       {
         id: "ex-look" as const,
         title: isSquareMatrix ? "Pattern & look" : "Color & look",

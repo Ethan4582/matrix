@@ -102,27 +102,27 @@ const PROP_ROWS: readonly PropRow[] = [
   {
     name: "opacityBase",
     type: "number (0…1)",
-    description: "Drives \`--dmx-opacity-base\` for the dimmest / idle stops in the dmx keyframe tracks.",
-    kinds: ["square", "circular"]
+    description: "Controls the dimmest baseline opacity (0–1) used by the loader's opacity curve.",
+    kinds: ["square", "circular", "triangle"]
   },
   {
     name: "opacityMid",
     type: "number (0…1)",
-    description: "Drives \`--dmx-opacity-mid\` for the middle brightness in sweep / echo timing.",
-    kinds: ["square", "circular"]
+    description: "Controls the middle brightness stop (0–1) in the loader's opacity curve.",
+    kinds: ["square", "circular", "triangle"]
   },
   {
     name: "opacityPeak",
     type: "number (0…1)",
-    description: "Drives \`--dmx-opacity-peak\` for the brightest keyframe stops.",
-    kinds: ["square", "circular"]
+    description: "Controls the brightest stop (0–1) in the loader's opacity curve.",
+    kinds: ["square", "circular", "triangle"]
   },
   {
     name: "cellPadding",
     type: "number",
     description:
-      "Fixed gap in pixels between 5×5 grid tracks. When set, the outer size becomes `dotSize * 5 + cellPadding * 4` and `size` is ignored for layout. Not used by the triangle 7×7 mask.",
-    kinds: ["square", "circular"]
+      "Fixed gap in pixels between grid tracks. When set, layout uses `dotSize * N + cellPadding * (N - 1)` (N is the matrix dimension) and ignores `size` for track spacing.",
+    kinds: ["square", "circular", "triangle"]
   },
   {
     name: "boxSize",

@@ -96,6 +96,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script
+          src="https://cdn.databuddy.cc/databuddy.js"
+          data-client-id="3bcee424-7f5b-4bef-b4df-f4d057106989"
+          data-track-outgoing-links="true"
+          crossOrigin="anonymous"
+          async
+        />
       </head>
       <body
         className={`${GeistPixelCircle.className} ${fontVariables} flex min-h-dvh flex-col font-medium antialiased`}

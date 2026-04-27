@@ -38,7 +38,7 @@ export function SiteFooter() {
           priority
         />
       </span>
-      <span className="inline-flex items-center gap-2.5 text-3xl  absolute bottom-4 right-8">
+      <span className="inline-flex items-center gap-2.5 text-3xl  absolute bottom-4 right-8 z-10">
         <HeartMatrixIcon className="shrink-0 " size={40} />
         <a href={CREATOR_URL} target="_blank" className="">by shawn.</a>
       </span>
