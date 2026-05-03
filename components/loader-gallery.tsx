@@ -84,6 +84,16 @@ import {
   DotmTriangle18,
   DotmTriangle19,
   DotmTriangle20,
+  DotmHex1,
+  DotmHex2,
+  DotmHex3,
+  DotmHex4,
+  DotmHex5,
+  DotmHex6,
+  DotmHex7,
+  DotmHex8,
+  DotmHex9,
+  DotmHex10,
   type DotMatrixCommonProps
 } from "@/loaders";
 import { LOADER_GALLERY_PREVIEW_PROPS } from "@/lib/loader-gallery-preview-props";
@@ -148,7 +158,17 @@ const componentMap = {
   "dotm-triangle-17": DotmTriangle17,
   "dotm-triangle-18": DotmTriangle18,
   "dotm-triangle-19": DotmTriangle19,
-  "dotm-triangle-20": DotmTriangle20
+  "dotm-triangle-20": DotmTriangle20,
+  "dotm-hex-1": DotmHex1,
+  "dotm-hex-2": DotmHex2,
+  "dotm-hex-3": DotmHex3,
+  "dotm-hex-4": DotmHex4,
+  "dotm-hex-5": DotmHex5,
+  "dotm-hex-6": DotmHex6,
+  "dotm-hex-7": DotmHex7,
+  "dotm-hex-8": DotmHex8,
+  "dotm-hex-9": DotmHex9,
+  "dotm-hex-10": DotmHex10
 };
 
 const heroNavLinkClassName =

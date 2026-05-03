@@ -594,6 +594,106 @@ export const loaderRegistry: LoaderRegistryEntry[] = [
     fileName: "dotm-triangle-20.tsx",
     dependencies: [],
     motionOptional: false
+  },
+  {
+    slug: "dotm-hex-1",
+    title: "Hex Orbit",
+    description:
+      "A 3-4-5-4-3 hexagonal dot field with two soft perimeter heads chasing around the shell while the center stays quietly lit.",
+    componentName: "DotmHex1",
+    fileName: "dotm-hex-1.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-hex-2",
+    title: "Prism Bloom",
+    description:
+      "Three rotating spokes sweep through the hex field with a soft outer shell pulse and a breathing center point.",
+    componentName: "DotmHex2",
+    fileName: "dotm-hex-2.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-hex-3",
+    title: "Honey Gate",
+    description:
+      "Two diagonal bands slide through the honeycomb from opposite sides, meeting in a bright center flash before opening again.",
+    componentName: "DotmHex3",
+    fileName: "dotm-hex-3.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-hex-4",
+    title: "Vertex Relay",
+    description:
+      "A bright signal hands off around the hex vertices while inner echo dots answer each corner and the center keeps a quick pulse.",
+    componentName: "DotmHex4",
+    fileName: "dotm-hex-4.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-hex-5",
+    title: "Spiral Lattice",
+    description:
+      "Counter-rotating spiral waves cross through the hex lattice, creating a fast core pulse and softer outer wake.",
+    componentName: "DotmHex5",
+    fileName: "dotm-hex-5.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-hex-6",
+    title: "Chevron March",
+    description:
+      "Smooth chevron bands flow through the hex field in a wrapped loop, keeping an obvious arrow pattern without a reset snap.",
+    componentName: "DotmHex6",
+    fileName: "dotm-hex-6.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-hex-7",
+    title: "Hourglass Flip",
+    description:
+      "Top and bottom bars squeeze into a bright center hourglass, then flip into side rails and a diamond.",
+    componentName: "DotmHex7",
+    fileName: "dotm-hex-7.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-hex-8",
+    title: "Glyph Flip",
+    description:
+      "Crisp symbolic masks flip between stars, chevrons, and rails for a snappy pixel-glyph loader.",
+    componentName: "DotmHex8",
+    fileName: "dotm-hex-8.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-hex-9",
+    title: "Petal Shimmer",
+    description:
+      "A four-petal highlight rotates through the hex with a soft shell sheen and steady center glow.",
+    componentName: "DotmHex9",
+    fileName: "dotm-hex-9.tsx",
+    dependencies: [],
+    motionOptional: false
+  },
+  {
+    slug: "dotm-hex-10",
+    title: "Liquid Vortex",
+    description:
+      "Refined swirl bands and a slower lens highlight create a smoother liquid shimmer through the hex lattice.",
+    componentName: "DotmHex10",
+    fileName: "dotm-hex-10.tsx",
+    dependencies: [],
+    motionOptional: false
   }
 ];
 

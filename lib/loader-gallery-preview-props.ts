@@ -62,5 +62,16 @@ export const LOADER_GALLERY_PREVIEW_PROPS: Record<string, DotMatrixCommonProps> 
   "dotm-triangle-17": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.8 },
   "dotm-triangle-18": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.6 },
   "dotm-triangle-19": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.5 },
-  "dotm-triangle-20": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.7  }
+  "dotm-triangle-20": { size: 30, dotSize: 6.5, pattern: "full", animated: true, speed: 1.7  },
+  "dotm-hex-1": { size: 34, dotSize: 5, pattern: "full", animated: true, speed: 1.6 },
+  "dotm-hex-2": { size: 34, dotSize: 5, pattern: "full", animated: true, speed: 1.7 },
+  "dotm-hex-3": { size: 34, dotSize: 5, pattern: "full", animated: true, speed: 1.45 },
+  "dotm-hex-4": { size: 34, dotSize: 5, pattern: "full", animated: true, speed: 1.5 },
+  "dotm-hex-5": { size: 34, dotSize: 5, pattern: "full", animated: true, speed: 1.75 },
+  "dotm-hex-6": { size: 34, dotSize: 5, pattern: "full", animated: true, speed: 1.55 },
+  "dotm-hex-7": { size: 34, dotSize: 5, pattern: "full", animated: true, speed: 1.9 },
+  "dotm-hex-8": { size: 34, dotSize: 5, pattern: "full", animated: true, speed: 1.35 },
+  "dotm-hex-9": { size: 34, dotSize: 5, pattern: "full", animated: true, speed: 1.8 },
+  "dotm-hex-10": { size: 34, dotSize: 5, pattern: "full", animated: true, speed: 1.55 }
 };
+

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-type LoaderKind = "square" | "circular" | "triangle";
+type LoaderKind = "square" | "circular" | "triangle" | "hex";
 
 const PATTERN_TYPE = `"diamond" | "full" | "outline" | "rose" | "cross" | "rings"`;
 
@@ -26,49 +26,49 @@ const PROP_ROWS: readonly PropRow[] = [
     type: "number",
     description:
       "Overall scale of the matrix. With the default 5×5 layout, the outer box is derived from the grid track span (and ignored when you use a fixed `cellPadding` / box layout on square & circular).",
-    default: d((k) => (k === "triangle" ? "30" : "24")),
-    kinds: ["square", "circular", "triangle"]
+    default: d((k) => (k === "triangle" ? "30" : k === "hex" ? "42" : "24")),
+    kinds: ["square", "circular", "triangle", "hex"]
   },
   {
     name: "dotSize",
     type: "number",
     description: "Width and height of each dot in pixels.",
-    default: d((k) => (k === "triangle" ? "4" : "3")),
-    kinds: ["square", "circular", "triangle"]
+    default: d((k) => (k === "triangle" ? "4" : k === "hex" ? "5" : "3")),
+    kinds: ["square", "circular", "triangle", "hex"]
   },
   {
     name: "color",
     type: "string",
     description: "Fill color for dots, passed through as the matrix `color` (typically `currentColor` or a CSS color string).",
     default: "currentColor",
-    kinds: ["square", "circular", "triangle"]
+    kinds: ["square", "circular", "triangle", "hex"]
   },
   {
     name: "speed",
     type: "number",
     description: "Animation speed multiplier. Higher values run the cycle faster; values ≤ 0 are treated as 1 for timing.",
     default: "1",
-    kinds: ["square", "circular", "triangle"]
+    kinds: ["square", "circular", "triangle", "hex"]
   },
   {
     name: "ariaLabel",
     type: "string",
     description: "Accessible name for the loading indicator (`aria-label` on the status element).",
     default: "Loading",
-    kinds: ["square", "circular", "triangle"]
+    kinds: ["square", "circular", "triangle", "hex"]
   },
   {
     name: "className",
     type: "string",
     description: "Optional class on the root / wrapper (and on the matrix root when not using the slot wrapper).",
-    kinds: ["square", "circular", "triangle"]
+    kinds: ["square", "circular", "triangle", "hex"]
   },
   {
     name: "muted",
     type: "boolean",
     description: "Enables the muted dmx look (softer visual treatment on the root).",
     default: "false",
-    kinds: ["square", "circular", "triangle"]
+    kinds: ["square", "circular", "triangle", "hex"]
   },
   {
     name: "animated",
@@ -76,7 +76,7 @@ const PROP_ROWS: readonly PropRow[] = [
     description:
       "When true, enables the loader's motion. Continuous auto-loop runs only if `hoverAnimated` is false; if both are true, motion is hover-only (reduced motion still respected).",
     default: "true",
-    kinds: ["square", "circular", "triangle"]
+    kinds: ["square", "circular", "triangle", "hex"]
   },
   {
     name: "hoverAnimated",
@@ -84,58 +84,58 @@ const PROP_ROWS: readonly PropRow[] = [
     description:
       "When true, disables automatic looping — animation runs on pointer hover instead. With `animated={false}`, the loader stays static until hover (reduced motion still respected).",
     default: "false",
-    kinds: ["square", "circular", "triangle"]
+    kinds: ["square", "circular", "triangle", "hex"]
   },
   {
     name: "dotClassName",
     type: "string",
     description: "Extra `className` applied to every dot `span` for one-off styling.",
-    kinds: ["square", "circular", "triangle"]
+    kinds: ["square", "circular", "triangle", "hex"]
   },
   {
     name: "pattern",
     type: PATTERN_TYPE,
-    description: `Active cells on the 5×5 \`DotMatrixBase\` grid. One of: ${PATTERN_LIST.join(", ")}.`,
+    description: `Active cells on the 5×5 matrix projection. One of: ${PATTERN_LIST.join(", ")}.`,
     default: '"full"',
-    kinds: ["square"]
+    kinds: ["square", "hex"]
   },
   {
     name: "opacityBase",
     type: "number (0…1)",
     description: "Controls the dimmest baseline opacity (0–1) used by the loader's opacity curve.",
-    kinds: ["square", "circular", "triangle"]
+    kinds: ["square", "circular", "triangle", "hex"]
   },
   {
     name: "opacityMid",
     type: "number (0…1)",
     description: "Controls the middle brightness stop (0–1) in the loader's opacity curve.",
-    kinds: ["square", "circular", "triangle"]
+    kinds: ["square", "circular", "triangle", "hex"]
   },
   {
     name: "opacityPeak",
     type: "number (0…1)",
     description: "Controls the brightest stop (0–1) in the loader's opacity curve.",
-    kinds: ["square", "circular", "triangle"]
+    kinds: ["square", "circular", "triangle", "hex"]
   },
   {
     name: "cellPadding",
     type: "number",
     description:
       "Fixed gap in pixels between grid tracks. When set, layout uses `dotSize * N + cellPadding * (N - 1)` (N is the matrix dimension) and ignores `size` for track spacing.",
-    kinds: ["square", "circular", "triangle"]
+    kinds: ["square", "circular", "triangle", "hex"]
   },
   {
     name: "boxSize",
     type: "number",
     description:
-      "Target outer width/height in px; the 5×5 matrix is scaled uniformly to fit (combined with `minSize`). Not used by triangle.",
-    kinds: ["square", "circular"]
+      "Target outer width/height in px; the matrix is scaled uniformly to fit (combined with `minSize`). Not used by triangle.",
+    kinds: ["square", "circular", "hex"]
   },
   {
     name: "minSize",
     type: "number",
     description: "Minimum width and height in px of the root slot before any `boxSize` scaling. Not used by triangle.",
-    kinds: ["square", "circular"]
+    kinds: ["square", "circular", "hex"]
   }
 ] as const;
 
@@ -155,6 +155,9 @@ function loaderKindFromSlug(slug: string): LoaderKind {
   }
   if (slug.startsWith("dotm-circular-")) {
     return "circular";
+  }
+  if (slug.startsWith("dotm-hex-")) {
+    return "hex";
   }
   return "square";
 }
