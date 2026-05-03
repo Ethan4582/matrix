@@ -132,6 +132,27 @@ export type { DotmTriangle19Props } from "./loaders/dotm-triangle-19";
 export { DotmTriangle20 } from "./loaders/dotm-triangle-20";
 export type { DotmTriangle20Props } from "./loaders/dotm-triangle-20";
 
+export { DotmHex1 } from "./loaders/dotm-hex-1";
+export type { DotmHex1Props } from "./loaders/dotm-hex-1";
+export { DotmHex2 } from "./loaders/dotm-hex-2";
+export type { DotmHex2Props } from "./loaders/dotm-hex-2";
+export { DotmHex3 } from "./loaders/dotm-hex-3";
+export type { DotmHex3Props } from "./loaders/dotm-hex-3";
+export { DotmHex4 } from "./loaders/dotm-hex-4";
+export type { DotmHex4Props } from "./loaders/dotm-hex-4";
+export { DotmHex5 } from "./loaders/dotm-hex-5";
+export type { DotmHex5Props } from "./loaders/dotm-hex-5";
+export { DotmHex6 } from "./loaders/dotm-hex-6";
+export type { DotmHex6Props } from "./loaders/dotm-hex-6";
+export { DotmHex7 } from "./loaders/dotm-hex-7";
+export type { DotmHex7Props } from "./loaders/dotm-hex-7";
+export { DotmHex8 } from "./loaders/dotm-hex-8";
+export type { DotmHex8Props } from "./loaders/dotm-hex-8";
+export { DotmHex9 } from "./loaders/dotm-hex-9";
+export type { DotmHex9Props } from "./loaders/dotm-hex-9";
+export { DotmHex10 } from "./loaders/dotm-hex-10";
+export type { DotmHex10Props } from "./loaders/dotm-hex-10";
+
 export {
   CROSS_INDEXES,
   DIAMOND_INDEXES,

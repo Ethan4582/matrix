@@ -19,6 +19,7 @@ const importRewrites: ReadonlyArray<{ from: string; to: string }> = [
   { from: "../core/cx", to: "./dotmatrix-core" },
   { from: "../core/grid-paths", to: "./dotmatrix-core" },
   { from: "../core/hydration-inline-style", to: "./dotmatrix-core" },
+  { from: "../core/opacity-triplet", to: "./dotmatrix-core" },
   { from: "../core/path-wave-factory", to: "./dotmatrix-core" },
   { from: "../core/patterns", to: "./dotmatrix-core" },
   { from: "../types", to: "./dotmatrix-core" },
