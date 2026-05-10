@@ -20,7 +20,7 @@
 .dmx-dot {
   border-radius: 999px;
   display: block;
-  background: currentColor;
+  background: var(--dmx-dot-fill, currentColor);
   /* Matches prior 0.24 with default base/mid */
   opacity: calc(0.5 * (var(--dmx-opacity-base) + var(--dmx-opacity-mid)));
   --dmx-bloom-level: 0;

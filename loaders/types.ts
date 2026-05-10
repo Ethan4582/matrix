@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import type { DotMatrixColorPreset } from "./core/color-presets";
 
 export type MatrixPattern = "diamond" | "full" | "outline" | "rose" | "cross" | "rings";
 
@@ -8,6 +9,7 @@ export interface DotMatrixCommonProps {
   size?: number;
   dotSize?: number;
   color?: string;
+  colorPreset?: DotMatrixColorPreset;
   speed?: number;
   ariaLabel?: string;
   className?: string;

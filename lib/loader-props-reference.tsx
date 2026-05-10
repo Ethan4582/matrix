@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 type LoaderKind = "square" | "circular" | "triangle" | "hex";
 
 const PATTERN_TYPE = `"diamond" | "full" | "outline" | "rose" | "cross" | "rings"`;
+const COLOR_PRESET_TYPE =
+  `"solid-theme" | "solid-mint" | "grad-sunset" | "grad-ocean" | "grad-neon" | "grad-aurora" | "grad-fire" | "grad-prism"`;
 
 const PATTERN_LIST = ["diamond", "full", "outline", "rose", "cross", "rings"] as const;
 
@@ -39,8 +41,16 @@ const PROP_ROWS: readonly PropRow[] = [
   {
     name: "color",
     type: "string",
-    description: "Fill color for dots, passed through as the matrix `color` (typically `currentColor` or a CSS color string).",
+    description:
+      "Dot color override (typically `currentColor` or any CSS color string). Ignored when `colorPreset` is set.",
     default: "currentColor",
+    kinds: ["square", "circular", "triangle", "hex"]
+  },
+  {
+    name: "colorPreset",
+    type: COLOR_PRESET_TYPE,
+    description:
+      "Applies a built-in solid/gradient look across dots. Sets both glow tint and dot fill using the preset palette.",
     kinds: ["square", "circular", "triangle", "hex"]
   },
   {

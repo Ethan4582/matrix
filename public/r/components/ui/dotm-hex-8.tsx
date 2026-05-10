@@ -3,6 +3,7 @@
 import type { CSSProperties } from "react";
 
 import { cx } from "@/components/ui/dotmatrix-core";
+import { resolveDmxColorTokens } from "@/components/ui/dotmatrix-core";
 import { styleOpacity, stylePx } from "@/components/ui/dotmatrix-core";
 import { remapOpacityToTriplet } from "@/components/ui/dotmatrix-core";
 import { dmxBloomHaloSpreadClass, dmxBloomRootActive, dmxDotBloomParts } from "@/components/ui/dotmatrix-core";
@@ -39,6 +40,7 @@ export function DotmHex8({
   size = 34,
   dotSize = 5,
   color = "currentColor",
+  colorPreset,
   ariaLabel = "Loading",
   className,
   muted = false,
@@ -73,7 +75,8 @@ export function DotmHex8({
   const om = clamp01(opacityMid);
   const op = clamp01(opacityPeak);
   const activePatternIndexes = getPatternIndexes(pattern);
-  const matrixStyle = { width: stylePx(matrixWidth), height: stylePx(matrixHeight), color, ["--dmx-dot-size" as const]: `${dotSize}px`, ...(ob !== undefined && { ["--dmx-opacity-base" as const]: ob }), ...(om !== undefined && { ["--dmx-opacity-mid" as const]: om }), ...(op !== undefined && { ["--dmx-opacity-peak" as const]: op }), ...(useWrapper ? { transform: `scale(${scale})`, transformOrigin: "center center" as const } : { minWidth: minSize, minHeight: minSize }) } as unknown as CSSProperties;
+  const { resolvedColor, dotFill } = resolveDmxColorTokens(color, colorPreset);
+  const matrixStyle = { width: stylePx(matrixWidth), height: stylePx(matrixHeight), ["--dmx-dot-fill" as const]: dotFill, color: resolvedColor, ["--dmx-dot-size" as const]: `${dotSize}px`, ...(ob !== undefined && { ["--dmx-opacity-base" as const]: ob }), ...(om !== undefined && { ["--dmx-opacity-mid" as const]: om }), ...(op !== undefined && { ["--dmx-opacity-peak" as const]: op }), ...(useWrapper ? { transform: `scale(${scale})`, transformOrigin: "center center" as const } : { minWidth: minSize, minHeight: minSize }) } as unknown as CSSProperties;
 
   const matrix = (
     <div role={useWrapper ? undefined : "status"} aria-live={useWrapper ? undefined : "polite"} aria-label={useWrapper ? undefined : ariaLabel} className={cx("dmx-root", muted && "dmx-muted", dmxBloomRootActive(bloom, halo) && "dmx-bloom", dmxBloomHaloSpreadClass(halo), !useWrapper && className)} style={matrixStyle} onMouseEnter={useWrapper ? undefined : onMouseEnter} onMouseLeave={useWrapper ? undefined : onMouseLeave}>

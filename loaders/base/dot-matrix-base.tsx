@@ -6,6 +6,7 @@ import { cx } from "../core/cx";
 import { dmxBloomHaloSpreadClass, dmxBloomRootActive, dmxDotBloomParts } from "../core/dmx-dot-bloom";
 import { getMatrix5Layout, resolveDmxBoxOuterDim } from "../core/matrix-layout";
 import { remapOpacityToTriplet } from "../core/opacity-triplet";
+import { resolveDmxColorTokens } from "../core/color-presets";
 import {
   distanceFromCenter,
   getPatternIndexes,
@@ -37,6 +38,7 @@ export function DotMatrixBase({
   size = 24,
   dotSize = 3,
   color = "currentColor",
+  colorPreset,
   speed = 1,
   ariaLabel = "Loading",
   className,
@@ -67,6 +69,7 @@ export function DotMatrixBase({
   const om = clamp01(opacityMid);
   const op = clamp01(opacityPeak);
   const unit = dotSize + gap;
+  const { resolvedColor, dotFill } = resolveDmxColorTokens(color, colorPreset);
 
   const dmxVarStyle = useMemo(() => {
     return {
@@ -74,7 +77,8 @@ export function DotMatrixBase({
       height: matrixSpan,
       "--dmx-speed": speedScale,
       ["--dmx-dot-size" as const]: `${dotSize}px`,
-      color,
+      ["--dmx-dot-fill" as const]: dotFill,
+      color: resolvedColor,
       ...(ob !== undefined && { ["--dmx-opacity-base" as const]: ob }),
       ...(om !== undefined && { ["--dmx-opacity-mid" as const]: om }),
       ...(op !== undefined && { ["--dmx-opacity-peak" as const]: op }),
@@ -85,7 +89,7 @@ export function DotMatrixBase({
         }
         : { minWidth: minSize, minHeight: minSize })
     } as unknown as CSSProperties;
-  }, [matrixSpan, speedScale, dotSize, color, ob, om, op, useWrapper, scale, minSize]);
+  }, [matrixSpan, speedScale, dotSize, dotFill, resolvedColor, ob, om, op, useWrapper, scale, minSize]);
 
   const gridStyle = useMemo(() => ({ gap }), [gap]);
 

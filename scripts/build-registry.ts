@@ -58,6 +58,7 @@ const importRewrites: ReadonlyArray<{ from: string; to: string }> = [
   { from: "../core/hydration-inline-style", to: "@/components/ui/dotmatrix-core" },
   { from: "../core/opacity-triplet", to: "@/components/ui/dotmatrix-core" },
   { from: "../core/dmx-dot-bloom", to: "@/components/ui/dotmatrix-core" },
+  { from: "../core/color-presets", to: "@/components/ui/dotmatrix-core" },
   { from: "../core/path-wave-factory", to: "@/components/ui/dotmatrix-core" },
   { from: "../core/patterns", to: "@/components/ui/dotmatrix-core" },
   { from: "../types", to: "@/components/ui/dotmatrix-core" },

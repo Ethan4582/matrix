@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useEffect, useRef, useState, type ComponentType } from "react";
+import { memo, useCallback, useEffect, useRef, useState, type ComponentType, type CSSProperties } from "react";
 import type { LoaderCard } from "@/components/loader-details-drawer";
 import type { DotMatrixCommonProps } from "@/loaders";
 
@@ -10,6 +10,7 @@ interface LoaderGalleryGridCardProps {
   isAnimationEnabled: boolean;
   PreviewComponent: ComponentType<DotMatrixCommonProps>;
   previewProps: DotMatrixCommonProps;
+  previewStyle?: CSSProperties;
 }
 
 export const LoaderGalleryGridCard = memo(function LoaderGalleryGridCard({
@@ -17,7 +18,8 @@ export const LoaderGalleryGridCard = memo(function LoaderGalleryGridCard({
   onSelect,
   isAnimationEnabled,
   PreviewComponent,
-  previewProps
+  previewProps,
+  previewStyle
 }: LoaderGalleryGridCardProps) {
   const cardRef = useRef<HTMLButtonElement | null>(null);
   const [isNearViewport, setIsNearViewport] = useState(false);
@@ -68,7 +70,7 @@ export const LoaderGalleryGridCard = memo(function LoaderGalleryGridCard({
       </div>
 
       <div className="relative flex h-full flex-col">
-        <div className="flex flex-1 items-center justify-center ">
+        <div className="flex flex-1 items-center justify-center " style={previewStyle}>
           <PreviewComponent {...previewProps} animated={shouldAnimate} />
         </div>
       </div>
