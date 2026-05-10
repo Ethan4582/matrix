@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 import { useSteppedCycle } from "@/components/ui/dotmatrix-hooks";
 
 import { cx } from "@/components/ui/dotmatrix-core";
+import { resolveDmxColorTokens } from "@/components/ui/dotmatrix-core";
 import { useDotMatrixPhases } from "@/components/ui/dotmatrix-hooks";
 import { styleOpacity, stylePx } from "@/components/ui/dotmatrix-core";
 import { remapOpacityToTriplet } from "@/components/ui/dotmatrix-core";
@@ -59,6 +60,7 @@ export function DotmTriangle1({
   size = 30,
   dotSize = 6.5,
   color = "currentColor",
+  colorPreset,
   ariaLabel = "Loading",
   className,
   muted = false,
@@ -89,11 +91,13 @@ export function DotmTriangle1({
   const gap =
     cellPadding ?? Math.max(1, Math.floor((size - dotSize * MATRIX_SIZE) / (MATRIX_SIZE - 1)));
   const matrixSize = dotSize * MATRIX_SIZE + gap * (MATRIX_SIZE - 1);
+  const { resolvedColor, dotFill } = resolveDmxColorTokens(color, colorPreset);
   const rootStyle = {
     width: stylePx(cellPadding == null ? size : matrixSize),
     height: stylePx(cellPadding == null ? size : matrixSize),
     ["--dmx-dot-size" as const]: `${dotSize}px`,
-    color
+    ["--dmx-dot-fill" as const]: dotFill,
+    color: resolvedColor
   } as CSSProperties;
 
   return (

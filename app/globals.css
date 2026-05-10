@@ -18,6 +18,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted-foreground: var(--muted-foreground);
+  --color-preset: var(--preset);
 
   --color-bg: var(--color-bg);
   --color-fg-strong: var(--color-fg-strong);
@@ -152,6 +153,7 @@
   --surface: #111113;
   --border: rgba(255, 255, 255, 0.1);
   --dotmatrix-accent: 220 90% 60%;
+  --preset: #202020;
 
   --color-bg: #000000;
   --color-fg-strong: #fafafa;
@@ -195,6 +197,7 @@
   --surface: #eeeeec;
   --border: rgba(0, 0, 0, 0.1);
   --dotmatrix-accent: 40 90% 40%;
+  --preset: #eaeaea;
 
   --color-bg: #ffffff;
   --color-fg-strong: #050505;

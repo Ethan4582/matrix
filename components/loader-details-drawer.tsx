@@ -156,7 +156,7 @@ export function PatternAndLook() {
   return (
     <${C}
       pattern="cross"
-      color="var(--color-dotmatrix)"
+      colorPreset="grad-aurora"
       speed={0.8}
       muted
       animated
@@ -168,7 +168,7 @@ export function PatternAndLook() {
 export function ColorAndLook() {
   return (
     <${C}
-      color="var(--color-dotmatrix)"
+      colorPreset="grad-aurora"
       muted
     />
   );

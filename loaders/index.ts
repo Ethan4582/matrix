@@ -1,4 +1,5 @@
 export type { DotMatrixCommonProps, DotMatrixPhase, MatrixPattern } from "./types";
+export type { DotMatrixColorPreset } from "./core/color-presets";
 
 export { DotMatrixIcon } from "./loaders/dot-matrix-icon";
 export type { DotMatrixIconProps } from "./loaders/dot-matrix-icon";

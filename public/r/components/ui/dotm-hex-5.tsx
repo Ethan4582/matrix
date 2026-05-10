@@ -3,6 +3,7 @@
 import type { CSSProperties } from "react";
 
 import { cx } from "@/components/ui/dotmatrix-core";
+import { resolveDmxColorTokens } from "@/components/ui/dotmatrix-core";
 import { styleOpacity, stylePx } from "@/components/ui/dotmatrix-core";
 import { remapOpacityToTriplet } from "@/components/ui/dotmatrix-core";
 import { dmxBloomRootActive, dmxDotBloomParts } from "@/components/ui/dotmatrix-core";
@@ -60,6 +61,7 @@ export function DotmHex5({
   size = 34,
   dotSize = 5,
   color = "currentColor",
+  colorPreset,
   ariaLabel = "Loading",
   className,
   muted = false,
@@ -104,10 +106,12 @@ export function DotmHex5({
   const op = clamp01(opacityPeak);
   const phase = reducedMotion || matrixPhase === "idle" ? 0.18 : cyclePhase;
   const activePatternIndexes = getPatternIndexes(pattern);
+  const { resolvedColor, dotFill } = resolveDmxColorTokens(color, colorPreset);
   const matrixStyle = {
     width: stylePx(matrixWidth),
     height: stylePx(matrixHeight),
-    color,
+    ["--dmx-dot-fill" as const]: dotFill,
+    color: resolvedColor,
     ["--dmx-dot-size" as const]: `${dotSize}px`,
     ...(ob !== undefined && { ["--dmx-opacity-base" as const]: ob }),
     ...(om !== undefined && { ["--dmx-opacity-mid" as const]: om }),
