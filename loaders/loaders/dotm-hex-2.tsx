@@ -75,6 +75,7 @@ export function DotmHex2({
   bloom = false,
   halo = 0,
   dotClassName,
+  dotShape = "circle",
   speed = 1.7,
   animated = true,
   hoverAnimated = false,
@@ -120,6 +121,7 @@ export function DotmHex2({
     ["--dmx-dot-fill" as const]: dotFill,
     color: resolvedColor,
     ["--dmx-dot-size" as const]: `${dotSize}px`,
+      ["--dmx-halo-level" as const]: halo,
     ...(ob !== undefined && { ["--dmx-opacity-base" as const]: ob }),
     ...(om !== undefined && { ["--dmx-opacity-mid" as const]: om }),
     ...(op !== undefined && { ["--dmx-opacity-peak" as const]: op }),
@@ -136,7 +138,7 @@ export function DotmHex2({
       role={useWrapper ? undefined : "status"}
       aria-live={useWrapper ? undefined : "polite"}
       aria-label={useWrapper ? undefined : ariaLabel}
-      className={cx("dmx-root", muted && "dmx-muted", dmxBloomRootActive(bloom, halo) && "dmx-bloom", !useWrapper && className)}
+      className={cx("dmx-root", `dmx-dot-shape-${dotShape}`, muted && "dmx-muted", dmxBloomRootActive(bloom, halo) && "dmx-bloom", !useWrapper && className)}
       style={matrixStyle}
       onMouseEnter={useWrapper ? undefined : onMouseEnter}
       onMouseLeave={useWrapper ? undefined : onMouseLeave}

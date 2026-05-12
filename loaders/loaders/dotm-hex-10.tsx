@@ -80,6 +80,7 @@ export function DotmHex10({
   bloom = false,
   halo = 0,
   dotClassName,
+  dotShape = "circle",
   speed = 1.55,
   animated = true,
   hoverAnimated = false,
@@ -124,6 +125,7 @@ export function DotmHex10({
     ["--dmx-dot-fill" as const]: dotFill,
     color: resolvedColor,
     ["--dmx-dot-size" as const]: `${dotSize}px`,
+      ["--dmx-halo-level" as const]: halo,
     ...(ob !== undefined && { ["--dmx-opacity-base" as const]: ob }),
     ...(om !== undefined && { ["--dmx-opacity-mid" as const]: om }),
     ...(op !== undefined && { ["--dmx-opacity-peak" as const]: op }),
@@ -133,7 +135,7 @@ export function DotmHex10({
   } as unknown as CSSProperties;
 
   const matrix = (
-    <div role={useWrapper ? undefined : "status"} aria-live={useWrapper ? undefined : "polite"} aria-label={useWrapper ? undefined : ariaLabel} className={cx("dmx-root", muted && "dmx-muted", dmxBloomRootActive(bloom, halo) && "dmx-bloom", dmxBloomHaloSpreadClass(halo), !useWrapper && className)} style={matrixStyle} onMouseEnter={useWrapper ? undefined : onMouseEnter} onMouseLeave={useWrapper ? undefined : onMouseLeave}>
+    <div role={useWrapper ? undefined : "status"} aria-live={useWrapper ? undefined : "polite"} aria-label={useWrapper ? undefined : ariaLabel} className={cx("dmx-root", `dmx-dot-shape-${dotShape}`, muted && "dmx-muted", dmxBloomRootActive(bloom, halo) && "dmx-bloom", dmxBloomHaloSpreadClass(halo), !useWrapper && className)} style={matrixStyle} onMouseEnter={useWrapper ? undefined : onMouseEnter} onMouseLeave={useWrapper ? undefined : onMouseLeave}>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: stylePx(rowGap), width: "100%", height: "100%" }}>
         {ROW_COUNTS.map((count, row) => (
           <div key={row} style={{ display: "flex", justifyContent: "center", gap: stylePx(gap) }}>

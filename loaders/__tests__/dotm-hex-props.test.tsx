@@ -57,6 +57,7 @@ describe("dotm hex loaders", () => {
         className="outer-slot"
         color="rgb(12, 34, 56)"
         dotClassName="custom-dot"
+        dotShape="diamond"
         dotSize={6}
         minSize={64}
         muted
@@ -79,6 +80,7 @@ describe("dotm hex loaders", () => {
     const matrix = container.querySelector<HTMLElement>(".dmx-root");
     expect(matrix).toBeTruthy();
     expect(matrix?.classList.contains("dmx-muted")).toBe(true);
+    expect(matrix?.classList.contains("dmx-dot-shape-diamond")).toBe(true);
     expect(matrix?.style.color).toBe("rgb(12, 34, 56)");
     expect(matrix?.style.getPropertyValue("--dmx-opacity-base")).toBe("0.11");
     expect(matrix?.style.getPropertyValue("--dmx-opacity-mid")).toBe("0.44");

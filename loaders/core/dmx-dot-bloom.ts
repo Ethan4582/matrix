@@ -29,7 +29,7 @@ export function dmxDotBloomParts(
   const remapped = remapOpacityToTriplet(curveOpacity, ob, om, op);
   const fromBloom = bloom ? opacityToBloomLevel(remapped) : 0;
   return {
-    level: Math.max(haloN, fromBloom),
+    level: fromBloom,
     bloomDot: haloN > 0 || (bloom && remappedOpacityQualifiesForBloom(remapped))
   };
 }

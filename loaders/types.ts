@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import type { DotMatrixColorPreset } from "./core/color-presets";
 
 export type MatrixPattern = "diamond" | "full" | "outline" | "rose" | "cross" | "rings";
+export type DotShape = "circle" | "square" | "diamond";
 
 export type DotMatrixPhase = "idle" | "collapse" | "hoverRipple" | "loadingRipple";
 
@@ -27,6 +28,7 @@ export interface DotMatrixCommonProps {
   animated?: boolean;
   hoverAnimated?: boolean;
   dotClassName?: string;
+  dotShape?: DotShape;
   /**
    * Drives `--dmx-opacity-base` in CSS. Used in keyframe low/rest stops and idle dot tone (0–1).
    */
