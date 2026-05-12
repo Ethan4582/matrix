@@ -9,6 +9,7 @@
   --dmx-opacity-base: 0.16;
   --dmx-opacity-mid: 0.32;
   --dmx-opacity-peak: 1;
+  --dmx-halo-level: 0;
 }
 
 .dmx-grid {
@@ -19,6 +20,7 @@
 
 .dmx-dot {
   border-radius: 999px;
+  clip-path: none;
   display: block;
   background: var(--dmx-dot-fill, currentColor);
   /* Matches prior 0.24 with default base/mid */
@@ -29,19 +31,70 @@
   will-change: opacity;
 }
 
+.dmx-root.dmx-dot-shape-circle .dmx-dot {
+  border-radius: 999px;
+  clip-path: none;
+}
+
+.dmx-root.dmx-dot-shape-square .dmx-dot {
+  border-radius: 0;
+  clip-path: none;
+}
+
+.dmx-root.dmx-dot-shape-diamond .dmx-dot {
+  border-radius: 0;
+  clip-path: none;
+  transform: rotate(45deg) scale(0.7071067812);
+}
+
 .dmx-bloom .dmx-dot {
   filter:
-    drop-shadow(0 0 calc(var(--dmx-dot-size, 3px) * 0.75 * var(--dmx-bloom-level, 0)) currentColor)
-    drop-shadow(0 0 calc(var(--dmx-dot-size, 3px) * 1.35 * var(--dmx-bloom-level, 0)) currentColor);
+    drop-shadow(
+      0 0
+      calc(
+        var(--dmx-dot-size, 3px) * 0.75 *
+          max(var(--dmx-bloom-level, 0), var(--dmx-halo-level, 0))
+      )
+      currentColor
+    )
+    drop-shadow(
+      0 0
+      calc(
+        var(--dmx-dot-size, 3px) * 1.35 *
+          max(var(--dmx-bloom-level, 0), var(--dmx-halo-level, 0))
+      )
+      currentColor
+    );
   will-change: opacity, filter;
 }
 
 /* Halo: modestly wider falloff than selective bloom (same --dmx-bloom-level on each dot). */
 .dmx-root.dmx-bloom-halo.dmx-bloom .dmx-dot {
   filter:
-    drop-shadow(0 0 calc(var(--dmx-dot-size, 3px) * 0.92 * var(--dmx-bloom-level, 0)) currentColor)
-    drop-shadow(0 0 calc(var(--dmx-dot-size, 3px) * 1.62 * var(--dmx-bloom-level, 0)) currentColor)
-    drop-shadow(0 0 calc(var(--dmx-dot-size, 3px) * 2.55 * var(--dmx-bloom-level, 0)) currentColor);
+    drop-shadow(
+      0 0
+      calc(
+        var(--dmx-dot-size, 3px) * 0.92 *
+          max(var(--dmx-bloom-level, 0), var(--dmx-halo-level, 0))
+      )
+      currentColor
+    )
+    drop-shadow(
+      0 0
+      calc(
+        var(--dmx-dot-size, 3px) * 1.62 *
+          max(var(--dmx-bloom-level, 0), var(--dmx-halo-level, 0))
+      )
+      currentColor
+    )
+    drop-shadow(
+      0 0
+      calc(
+        var(--dmx-dot-size, 3px) * 2.55 *
+          max(var(--dmx-bloom-level, 0), var(--dmx-halo-level, 0))
+      )
+      currentColor
+    );
   will-change: opacity, filter;
 }
 

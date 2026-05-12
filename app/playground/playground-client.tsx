@@ -11,7 +11,13 @@ import {
 } from "@/components/loader-gallery-defaults";
 import { loaderComponentMap } from "@/lib/loader-component-map";
 import { LOADER_GALLERY_PREVIEW_PROPS } from "@/lib/loader-gallery-preview-props";
-import { DotMatrixIcon, type DotMatrixColorPreset, type DotMatrixCommonProps, type MatrixPattern } from "@/loaders";
+import {
+  DotMatrixIcon,
+  type DotMatrixColorPreset,
+  type DotMatrixCommonProps,
+  type DotShape,
+  type MatrixPattern
+} from "@/loaders";
 
 interface PlaygroundLoaderOption {
   slug: string;
@@ -31,6 +37,12 @@ const patternOptions: { value: MatrixPattern; label: string }[] = [
   { value: "cross", label: "Cross" },
   { value: "rings", label: "Rings" },
   { value: "rose", label: "Rose" }
+];
+
+const dotShapeOptions: { value: DotShape; label: string }[] = [
+  { value: "circle", label: "Circle" },
+  { value: "square", label: "Square" },
+  { value: "diamond", label: "Diamond" }
 ];
 
 const DEFAULT_THEME_COLOR = "#f4f4f5";
@@ -144,6 +156,11 @@ export function PlaygroundClient({ initialSlug, loaders }: PlaygroundClientProps
         default: defaultProps.pattern ?? "full",
         options: patternOptions
       },
+      dotShape: {
+        type: "select",
+        default: defaultProps.dotShape ?? "circle",
+        options: dotShapeOptions
+      },
       states: {
         _collapsed: false,
         animated: defaultProps.animated ?? true,
@@ -223,6 +240,7 @@ export function PlaygroundClient({ initialSlug, loaders }: PlaygroundClientProps
     color: customColor,
     ...(resolvedColorPreset ? { colorPreset: resolvedColorPreset } : {}),
     pattern: controls.pattern as MatrixPattern,
+    dotShape: controls.dotShape as DotShape,
     animated: controls.states.animated,
     hoverAnimated: controls.states.hoverAnimated,
     muted: controls.states.muted,
@@ -257,6 +275,10 @@ export function PlaygroundClient({ initialSlug, loaders }: PlaygroundClientProps
       `speed={${formatNumber(controls.speed)}}`,
       `pattern="${controls.pattern}"`
     ];
+
+    if (controls.dotShape !== "circle") {
+      propLines.push(`dotShape="${controls.dotShape}"`);
+    }
 
     if (resolvedColorPreset) {
       propLines.push(`colorPreset="${resolvedColorPreset}"`);
@@ -305,6 +327,7 @@ export function PlaygroundClient({ initialSlug, loaders }: PlaygroundClientProps
     controls.dotSize,
     controls.speed,
     controls.pattern,
+    controls.dotShape,
     controls.states.animated,
     controls.states.hoverAnimated,
     controls.states.muted,
@@ -348,7 +371,7 @@ export function PlaygroundClient({ initialSlug, loaders }: PlaygroundClientProps
               style={previewStyle}
             >
               <SelectedLoader
-                key={`${selectedLoader?.slug}-${controls.pattern}-${controls.colorPreset}-${controls.customColor}`}
+                key={`${selectedLoader?.slug}-${controls.pattern}-${controls.dotShape}-${controls.colorPreset}-${controls.customColor}`}
                 {...props}
               />
             </div>

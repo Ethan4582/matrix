@@ -79,6 +79,7 @@ export function DotmTriangle14({
   bloom = false,
   halo = 0,
   dotClassName,
+  dotShape = "circle",
   speed = 1.45,
   animated = true,
   hoverAnimated = false,
@@ -108,6 +109,7 @@ export function DotmTriangle14({
     width: stylePx(cellPadding == null ? size : matrixSize),
     height: stylePx(cellPadding == null ? size : matrixSize),
     ["--dmx-dot-size" as const]: `${dotSize}px`,
+      ["--dmx-halo-level" as const]: halo,
     ["--dmx-dot-fill" as const]: dotFill,
     color: resolvedColor
   } as CSSProperties;
@@ -117,7 +119,7 @@ export function DotmTriangle14({
       role="status"
       aria-live="polite"
       aria-label={ariaLabel}
-      className={cx("dmx-root", muted && "dmx-muted", dmxBloomRootActive(bloom, halo) && "dmx-bloom", className)}
+      className={cx("dmx-root", `dmx-dot-shape-${dotShape}`, muted && "dmx-muted", dmxBloomRootActive(bloom, halo) && "dmx-bloom", className)}
       style={rootStyle}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}

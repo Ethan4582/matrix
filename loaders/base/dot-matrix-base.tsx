@@ -43,6 +43,7 @@ export function DotMatrixBase({
   ariaLabel = "Loading",
   className,
   pattern = "diamond",
+  dotShape = "circle",
   muted = false,
   bloom = false,
   halo = 0,
@@ -77,6 +78,7 @@ export function DotMatrixBase({
       height: matrixSpan,
       "--dmx-speed": speedScale,
       ["--dmx-dot-size" as const]: `${dotSize}px`,
+      ["--dmx-halo-level" as const]: halo,
       ["--dmx-dot-fill" as const]: dotFill,
       color: resolvedColor,
       ...(ob !== undefined && { ["--dmx-opacity-base" as const]: ob }),
@@ -89,7 +91,7 @@ export function DotMatrixBase({
         }
         : { minWidth: minSize, minHeight: minSize })
     } as unknown as CSSProperties;
-  }, [matrixSpan, speedScale, dotSize, dotFill, resolvedColor, ob, om, op, useWrapper, scale, minSize]);
+  }, [matrixSpan, speedScale, dotSize, halo, dotFill, resolvedColor, ob, om, op, useWrapper, scale, minSize]);
 
   const gridStyle = useMemo(() => ({ gap }), [gap]);
 
@@ -214,6 +216,7 @@ export function DotMatrixBase({
     <div
       className={cx(
         "dmx-root",
+        `dmx-dot-shape-${dotShape}`,
         muted && "dmx-muted",
         dmxBloomRootActive(bloom, halo) && "dmx-bloom",
         dmxBloomHaloSpreadClass(halo),
@@ -257,6 +260,7 @@ export function DotMatrixBase({
       aria-label={ariaLabel}
       className={cx(
         "dmx-root",
+        `dmx-dot-shape-${dotShape}`,
         muted && "dmx-muted",
         dmxBloomRootActive(bloom, halo) && "dmx-bloom",
         dmxBloomHaloSpreadClass(halo),

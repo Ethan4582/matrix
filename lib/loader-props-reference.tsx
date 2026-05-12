@@ -119,6 +119,13 @@ const PROP_ROWS: readonly PropRow[] = [
     kinds: ["square", "circular", "triangle", "hex"]
   },
   {
+    name: "dotShape",
+    type: `"circle" | "square" | "diamond"`,
+    description: "Dot geometry for each active cell.",
+    default: '"circle"',
+    kinds: ["square", "circular", "triangle", "hex"]
+  },
+  {
     name: "pattern",
     type: PATTERN_TYPE,
     description: `Active cells on the 5×5 matrix projection. One of: ${PATTERN_LIST.join(", ")}.`,
