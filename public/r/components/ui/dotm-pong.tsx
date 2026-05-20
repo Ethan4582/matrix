@@ -1,16 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { resolveDmxColorTokens } from "../core/color-presets";
-import type { DotMatrixCommonProps } from "../types";
 
-export interface DotmPongProps extends DotMatrixCommonProps {
+export type DotmPongProps = {
   gridSize?: number;
   cellSize?: number;
   gap?: number;
+  speed?: number;
   activeColor?: string;
   inactiveColor?: string;
-}
+  className?: string;
+  size?: number;
+  dotSize?: number;
+};
 
 type BallState = {
   x: number;
@@ -24,22 +26,18 @@ const clamp = (value: number, min: number, max: number) =>
 
 export function DotmPong({
   gridSize = 8,
-  cellSize,
-  gap,
-  speed = 50,
-  activeColor,
+  cellSize = 8,
+  gap = 2,
+  speed = 60,
+  activeColor = "#ffffff",
   inactiveColor = "#27272a",
   className = "",
-  size,
-  dotSize,
-  color,
-  colorPreset,
-  dotShape = "circle",
-  ...rest
+  size = 1,
+  dotSize = 5,
 }: DotmPongProps) {
 
-  let resolvedCellSize = cellSize ?? dotSize ?? 8;
-  let resolvedGap = gap ?? 2;
+  let resolvedCellSize = cellSize;
+  let resolvedGap = gap;
 
   if (size !== undefined && size > 10) {
     resolvedCellSize = Math.max(2, Math.round(size / 7.5));
@@ -49,7 +47,6 @@ export function DotmPong({
     resolvedGap = Math.max(1, Math.round(dotSize * 0.3));
   }
 
-  const { resolvedColor } = resolveDmxColorTokens(activeColor || color || "#ffffff", colorPreset);
 
   const intervalDelay = speed < 10 ? Math.max(10, Math.round(60 / speed)) : speed;
 
@@ -72,6 +69,7 @@ export function DotmPong({
 
         if (nextY <= 0 || nextY >= gridSize - 1) {
           dy *= -1;
+          nextY = y + dy;
         }
 
         let nextLeftPaddle = leftPaddle;
@@ -96,6 +94,7 @@ export function DotmPong({
 
         if (leftHit || rightHit) {
           dx *= -1;
+          nextX = x + dx;
         }
 
         if (nextX < 0 || nextX > gridSize - 1) {
@@ -128,10 +127,6 @@ export function DotmPong({
   }, [gridSize, intervalDelay]);
 
   const cells = Array.from({ length: gridSize * gridSize });
-  
-  let borderRadius = "4px";
-  if (dotShape === "circle") borderRadius = "999px";
-  else if (dotShape === "square") borderRadius = "0px";
 
   return (
     <div
@@ -140,7 +135,6 @@ export function DotmPong({
         gridTemplateColumns: `repeat(${gridSize}, ${resolvedCellSize}px)`,
         gap: resolvedGap,
       }}
-      {...rest}
     >
       {cells.map((_, index) => {
         const row = Math.floor(index / gridSize);
@@ -162,14 +156,13 @@ export function DotmPong({
         return (
           <div
             key={index}
-            className="transition-colors duration-75"
+            className="rounded-[4px] transition-colors duration-75"
             style={{
               width: resolvedCellSize,
               height: resolvedCellSize,
-              borderRadius,
               backgroundColor:
                 isLeft || isRight || isBall
-                  ? resolvedColor
+                  ? activeColor
                   : inactiveColor,
             }}
           />

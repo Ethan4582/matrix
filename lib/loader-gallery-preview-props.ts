@@ -1,6 +1,6 @@
 import type { DotMatrixCommonProps } from "@/loaders";
 
-export const LOADER_GALLERY_PREVIEW_PROPS: Record<string, any> = {
+export const LOADER_GALLERY_PREVIEW_PROPS: Record<string, DotMatrixCommonProps> = {
   "dotm-pong": { size: 36, speed: 1.5 },
   "dotm-square-1": { size: 36, dotSize: 5, pattern: "full", animated: true, speed: 1.1 },
   "dotm-square-2": { size: 36, dotSize: 5, pattern: "full", animated: true, speed: 1.15 },
